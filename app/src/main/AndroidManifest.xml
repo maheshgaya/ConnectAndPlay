@@ -41,10 +41,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activity.ExploreGames"
-            android:label="@string/explore_games_label">
-        </activity>
-
+      
     </application>
 
 </manifest>
