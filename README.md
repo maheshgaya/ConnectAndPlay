@@ -16,5 +16,7 @@ This app allows users to connect and team up with other players to play sport ga
 ##Contributing to the Source Code
 1. Fork this repository
 2. Make all the changes, or add new features in your **own** repository
+
+  **NOTE: When pushing commit to your repository, uncheck google_maps_api.xml to ignore the api key that you added. This will leave GOOGLE_MAPS_API_KEY as the default.**
 3. Once you implement your patch, [rebase](https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request) your repository to reflect the latest commits on this repository
 4. Pull a request, once you are ready to submit your patch
