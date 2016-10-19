@@ -1,8 +1,9 @@
-package com.duse.android.connectandplay;
+package com.duse.android.connectandplay.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.duse.android.connectandplay.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
