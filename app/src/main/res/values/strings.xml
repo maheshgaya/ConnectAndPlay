@@ -7,4 +7,6 @@
     <string name="soccer_label">Soccer</string>
     <string name="tennis_label">Tennis</string>
     <string name="volleyball_label">Volleyball</string>
+
+    <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
 </resources>
