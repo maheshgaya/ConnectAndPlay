@@ -9,6 +9,7 @@ import android.provider.BaseColumns;
  * Created by Mahesh Gaya on 10/20/16.
  */
 
+//TODO: add list of players
 public class GamesContract {
     public static final String CONTENT_AUTHORITY = "com.duse.android.connectandplay.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -73,6 +74,7 @@ public class GamesContract {
         public static final String COLUMN_FIRST_NAME = "first_name";
         public static final String COLUMN_LAST_NAME = "last_name";
         public static final String COLUMN_BIOGRAPHY = "biography";
+        public static final String COLUMN_CURRENT_USER = "current_user"; //1 or 0
 
         //building the paths
         public static Uri buildUserUri(long id){

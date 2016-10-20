@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.duse.android.connectandplay.model.Game;
-import com.duse.android.connectandplay.model.User;
 
 /**
  * Created by Mahesh Gaya on 10/20/16.
@@ -27,7 +25,8 @@ public class GamesDbHelper extends SQLiteOpenHelper {
          * username TEXT NOT NULL,
          * first_name TEXT NOT NULL,
          * last_name TEXT NOT NULL,
-         * biography TEXT NOT NULL
+         * biography TEXT NOT NULL,
+         * current_user TEXT NOT NULL
          * );
          */
         final String SQL_CREATE_USER_TABLE =
@@ -36,7 +35,8 @@ public class GamesDbHelper extends SQLiteOpenHelper {
                         GamesContract.UserEntry.COLUMN_USERNAME + " TEXT NOT NULL, " +
                         GamesContract.UserEntry.COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
                         GamesContract.UserEntry.COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                        GamesContract.UserEntry.COLUMN_BIOGRAPHY + " TEXT NOT NULL" +
+                        GamesContract.UserEntry.COLUMN_BIOGRAPHY + " TEXT NOT NULL, " +
+                        GamesContract.UserEntry.COLUMN_CURRENT_USER + " TEXT NOT NULL" +
                         ");";
 
         //SPORT TABLE
@@ -71,6 +71,7 @@ public class GamesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_GAME_TABLE =
                 "CREATE TABLE " + GamesContract.GameEntry.TABLE_NAME + "(" +
                         GamesContract.GameEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        GamesContract.GameEntry.COLUMN_GAME_NAME + " TEXT NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_SPORT_ID + " INTEGER NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_TIME + " TEXT NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_DATE + " TEXT NOT NULL, " +
@@ -91,7 +92,7 @@ public class GamesDbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.GameEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.UserEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.SportEntry.TABLE_NAME);
