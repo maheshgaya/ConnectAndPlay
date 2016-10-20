@@ -25,7 +25,7 @@ import java.util.List;
  * Tutorial: <a href="http://www.androidhive.info/2015/09/android-material-design-working-with-tabs/">Android Hive</a>
  */
 
-public class ExploreGames extends AppCompatActivity{
+public class ExploreGamesActivity extends AppCompatActivity{
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -39,6 +39,9 @@ public class ExploreGames extends AppCompatActivity{
         //creates the toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //handles tabs and fragments
         mViewPager = (ViewPager) findViewById(R.id.viewpager);

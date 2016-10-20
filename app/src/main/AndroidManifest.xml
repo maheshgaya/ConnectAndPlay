@@ -24,9 +24,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ExploreGames"
+        <activity android:name=".activity.ExploreGamesActivity"
             android:label="@string/explore_games_label"
             android:parentActivityName=".activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
         </activity>
     </application>
 
