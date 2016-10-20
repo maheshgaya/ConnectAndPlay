@@ -26,10 +26,14 @@ import java.util.List;
  */
 
 public class ExploreGamesActivity extends AppCompatActivity{
-    private Toolbar mToolbar;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private Toolbar mToolbar; //action bar
+    private TabLayout mTabLayout; //tabs
+    private ViewPager mViewPager; //page content
 
+    /**
+     * create and configure the views
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
         //creates the toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        //adds the close button
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,6 +71,9 @@ public class ExploreGamesActivity extends AppCompatActivity{
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * Class to handle the ViewPagers(tabs)
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter{
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

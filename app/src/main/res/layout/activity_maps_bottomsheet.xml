@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MapsActivity">
-    <!-- Main Layout -->
+    <!-- Main Layout: Maps -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/fragment_maps"/>
-    <!-- Bottom Sheet Layout -->
+    <!-- Bottom Sheet Layout: Explore Games -->
     <RelativeLayout
         android:id="@+id/layout_explore_bottom_sheet"
         android:paddingLeft="@dimen/activity_horizontal_margin"

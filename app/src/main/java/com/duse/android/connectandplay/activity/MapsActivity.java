@@ -24,15 +24,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 {
 
     private Toolbar mToolbar;
-    private BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
     private View mBottomSheetLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
+        //shows Action bar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
+        //This opens ExploreGamesActivity
         mBottomSheetLayout = findViewById(R.id.layout_explore_bottom_sheet);
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,12 +52,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * Configures maps when it is ready
+     * @param map
+     */
     @Override
     public void onMapReady(GoogleMap map) {
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
     }
+
+    /**
+     * Inflates menus for this class
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -62,6 +75,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    /**
+     * Adds logic to the menus for this class
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
