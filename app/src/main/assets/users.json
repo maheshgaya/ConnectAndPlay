@@ -1,3 +1,64 @@
 {
-  "users": []
+  "users": [
+    {
+      "Username": "jim_scott93",
+      "First Name": "James",
+      "Last Name": "Scott",
+      "Biography": "I used to play basketball in college. Now I am just looking to play basketball recreationally."
+    },
+    {
+      "Username": "paul_moore87",
+      "First Name": "Paul",
+      "Last Name": "Moore",
+      "Biography": "Enjoys playing soccer and tennis."
+    },
+    {
+      "Username": "brian_clark97",
+      "First Name": "Brian",
+      "Last Name": "Clark",
+      "Biography": "Hey, I am Brian. Currenly, playing soccer at college. I also play football."
+    },
+    {
+      "Username": "chris_lee89",
+      "First Name": "Christopher",
+      "Last Name": "Lee",
+      "Biography": "Looking for quick basketball pickup games, four on four anyone?"
+    },
+    {
+      "Username": "william_thomas97",
+      "First Name": "William",
+      "Last Name": "Thomas",
+      "Biography": "On the football team at University of Iowa."
+    },
+    {
+      "Username": "em_turner96",
+      "First Name": "Emily",
+      "Last Name": "Turner",
+      "Biography": "I am on the women's basketball team at Illinois State University."
+    },
+    {
+      "Username": "maggie_brown95",
+      "First Name": "Margaret",
+      "Last Name": "Brown",
+      "Biography": "Currently, playing tennis for Iowa State. Anyone up for a match?"
+    },
+    {
+      "Username": "jenny_roberts92",
+      "First Name": "Jennifer",
+      "Last Name": "Roberts",
+      "Biography": "Hey, any old college volleyball players out there?"
+    },
+    {
+      "Username": "maria_perez87",
+      "First Name": "Maria",
+      "Last Name": "Perez",
+      "Biography": "Casually, like to play volleyball since I used to play in high school."
+    },
+    {
+      "Username": "izzy_hernandez90",
+      "First Name": "Isabella",
+      "Last Name": "Hernandez",
+      "Biography": "Trying to keep active by casually playing volleyball and soccer."
+    }
+  ]
 }
