@@ -26,17 +26,23 @@
     <!-- Bottom Sheet Layout -->
     <RelativeLayout
         android:id="@+id/layout_bottom_sheet"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        app:behavior_peekHeight="80dp"
-        app:behavior_hideable="true"
+        android:layout_height="@dimen/explore_bottom_sheet_height"
+        app:behavior_peekHeight="@dimen/explore_bottom_sheet_height"
+        app:behavior_hideable="false"
         app:layout_behavior="@string/string_bottom_sheet_behavior"
         android:elevation="@dimen/z_bottom_sheet"
         android:background="@color/color_bottom_sheet">
         <TextView
+            android:drawableLeft="@drawable/ic_explore"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
             android:id="@+id/txt_maps_explore_games"
             tools:text="@string/explore_games_label"
             android:text="@string/explore_games_label"
+            android:textSize="@dimen/explore_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
