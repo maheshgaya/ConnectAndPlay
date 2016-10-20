@@ -23,7 +23,7 @@ public class Constant {
     public static final String USER_FIRST_NAME = "First Name";
     public static final String USER_LAST_NAME = "Last Name";
     public static final String USER_BIOGRAPHY = "Biography";
-    
+
     //Sports
     public static final String SPORT_ARRAY = "sports";
     public static final String SPORT_NAME = "name";
