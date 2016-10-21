@@ -2,6 +2,7 @@ package com.duse.android.connectandplay.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,9 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.duse.android.connectandplay.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -26,9 +30,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Toolbar mToolbar;
     private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
     private View mBottomSheetLayout;
+    private GoogleMap mMap;
+    private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
+    private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //@assignee: Mahesh TODO: get last marker used /location
         //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
         //shows Action bar
@@ -52,15 +60,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        //@assignee: Mahesh TODO: save last location / marker used
+    }
+
     /**
      * Configures maps when it is ready
      * @param map
      */
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
+        mMap = map;
+        //can be replaced with latitude and longitude
+        setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
+        addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
+                "Flag Football this Saturday",
+                "Software Engineering Group 2");
+    }
+
+    public void setCameraPosition(double latitude, double longitude){
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(latitude, longitude))      // Sets the center of the map
+                .zoom(15)                   // Sets the zoom
+                .build();                   // Creates a CameraPosition from the builder
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+    }
+
+    public void addMarker(double latitude, double longitude, String title, String organizer){
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(title)
+                .snippet("Organized by " + organizer)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 
     /**
