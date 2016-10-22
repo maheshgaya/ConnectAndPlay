@@ -25,11 +25,15 @@ import java.util.List;
  * Tutorial: <a href="http://www.androidhive.info/2015/09/android-material-design-working-with-tabs/">Android Hive</a>
  */
 
-public class ExploreGames extends AppCompatActivity{
-    private Toolbar mToolbar;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+public class ExploreGamesActivity extends AppCompatActivity{
+    private Toolbar mToolbar; //action bar
+    private TabLayout mTabLayout; //tabs
+    private ViewPager mViewPager; //page content
 
+    /**
+     * create and configure the views
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,10 @@ public class ExploreGames extends AppCompatActivity{
         //creates the toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        //adds the close button
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //handles tabs and fragments
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -63,6 +71,9 @@ public class ExploreGames extends AppCompatActivity{
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * Class to handle the ViewPagers(tabs)
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter{
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
