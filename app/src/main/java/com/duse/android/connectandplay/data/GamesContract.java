@@ -9,7 +9,6 @@ import android.provider.BaseColumns;
  * Created by Mahesh Gaya on 10/20/16.
  */
 
-//TODO: add list of players
 public class GamesContract {
     public static final String CONTENT_AUTHORITY = "com.duse.android.connectandplay.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);

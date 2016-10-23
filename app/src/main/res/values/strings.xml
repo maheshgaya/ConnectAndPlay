@@ -4,6 +4,9 @@
     <string name="saved_games_label">Saved Games</string>
     <string name="profile_label">My Profile</string>
     <string name="about_label">About</string>
+    <string name="hosted_games_label">Hosted Games</string>
+    <string name="your_games_label">Your Games</string>
+
 
     <string name="basketball_label">Basketball</string>
     <string name="football_label">Football</string>

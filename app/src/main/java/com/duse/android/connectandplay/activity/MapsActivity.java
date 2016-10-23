@@ -20,31 +20,34 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback
 {
+    //Binding views
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
 
-    private Toolbar mToolbar;
-    private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
-    private View mBottomSheetLayout;
     private GoogleMap mMap;
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
+    private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //@assignee: Mahesh TODO: get last marker used /location
         //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
+        ButterKnife.bind(this);
         //shows Action bar
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         //This opens ExploreGamesActivity
-        mBottomSheetLayout = findViewById(R.id.layout_explore_bottom_sheet);
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,14 +90,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+
     }
 
     public void addMarker(double latitude, double longitude, String title, String organizer){
+        Float[] color = new Float[]{
+                BitmapDescriptorFactory.HUE_MAGENTA,
+                BitmapDescriptorFactory.HUE_GREEN,
+                BitmapDescriptorFactory.HUE_CYAN,
+                BitmapDescriptorFactory.HUE_ORANGE,
+                BitmapDescriptorFactory.HUE_VIOLET,
+                BitmapDescriptorFactory.HUE_ROSE
+        }; //TODO: divide user id by the length and round the result up. This will be the color of the marker
+
+
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet("Organized by " + organizer)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .setTag(0);
     }
 
     /**
@@ -123,7 +138,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_saved_games) {
-            //TODO: open intent for saved games
+            Intent intent = new Intent(this, YourGamesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.action_profile){
             //TODO: open intent for profile
         } else if (id == R.id.action_about){

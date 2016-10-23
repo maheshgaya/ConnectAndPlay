@@ -1,56 +1,41 @@
 package com.duse.android.connectandplay.activity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
 
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.adapter.ViewPagerAdapter;
-import com.duse.android.connectandplay.fragment.BasketballFragment;
-import com.duse.android.connectandplay.fragment.FootballFragment;
-import com.duse.android.connectandplay.fragment.SoccerFragment;
-import com.duse.android.connectandplay.fragment.TennisFragment;
-import com.duse.android.connectandplay.fragment.VolleyballFragment;
+import com.duse.android.connectandplay.fragment.HostGamesFragment;
+import com.duse.android.connectandplay.fragment.SavedGamesFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindDrawable;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Mahesh Gaya on 10/17/16.
- * Tutorial: <a href="http://www.androidhive.info/2015/09/android-material-design-working-with-tabs/">Android Hive</a>
+ * Created by Mahesh Gaya on 10/23/16.
  */
 
-public class ExploreGamesActivity extends AppCompatActivity{
+public class YourGamesActivity extends AppCompatActivity{
     private static final String TAG = ExploreGamesActivity.class.getSimpleName();
+
     //Binding views
-    @BindView(R.id.toolbar)  Toolbar mToolbar; //action bar
+    @BindView(R.id.fab_add) FloatingActionButton mFab;
+    @BindView(R.id.toolbar) Toolbar mToolbar; //action bar
     @BindView(R.id.tabs) TabLayout mTabLayout; //tabs
     @BindView(R.id.viewpager) ViewPager mViewPager; //page content
-    @BindView(R.id.fab_add) FloatingActionButton mFab; //fab
-
-    //Binding drawables
-    @BindDrawable(R.drawable.ic_close) Drawable closeIcon;
 
     //Binding strings
-    @BindString(R.string.basketball_label) String basketballLabel;
-    @BindString(R.string.football_label) String footballLabel;
-    @BindString(R.string.soccer_label) String soccerLabel;
-    @BindString(R.string.tennis_label) String tennisLabel;
-    @BindString(R.string.volleyball_label) String volleyballLabel;
+    @BindString(R.string.saved_games_label) String savedGamesLabel;
+    @BindString(R.string.hosted_games_label) String hostedGamesLabel;
+
+
 
     /**
      * create and configure the views
@@ -59,22 +44,23 @@ public class ExploreGamesActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //sets the view layout
-        setContentView(R.layout.activity_explore_games);
-        ButterKnife.bind(this);
 
+        //sets the view layout
+        setContentView(R.layout.activity_your_games);
+        ButterKnife.bind(this);
         //creates the toolbar
         setSupportActionBar(mToolbar);
-
         //adds the close button
-        getSupportActionBar().setHomeAsUpIndicator(closeIcon);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //handles tabs and fragments
         setupViewPage(mViewPager);
 
+
+        mTabLayout = (TabLayout)findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -83,13 +69,28 @@ public class ExploreGamesActivity extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-
+                switch (position){
+                    case 0:{
+                        //if saved games, remove fab
+                        mFab.hide();
+                        mFab.setVisibility(View.GONE);
+                        break;
+                    }
+                    case 1:{
+                        mFab.show();
+                        mFab.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
+
+
     }
 
     /**
@@ -98,13 +99,8 @@ public class ExploreGamesActivity extends AppCompatActivity{
      */
     private void setupViewPage(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new BasketballFragment(), basketballLabel);
-        adapter.addFrag(new FootballFragment(), footballLabel);
-        adapter.addFrag(new SoccerFragment(), soccerLabel);
-        adapter.addFrag(new TennisFragment(), tennisLabel);
-        adapter.addFrag(new VolleyballFragment(), volleyballLabel);
+        adapter.addFrag(new SavedGamesFragment(), savedGamesLabel);
+        adapter.addFrag(new HostGamesFragment(), hostedGamesLabel);
         viewPager.setAdapter(adapter);
     }
-
-
 }
