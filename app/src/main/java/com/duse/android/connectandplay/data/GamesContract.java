@@ -17,6 +17,7 @@ public class GamesContract {
     public static final String PATH_GAME = "game";
     public static final String PATH_USER = "user";
     public static final String PATH_SPORT = "sport";
+    public static final String PATH_PARTICIPATE = "participate";
 
     public static final class GameEntry implements BaseColumns{
         //defining types and path
@@ -45,12 +46,16 @@ public class GamesContract {
 
 
         //building the paths
+        //content://game/[_id]
         public static Uri buildGameUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        //TODO:building paths for inner join with user
-        //TODO: building paths for inner join with sport
+        //content://game/user/[user_id]
+        public static Uri buildGameUserUri(int userId){
+            return CONTENT_URI.buildUpon().appendPath(UserEntry.TABLE_NAME)
+                    .appendPath(Integer.toString(userId)).build();
+        }
 
     }
 
@@ -102,5 +107,27 @@ public class GamesContract {
         public static Uri buildSportUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+    }
+
+    public static final class ParticipateEntry implements BaseColumns{
+        //defining types and path
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTICIPATE).build();
+        //dir type
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTICIPATE;
+        //item type
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTICIPATE;
+
+        //Define table
+        public static final String TABLE_NAME = "participate";
+        public static final String COLUMN_GAME_ID = "game_id";
+
+        //building the paths
+        public static Uri buildParticipateUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
     }
 }

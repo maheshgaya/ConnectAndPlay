@@ -17,7 +17,6 @@ public class GamesProvider  extends ContentProvider{
 
     //code for UriMatcher
     private static final int GAME = 100; //dir
-    //TODO: ADD query parameters for sport id
     private static final int GAME_WITH_ID = 101; //inner join item
 
     private static final int USER = 200; //dir
