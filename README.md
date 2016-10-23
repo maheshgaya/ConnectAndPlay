@@ -1,8 +1,8 @@
-# ConnectAndPlay
-
+# TEAM UP
+code name: Connect&Play
 This app allows users to connect and team up with other players to play sport games.
 
-##Using the Source Code in Android Studio
+## Using the Source Code in Android Studio
 1. Clone the repository
   
   ```
@@ -13,7 +13,7 @@ This app allows users to connect and team up with other players to play sport ga
 4. Add your API key to google_maps_api.xml
 5. Run the project in an emulator with api greater or equal to 21
 
-##Contributing to the Source Code
+## Contributing to the Source Code
 1. Fork this repository
 2. Make all the changes, or add new features in your **own** repository
 
