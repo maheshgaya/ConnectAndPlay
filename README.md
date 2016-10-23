@@ -1,5 +1,6 @@
 # TEAM UP
 code name: Connect&Play
+
 This app allows users to connect and team up with other players to play sport games.
 
 ## Using the Source Code in Android Studio
