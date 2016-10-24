@@ -57,8 +57,6 @@ public class GameAdapter extends CursorAdapter {
         viewHolder.organizerTextView.setText(organizer);
 
 
-
-
     }
     public static class ViewHolder{
         @BindView(R.id.card_view_game_title_text_view) TextView titleTextView;

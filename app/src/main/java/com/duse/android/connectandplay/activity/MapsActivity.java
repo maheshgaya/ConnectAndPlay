@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.duse.android.connectandplay.R;
+import com.duse.android.connectandplay.syncdata.FetchGameData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -144,6 +145,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             //TODO: open intent for profile
         } else if (id == R.id.action_about){
             //TODO: open intent for about
+        } else if (id == R.id.action_refresh){
+            FetchGameData fetchGameData = new FetchGameData(this);
+            fetchGameData.execute();
         }
 
         return super.onOptionsItemSelected(item);
