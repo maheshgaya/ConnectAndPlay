@@ -11,13 +11,29 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class GamesDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "games.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public GamesDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //PARTICIPATE TABLE
+        /**
+         * CREATE TABLE participate (
+         * _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+         * game_id INTEGER NOT NULL,
+         * FOREIGN KEY (game_id) REFERENCES sport(_id),
+         * );
+         */
+        final String SQL_CREATE_PARTICIPATE_TABLE =
+                "CREATE TABLE " + GamesContract.ParticipateEntry.TABLE_NAME + "(" +
+                        GamesContract.ParticipateEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        GamesContract.ParticipateEntry.COLUMN_GAME_ID + " INTEGER NOT NULL, " +
+                        "FOREIGN KEY (" + GamesContract.ParticipateEntry.COLUMN_GAME_ID + ") " +
+                        "REFERENCES " + GamesContract.GameEntry.TABLE_NAME + "(" + GamesContract.GameEntry._ID + ")" +
+                        ");";
+
         //USER TABLE
         /**
          * CREATE TABLE user (
@@ -86,13 +102,16 @@ public class GamesDbHelper extends SQLiteOpenHelper {
                         ");";
 
         //Create tables in sqlite
+
         sqLiteDatabase.execSQL(SQL_CREATE_SPORT_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_PARTICIPATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.ParticipateEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.GameEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.UserEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.SportEntry.TABLE_NAME);

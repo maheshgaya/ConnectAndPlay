@@ -3,6 +3,7 @@ package com.duse.android.connectandplay.fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -13,11 +14,14 @@ import android.view.ViewGroup;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.data.GamesContract;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- * Created by Mahesh Gaya on 10/17/16.
+ * Created by Mahesh Gaya on 10/23/16.
  */
 
-public class VolleyballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SavedGamesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String[] GAME_PROJECTION ={
             GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
             GamesContract.GameEntry.COLUMN_GAME_NAME,
@@ -39,7 +43,8 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     public static final int COLUMN_PEOPLE_NEEDED = 6;
     public static final int COLUMN_USERNAME = 7;
     public static final int COLUMN_SPORT_NAME = 8;
-    public VolleyballFragment(){
+
+    public SavedGamesFragment(){
         //required empty constructor
     }
 
@@ -52,8 +57,10 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_saved_games, container, false);
+        ButterKnife.bind(this, view);
 
-        return inflater.inflate(R.layout.fragment_volleyball, container, false);
+        return view;
     }
 
     @Override

@@ -14,10 +14,10 @@ import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.data.GamesContract;
 
 /**
- * Created by Mahesh Gaya on 10/17/16.
+ * Created by Mahesh Gaya on 10/23/16.
  */
 
-public class VolleyballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class HostGamesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String[] GAME_PROJECTION ={
             GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
             GamesContract.GameEntry.COLUMN_GAME_NAME,
@@ -39,10 +39,9 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     public static final int COLUMN_PEOPLE_NEEDED = 6;
     public static final int COLUMN_USERNAME = 7;
     public static final int COLUMN_SPORT_NAME = 8;
-    public VolleyballFragment(){
+    public HostGamesFragment(){
         //required empty constructor
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +52,7 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_volleyball, container, false);
+        return inflater.inflate(R.layout.fragment_hosted_games, container, false);
     }
 
     @Override

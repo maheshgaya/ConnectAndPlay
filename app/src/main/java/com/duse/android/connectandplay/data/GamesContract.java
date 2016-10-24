@@ -9,7 +9,6 @@ import android.provider.BaseColumns;
  * Created by Mahesh Gaya on 10/20/16.
  */
 
-//TODO: add list of players
 public class GamesContract {
     public static final String CONTENT_AUTHORITY = "com.duse.android.connectandplay.app";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
@@ -18,6 +17,7 @@ public class GamesContract {
     public static final String PATH_GAME = "game";
     public static final String PATH_USER = "user";
     public static final String PATH_SPORT = "sport";
+    public static final String PATH_PARTICIPATE = "participate";
 
     public static final class GameEntry implements BaseColumns{
         //defining types and path
@@ -46,12 +46,29 @@ public class GamesContract {
 
 
         //building the paths
+        //content://game/[_id]
         public static Uri buildGameUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        //TODO:building paths for inner join with user
-        //TODO: building paths for inner join with sport
+        //content://game/user/[user_id]
+        public static Uri buildGameUserUri(long userId){
+            return CONTENT_URI.buildUpon().appendPath(UserEntry.TABLE_NAME)
+                    .appendPath(Long.toString(userId)).build();
+        }
+
+        //content://game/sport/[sport_id]
+        public static Uri buildGameSportUri(long sportId){
+            return CONTENT_URI.buildUpon().appendPath(SportEntry.TABLE_NAME)
+                    .appendPath(Long.toString(sportId)).build();
+        }
+
+        public static String getSportIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        public static String getUserIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
+        }
 
     }
 
@@ -103,5 +120,38 @@ public class GamesContract {
         public static Uri buildSportUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+    }
+
+    public static final class ParticipateEntry implements BaseColumns{
+        //defining types and path
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTICIPATE).build();
+        //dir type
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTICIPATE;
+        //item type
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PARTICIPATE;
+
+        //Define table
+        public static final String TABLE_NAME = "participate";
+        public static final String COLUMN_GAME_ID = "game_id";
+
+        //building the paths
+        //content://authority/participate/[_id]
+        public static Uri buildParticipateUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+        //content://authority/participate/game/[game_id]
+        public static Uri buildParticipateGameUri(long gameId){
+            return CONTENT_URI.buildUpon().appendPath(GameEntry.TABLE_NAME)
+                    .appendPath(Long.toString(gameId)).build();
+        }
+
+        public static String getGameIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        
+
     }
 }
