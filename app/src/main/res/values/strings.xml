@@ -26,7 +26,8 @@
     <string name="volleyball_label">Volleyball</string>
 
     <!-- customs -->
-    <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
 
-    <string name="content_authority">com.duse.android.connectandplay.app</string>
+    <string name="sync_account_type">connectandplay.android.duse.com</string>
+    <string name="content_authority" translatable="false">com.duse.android.connectandplay.app</string>
 </resources>

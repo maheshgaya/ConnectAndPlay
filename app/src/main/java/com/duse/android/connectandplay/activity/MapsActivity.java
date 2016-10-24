@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.duse.android.connectandplay.R;
+import com.duse.android.connectandplay.sync.GameSyncAdapter;
 import com.duse.android.connectandplay.syncdata.FetchGameData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,7 +64,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        GameSyncAdapter.initializeSyncAdapter(this);
 
     }
 
@@ -71,6 +72,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         //@assignee: Mahesh TODO: save last location / marker used
+    }
+
+
+    public void updateGames(){
+        GameSyncAdapter.syncImmediately(this);
     }
 
     /**

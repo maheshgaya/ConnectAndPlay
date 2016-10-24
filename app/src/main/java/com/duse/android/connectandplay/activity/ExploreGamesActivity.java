@@ -20,6 +20,7 @@ import com.duse.android.connectandplay.fragment.FootballFragment;
 import com.duse.android.connectandplay.fragment.SoccerFragment;
 import com.duse.android.connectandplay.fragment.TennisFragment;
 import com.duse.android.connectandplay.fragment.VolleyballFragment;
+import com.duse.android.connectandplay.sync.GameSyncAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
             }
         });
     }
+
 
     /**
      * Setup the tabs in the layout
