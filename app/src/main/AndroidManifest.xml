@@ -16,12 +16,20 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+<<<<<<< HEAD
+=======
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+>>>>>>> e055f457bed902d17742c48dc59d9526008da2d0
         <activity android:name=".activity.ExploreGamesActivity"
             android:label="@string/explore_games_label"
             android:parentActivityName=".activity.MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
+<<<<<<< HEAD
         </activity>
         <activity android:name=".activity.YourGamesActivity"
             android:label="@string/your_games_label"
@@ -30,6 +38,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
         </activity>
+=======
+        </activity>
+        <activity android:name=".activity.YourGamesActivity"
+            android:label="@string/your_games_label"
+            android:parentActivityName=".activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
+        </activity>
+>>>>>>> e055f457bed902d17742c48dc59d9526008da2d0
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.GamesProvider"
