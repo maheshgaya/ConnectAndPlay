@@ -1,9 +1,12 @@
 package com.duse.android.connectandplay.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -28,7 +31,8 @@ import butterknife.ButterKnife;
 /**
  * Created by kristinaneel on 10/16/2016.
  */
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+        LoaderManager.LoaderCallbacks<Cursor>
 {
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -37,7 +41,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
-    private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,6 +154,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //TODO: @assignee Mahesh create markers from database
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
 
