@@ -16,10 +16,25 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activity.ExploreGames"
+        <activity android:name=".activity.ExploreGamesActivity"
             android:label="@string/explore_games_label"
             android:parentActivityName=".activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
         </activity>
+        <activity android:name=".activity.YourGamesActivity"
+            android:label="@string/your_games_label"
+            android:parentActivityName=".activity.MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
+        </activity>
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.GamesProvider"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

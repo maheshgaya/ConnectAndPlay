@@ -1,12 +1,32 @@
 <resources>
     <string name="app_name">TeamUp</string>
+    <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
+    <string name="saved_games_label">Saved Games</string>
+    <string name="profile_label">My Profile</string>
+    <string name="about_label">About</string>
+    <string name="refresh_label">Refresh</string>
 
+    <!-- Card View -->
+    <string name="participate_button">Participate</string>
+    <string name="share_button">Share</string>
+    <string name="organized_by">Organized by </string>
+    <string name="people_needed"> persons needed</string>
+    <string name="person_needed"> person needed</string>
+    <string name="report">Report</string>
+    <string name="edit">Edit</string>
+
+    <!-- fragments -->
+    <string name="hosted_games_label">Hosted Games</string>
+    <string name="your_games_label">Your Games</string>
     <string name="basketball_label">Basketball</string>
     <string name="football_label">Football</string>
     <string name="soccer_label">Soccer</string>
     <string name="tennis_label">Tennis</string>
     <string name="volleyball_label">Volleyball</string>
 
+    <!-- customs -->
     <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+
+    <string name="content_authority">com.duse.android.connectandplay.app</string>
 </resources>
