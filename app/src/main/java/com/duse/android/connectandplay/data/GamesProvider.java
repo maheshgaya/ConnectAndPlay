@@ -393,6 +393,7 @@ public class GamesProvider  extends ContentProvider {
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
+                break;
             }
             case PARTICIPATE: {
                 long _id = db.insert(GamesContract.ParticipateEntry.TABLE_NAME, null, contentValues);
@@ -401,6 +402,7 @@ public class GamesProvider  extends ContentProvider {
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
+                break;
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

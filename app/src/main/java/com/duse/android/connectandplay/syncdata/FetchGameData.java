@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.data.GamesContract;
@@ -22,6 +23,7 @@ import java.io.InputStream;
  */
 
 public class FetchGameData extends AsyncTask<Void, Void, Void>{
+    private static final String TAG = FetchGameData.class.getSimpleName();
     private Context mContext;
     public FetchGameData(Context context){
         mContext = context;
@@ -104,7 +106,7 @@ public class FetchGameData extends AsyncTask<Void, Void, Void>{
                     new String[]{GamesContract.GameEntry._ID},
                     GamesContract.GameEntry.COLUMN_GAME_NAME + " = ? AND " +
                             GamesContract.GameEntry.COLUMN_SPORT_ID + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? AND ",
+                            GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? ",
                     new String[]{gameName, Long.toString(sportId), Long.toString(userId)},
                     null
             );
@@ -209,6 +211,7 @@ public class FetchGameData extends AsyncTask<Void, Void, Void>{
                 readSportsJson(sportJson);
                 readUsersJson(usersJson);
                 readGamesJson(gamesJson);
+                Log.d(TAG, "doInBackground: Wow, this is done correctly!");
             }catch (JSONException e){
                 e.printStackTrace();
                 return null;
