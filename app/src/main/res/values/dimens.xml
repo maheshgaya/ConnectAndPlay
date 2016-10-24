@@ -5,5 +5,7 @@
     <dimen name="z_bottom_sheet">16dp</dimen>
     <dimen name="explore_bottom_sheet_height">56dp</dimen>
     <dimen name="explore_text_size">16sp</dimen>
+    <dimen name="card_padding">16dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
+    <dimen name="game_title_text_size">18sp</dimen>
 </resources>
