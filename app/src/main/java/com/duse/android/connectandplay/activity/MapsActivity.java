@@ -1,23 +1,27 @@
 package com.duse.android.connectandplay.activity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-<<<<<<< HEAD
-import android.support.v4.content.ContextCompat;
-=======
+import android.os.PersistableBundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
->>>>>>> refs/remotes/maheshgaya/master
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.duse.android.connectandplay.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -25,52 +29,123 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback
 {
+    //Binding views
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
 
-    private Toolbar mToolbar;
+    private GoogleMap mMap;
+    private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
+    private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
+    private BottomSheetBehavior mBottomSheetBehavior; //TODO: to use for custom bottomsheet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //@assignee: Mahesh TODO: get last marker used /location
+        //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+        //shows Action bar
         setSupportActionBar(mToolbar);
+
+        //This opens ExploreGamesActivity
+        mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExploreGamesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
-        if (ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED){
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)){
-
-            }else{
-                ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_COARSE_LOCATION);
-            }
-        }
-
-
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        //@assignee: Mahesh TODO: save last location / marker used
+    }
+
+    /**
+     * Configures maps when it is ready
+     * @param map
+     */
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
+        mMap = map;
+        //can be replaced with latitude and longitude
+        setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
+        addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
+                "Flag Football this Saturday",
+                "Software Engineering Group 2");
     }
 
+    public void setCameraPosition(double latitude, double longitude){
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(latitude, longitude))      // Sets the center of the map
+                .zoom(15)                   // Sets the zoom
+                .build();                   // Creates a CameraPosition from the builder
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+    }
+
+    public void addMarker(double latitude, double longitude, String title, String organizer){
+        Float[] color = new Float[]{
+                BitmapDescriptorFactory.HUE_MAGENTA,
+                BitmapDescriptorFactory.HUE_GREEN,
+                BitmapDescriptorFactory.HUE_CYAN,
+                BitmapDescriptorFactory.HUE_ORANGE,
+                BitmapDescriptorFactory.HUE_VIOLET,
+                BitmapDescriptorFactory.HUE_ROSE
+        }; //TODO: divide user id by the length and round the result up. This will be the color of the marker
+
+
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(title)
+                .snippet("Organized by " + organizer)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .setTag(0);
+    }
+
+    /**
+     * Inflates menus for this class
+     * @param menu
+     * @return
+     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
-        switch(requestCode){
-            case MY_PERMISSION_REQUEST_COARSE_LOCATION:{
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-            }
-            else{
-
-            }
-            return;
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.map_menu, menu);
+        return true;
     }
+
+    /**
+     * Adds logic to the menus for this class
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.pref_general.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_saved_games) {
+            Intent intent = new Intent(this, YourGamesActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_profile){
+            //TODO: open intent for profile
+        } else if (id == R.id.action_about){
+            //TODO: open intent for about
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
-
