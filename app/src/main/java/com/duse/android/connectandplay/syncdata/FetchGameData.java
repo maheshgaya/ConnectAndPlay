@@ -23,6 +23,7 @@ import java.io.InputStream;
  */
 
 public class FetchGameData extends AsyncTask<Void, Void, Void>{
+    //TODO: Replace with SyncAdapters (SyncAdapter is awesome)
     private static final String TAG = FetchGameData.class.getSimpleName();
     private Context mContext;
     public FetchGameData(Context context){
