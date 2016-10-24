@@ -52,9 +52,22 @@ public class GamesContract {
         }
 
         //content://game/user/[user_id]
-        public static Uri buildGameUserUri(int userId){
+        public static Uri buildGameUserUri(long userId){
             return CONTENT_URI.buildUpon().appendPath(UserEntry.TABLE_NAME)
-                    .appendPath(Integer.toString(userId)).build();
+                    .appendPath(Long.toString(userId)).build();
+        }
+
+        //content://game/sport/[sport_id]
+        public static Uri buildGameSportUri(long sportId){
+            return CONTENT_URI.buildUpon().appendPath(SportEntry.TABLE_NAME)
+                    .appendPath(Long.toString(sportId)).build();
+        }
+
+        public static String getSportIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        public static String getUserIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
         }
 
     }
@@ -125,9 +138,20 @@ public class GamesContract {
         public static final String COLUMN_GAME_ID = "game_id";
 
         //building the paths
+        //content://authority/participate/[_id]
         public static Uri buildParticipateUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+        //content://authority/participate/game/[game_id]
+        public static Uri buildParticipateGameUri(long gameId){
+            return CONTENT_URI.buildUpon().appendPath(GameEntry.TABLE_NAME)
+                    .appendPath(Long.toString(gameId)).build();
+        }
+
+        public static String getGameIdFromUri(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        
 
     }
 }

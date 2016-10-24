@@ -15,4 +15,6 @@
     <string name="volleyball_label">Volleyball</string>
 
     <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+
+    <string name="content_authority">com.duse.android.connectandplay.app</string>
 </resources>

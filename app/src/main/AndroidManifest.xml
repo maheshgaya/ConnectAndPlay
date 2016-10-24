@@ -39,7 +39,7 @@
                 android:value=".activity.MapsActivity" />
         </activity>
         <provider
-            android:authorities="com.duse.android.connectandplay.app"
+            android:authorities="@string/content_authority"
             android:name=".data.GamesProvider"
             android:enabled="true"
             android:exported="true"/>
