@@ -13,8 +13,8 @@
     <string name="participate_button">Participate</string>
     <string name="share_button">Share</string>
     <string name="organized_by">Organized by </string>
-    <string name="people_needed">&#160;persons needed</string>
-    <string name="person_needed">&#160;person needed</string>
+    <string name="people_needed">persons needed</string>
+    <string name="person_needed">person needed</string>
     <string name="report">Report</string>
     <string name="edit">Edit</string>
 
