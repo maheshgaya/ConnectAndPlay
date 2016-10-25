@@ -55,6 +55,7 @@
                 android:value=".activity.MapsActivity" />
         </activity>
 
+
         <!-- provides the details about a card -->
         <activity android:name=".activity.DetailActivity"
             android:label="@string/detail_label"
@@ -65,15 +66,13 @@
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
 
+
         <!-- creates a game to add to database -->
         <activity android:name=".activity.CreateGameActivity"
             android:label="@string/create_game_label"
             android:parentActivityName=".activity.MapsActivity"
-            android:theme="@style/AppActionBarTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MapsActivity" />
-        </activity>
+            android:theme="@style/AppActionBarTheme"/>
+
 
         <activity android:name=".activity.ProfileActivity"
             android:label="@string/profile_label"
@@ -84,6 +83,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
         </activity>
+        
 
         <!-- gets the latitude and logitude from the physical address -->
         <service android:name=".service.LatLongService" />
