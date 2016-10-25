@@ -3,16 +3,18 @@
     <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
     <string name="saved_games_label">Saved Games</string>
-    <string name="profile_label">My Profile</string>
+    <string name="profile_label">Edit Profile</string>
     <string name="about_label">About</string>
     <string name="refresh_label">Refresh</string>
+    <string name="detail_label">Game Detail</string>
+    <string name="create_game_label">Create Game</string>
 
     <!-- Card View -->
     <string name="participate_button">Participate</string>
     <string name="share_button">Share</string>
     <string name="organized_by">Organized by </string>
-    <string name="people_needed"> persons needed</string>
-    <string name="person_needed"> person needed</string>
+    <string name="people_needed">&#160;persons needed</string>
+    <string name="person_needed">&#160;person needed</string>
     <string name="report">Report</string>
     <string name="edit">Edit</string>
 
@@ -25,8 +27,16 @@
     <string name="tennis_label">Tennis</string>
     <string name="volleyball_label">Volleyball</string>
 
-    <!-- customs -->
-    <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+    <!-- static for queries -->
+    <string name="basketball_query_key" translatable="false">Basketball</string>
+    <string name="football_query_key" translatable="false">Football</string>
+    <string name="soccer_query_key" translatable="false">Soccer</string>
+    <string name="tennis_query_key" translatable="false">Tennis</string>
+    <string name="volleyball_query_key" translatable="false">Volleyball</string>
 
-    <string name="content_authority">com.duse.android.connectandplay.app</string>
+    <!-- customs -->
+    <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+
+    <string name="sync_account_type" translatable="false">connectandplay.android.duse.com</string>
+    <string name="content_authority" translatable="false">com.duse.android.connectandplay.app</string>
 </resources>

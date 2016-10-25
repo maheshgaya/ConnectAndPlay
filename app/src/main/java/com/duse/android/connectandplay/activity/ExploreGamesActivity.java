@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.adapter.ViewPagerAdapter;
@@ -20,6 +22,7 @@ import com.duse.android.connectandplay.fragment.FootballFragment;
 import com.duse.android.connectandplay.fragment.SoccerFragment;
 import com.duse.android.connectandplay.fragment.TennisFragment;
 import com.duse.android.connectandplay.fragment.VolleyballFragment;
+import com.duse.android.connectandplay.sync.GameSyncAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,22 +78,15 @@ public class ExploreGamesActivity extends AppCompatActivity{
         setupViewPage(mViewPager);
 
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onClick(View view) {
+                //TODO: replace this with CreateGameActivity
+                Toast.makeText(getApplicationContext(), "Fab is tapped", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     /**
      * Setup the tabs in the layout

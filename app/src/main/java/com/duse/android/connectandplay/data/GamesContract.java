@@ -63,9 +63,15 @@ public class GamesContract {
                     .appendPath(Long.toString(sportId)).build();
         }
 
+
+        public static String getGameIdFromUri(Uri uri) {
+            return uri.getLastPathSegment();
+        }
+
         public static String getSportIdFromUri(Uri uri){
             return uri.getLastPathSegment();
         }
+
         public static String getUserIdFromUri(Uri uri){
             return uri.getLastPathSegment();
         }
