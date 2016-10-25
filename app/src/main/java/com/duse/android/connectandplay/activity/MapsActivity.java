@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -18,6 +20,7 @@ import android.view.View;
 
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.syncdata.FetchGameData;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,8 +40,7 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor>
-{
+        LoaderManager.LoaderCallbacks<Cursor>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
@@ -57,6 +59,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         //shows Action bar
         setSupportActionBar(mToolbar);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
 
         //This opens ExploreGamesActivity
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +90,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         }
 
+    }
+
+    protected void onStart(){
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop(){
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -199,8 +216,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
-                    Location myLocation =
-                            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+//                    buildGoogleApiClient();
+//                    Location myLocation =
+//                            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 }
             } else {
                 // Permission was denied or request was cancelled
@@ -208,5 +227,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location myLocation =
+                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }
 
