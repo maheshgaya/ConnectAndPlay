@@ -37,6 +37,7 @@
                 android:layout_below="@+id/game_date_time_text_view"/>
 
             <ImageButton
+                android:id="@+id/game_icon"
                 tools:src="@mipmap/ic_sport_football"
                 android:layout_width="@dimen/game_icon_size"
                 android:layout_height="@dimen/game_icon_size"

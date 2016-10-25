@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 public class BasketballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     @BindView(R.id.recycleview_basketball)  RecyclerView mRecycleView;
     @BindString(R.string.basketball_query_key) String mBasketballQueryKey;
+
+
     private GameAdapter mGameAdapter;
 
     private static final int GAME_LOADER = 0;
