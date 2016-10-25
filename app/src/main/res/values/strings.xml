@@ -7,6 +7,7 @@
     <string name="about_label">About</string>
     <string name="refresh_label">Refresh</string>
     <string name="detail_label">Game Detail</string>
+    <string name="create_game_label">Create Game</string>
 
     <!-- Card View -->
     <string name="participate_button">Participate</string>

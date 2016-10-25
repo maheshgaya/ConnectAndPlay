@@ -55,6 +55,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
+        <activity android:name=".activity.CreateGameActivity"
+            android:label="@string/create_game_label"
+            android:parentActivityName=".activity.MapsActivity"
+            android:theme="@style/AppActionBarTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
+        </activity>
 
         <provider
             android:authorities="@string/content_authority"

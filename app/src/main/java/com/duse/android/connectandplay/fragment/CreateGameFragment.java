@@ -6,10 +6,8 @@ import android.support.v4.app.Fragment;
  * Created by Mahesh Gaya on 10/25/16.
  */
 
-public class DetailFragment extends Fragment {
-    public static final String DETAIL_URI = "URI";
-    //TODO
-    public DetailFragment(){
+public class CreateGameFragment extends Fragment {
+    public CreateGameFragment(){
         //required default constructor
     }
 }
