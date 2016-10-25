@@ -151,6 +151,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(intent);
         } else if (id == R.id.action_profile){
             //TODO: open intent for profile
+
+
         } else if (id == R.id.action_about){
             //TODO: open intent for about
         } /*else if (id == R.id.action_refresh){
