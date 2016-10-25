@@ -8,5 +8,98 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     tools:context=".activity.DetailActivity">
     <!-- TODO: add things -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                tools:text="Title"
+                android:id="@+id/game_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/game_detail_title_text_size"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/game_date_time_text_view"
+                tools:text="November 30, 2016 | 02:00 pm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/game_title_text_view"/>
+            <TextView
+                android:id="@+id/game_location_text_view"
+                tools:text="2719 Forest Ave, Des Moines, IA 50311"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/game_date_time_text_view"/>
+
+            <ImageButton
+                android:id="@+id/game_icon"
+                tools:src="@mipmap/ic_sport_football"
+                android:layout_width="@dimen/game_icon_size"
+                android:layout_height="@dimen/game_icon_size"
+                android:background="@android:color/transparent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:paddingTop="@dimen/card_padding"
+            android:paddingBottom="@dimen/card_padding"
+            android:textColor="@android:color/black"
+            android:id="@+id/game_desc_text_view"
+            tools:text="We are organizing a fun soccer game at the Drake Stadium. You are all invited to participate. You are also allowed to bring a friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/game_people_needed_text_view"
+            tools:text="9 persons needed"
+            android:textColor="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/organizer_text_view"
+            tools:text="Organized by Mahesh Gaya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="@dimen/card_padding"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:divider="@drawable/separator"
+            android:showDividers="middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/game_participate_button"
+                android:text="@string/participate_button"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/game_share_button"
+                android:text="@string/share_button"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:layout_marginBottom="@dimen/card_padding"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0"/>
+    </LinearLayout>
 
 </ScrollView>
