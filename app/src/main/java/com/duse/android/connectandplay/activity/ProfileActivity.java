@@ -29,6 +29,10 @@ public class ProfileActivity extends AppCompatActivity {
         mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         inputLayoutUName = (TextInputLayout) findViewById(R.id.input_layout_username);
         inputLayoutFName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
         inputLayoutLName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
