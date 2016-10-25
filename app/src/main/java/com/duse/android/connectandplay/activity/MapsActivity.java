@@ -19,10 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.duse.android.connectandplay.R;
-import com.duse.android.connectandplay.syncdata.FetchGameData;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.duse.android.connectandplay.sync.GameSyncAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -77,7 +78,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        GameSyncAdapter.initializeSyncAdapter(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -108,6 +109,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //@assignee: Mahesh TODO: save last location / marker used
     }
 
+
+    public void updateGames(){
+        GameSyncAdapter.syncImmediately(this);
+    }
+
     /**
      * Configures maps when it is ready
      * @param map
@@ -134,13 +140,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addMarker(double latitude, double longitude, String title, String organizer){
         Float[] color = new Float[]{
-                BitmapDescriptorFactory.HUE_MAGENTA,
-                BitmapDescriptorFactory.HUE_GREEN,
-                BitmapDescriptorFactory.HUE_CYAN,
-                BitmapDescriptorFactory.HUE_ORANGE,
-                BitmapDescriptorFactory.HUE_VIOLET,
+                BitmapDescriptorFactory.HUE_GREEN, //basketball
+                BitmapDescriptorFactory.HUE_CYAN, //football
+                BitmapDescriptorFactory.HUE_ORANGE, //tennis
+                BitmapDescriptorFactory.HUE_VIOLET, //volleyball
                 BitmapDescriptorFactory.HUE_ROSE
-        }; //TODO: divide user id by the length and round the result up. This will be the color of the marker
+        }; //TODO: use color per game
 
 
         mMap.addMarker(new MarkerOptions()
@@ -150,6 +155,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
                 .setTag(0);
     }
+
 
     /**
      * Inflates menus for this class
@@ -180,13 +186,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent intent = new Intent(this, YourGamesActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_profile){
-            //TODO: open intent for profile
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.action_about){
             //TODO: open intent for about
-        } else if (id == R.id.action_refresh){
-            FetchGameData fetchGameData = new FetchGameData(this);
-            fetchGameData.execute();
-        }
+        } /*else if (id == R.id.action_refresh){
+            updateGames();
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

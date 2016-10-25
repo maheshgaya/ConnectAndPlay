@@ -2,23 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.duse.android.connectandplay">
 
+    <!-- used for getting location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="android.support.multidex.MultiDexApplication">
 
+        <!-- used to authenticate request for Google Maps Api -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <!-- main screen, shows the map with all the markers-->
+        <activity android:name=".activity.MapsActivity"
 
-
-        <activity android:name =".activity.MapsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +37,7 @@
             </intent-filter>
         </activity>
 
+        <!-- shows all the games, categorized by sport -->
         <activity android:name=".activity.ExploreGamesActivity"
             android:label="@string/explore_games_label"
             android:parentActivityName=".activity.MapsActivity">
@@ -33,6 +45,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
         </activity>
+
+
+        <!-- shows saved games and hosted games -->
 
         <activity android:name=".activity.YourGamesActivity"
             android:label="@string/your_games_label"
@@ -42,11 +57,67 @@
                 android:value=".activity.MapsActivity" />
         </activity>
 
+        <!-- provides the details about a card -->
+        <activity android:name=".activity.DetailActivity"
+            android:label="@string/detail_label"
+            android:parentActivityName=".activity.ExploreGamesActivity"
+            android:theme="@style/AppActionBarTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ExploreGamesActivity" />
+        </activity>
+
+
+        <!-- creates a game to add to database -->
+        <activity android:name=".activity.CreateGameActivity"
+            android:label="@string/create_game_label"
+            android:parentActivityName=".activity.MapsActivity"
+            android:theme="@style/AppActionBarTheme"/>
+
+
+        <activity android:name=".activity.ProfileActivity"
+            android:label="@string/profile_label"
+            android:theme="@style/AppActionBarTheme"
+            android:parentActivityName=".activity.MapsActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MapsActivity" />
+        </activity>
+        
+
+        <!-- gets the latitude and logitude from the physical address -->
+        <service android:name=".service.LatLongService" />
+
+        <!-- queries the SQLite database -->
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.GamesProvider"
-            android:enabled="true"
+            android:syncable="true"
             android:exported="true"/>
+
+        <!-- SyncAdapter's dummy authentication service -->
+        <service android:name=".sync.GameAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".sync.GameSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
     </application>
 
 </manifest>

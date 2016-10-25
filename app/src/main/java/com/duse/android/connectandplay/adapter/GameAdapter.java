@@ -1,7 +1,9 @@
 package com.duse.android.connectandplay.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.duse.android.connectandplay.R;
+import com.duse.android.connectandplay.activity.DetailActivity;
+import com.duse.android.connectandplay.data.GamesContract;
 import com.duse.android.connectandplay.fragment.BasketballFragment;
+import com.duse.android.connectandplay.fragment.DetailFragment;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -25,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolder> {
     private Context mContext;
-    private PopupMenu mPopupMenu;
     public GameAdapter(Context context, Cursor cursor){
         super(context, cursor);
         mContext = context;
@@ -33,6 +38,8 @@ public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolde
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
+        final int position = cursor.getPosition() + 1;
+        final long gameId = cursor.getLong(BasketballFragment.COLUMN_GAME_ID);
         String title = cursor.getString(BasketballFragment.COLUMN_GAME_NAME);
         viewHolder.titleTextView.setText(title);
 
@@ -42,31 +49,16 @@ public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolde
 
         String location = cursor.getString(BasketballFragment.COLUMN_LOCATION);
         viewHolder.locationTextView.setText(location);
-
-        String description = cursor.getString(BasketballFragment.COLUMN_DESCRIPTION);
-        viewHolder.descriptionTextView.setText(description);
-
-        int peopleNeeded = cursor.getInt(BasketballFragment.COLUMN_PEOPLE_NEEDED);
-        String peopleNeededStr;
-        if (peopleNeeded <= 1){
-            peopleNeededStr = peopleNeeded + viewHolder.personStr;
-        } else {
-            peopleNeededStr = peopleNeeded + viewHolder.peopleStr;
-        }
-        viewHolder.peopleNeededTextView.setText(peopleNeededStr);
-
-        String organizer = viewHolder.organizedByStr + cursor.getString(BasketballFragment.COLUMN_USERNAME);
-        viewHolder.organizerTextView.setText(organizer);
-
-        mPopupMenu = new PopupMenu(mContext, viewHolder.moreImageButton);
-        MenuInflater menuInflater = mPopupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.more_menu, mPopupMenu.getMenu());
-        viewHolder.moreImageButton.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                mPopupMenu.show();
+            public void onClick(View view) {
+                Uri detailUri = GamesContract.GameEntry.buildGameUri(gameId);
+                Intent detailIntent = new Intent(mContext, DetailActivity.class);
+                detailIntent.setData(detailUri);
+                mContext.startActivity(detailIntent);
             }
         });
+
     }
 
     @Override
@@ -77,20 +69,15 @@ public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolde
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
+        //Strings
         @BindString(R.string.organized_by) String organizedByStr;
         @BindString(R.string.people_needed) String peopleStr;
         @BindString(R.string.person_needed) String personStr;
-
+        //TextViews
         @BindView(R.id.card_view_game_title_text_view) TextView titleTextView;
-        @BindView(R.id.card_view_more_image_button) ImageButton moreImageButton;
         @BindView(R.id.card_view_game_date_time_text_view) TextView dateTimeTextView;
         @BindView(R.id.card_view_game_location_text_view) TextView locationTextView;
-        @BindView(R.id.card_view_game_desc_text_view) TextView descriptionTextView;
-        @BindView(R.id.card_view_game_people_needed_text_view) TextView peopleNeededTextView;
-        @BindView(R.id.card_view_organizer_text_view) TextView organizerTextView;
-        @BindView(R.id.card_view_game_participate_button)
-        Button participateButton;
-        @BindView(R.id.card_view_game_share_button) Button shareButton;
+
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);

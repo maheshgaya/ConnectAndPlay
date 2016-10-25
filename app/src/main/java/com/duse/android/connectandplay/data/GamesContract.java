@@ -63,9 +63,15 @@ public class GamesContract {
                     .appendPath(Long.toString(sportId)).build();
         }
 
+
+        public static String getGameIdFromUri(Uri uri) {
+            return uri.getLastPathSegment();
+        }
+
         public static String getSportIdFromUri(Uri uri){
             return uri.getLastPathSegment();
         }
+
         public static String getUserIdFromUri(Uri uri){
             return uri.getLastPathSegment();
         }
@@ -154,4 +160,6 @@ public class GamesContract {
         
 
     }
+
+    //TODO Create a location table to store the  LatLong based on location
 }
