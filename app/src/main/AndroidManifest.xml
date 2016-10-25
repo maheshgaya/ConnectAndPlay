@@ -47,6 +47,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
         </activity>
+
         <activity android:name=".activity.DetailActivity"
             android:label="@string/detail_label"
             android:parentActivityName=".activity.ExploreGamesActivity"
@@ -55,10 +56,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
+
         <activity android:name=".activity.CreateGameActivity"
             android:label="@string/create_game_label"
             android:parentActivityName=".activity.MapsActivity"
-            android:theme="@style/AppActionBarTheme">
+            android:theme="@style/AppActionBarTheme"/>
+
+
+        <activity android:name=".activity.ProfileActivity"
+            android:label="@string/profile_label"
+            android:theme="@style/AppActionBarTheme"
+            android:parentActivityName=".activity.MapsActivity">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
