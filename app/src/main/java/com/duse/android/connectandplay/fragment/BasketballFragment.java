@@ -35,7 +35,6 @@ public class BasketballFragment extends Fragment implements LoaderManager.Loader
     private GameAdapter mGameAdapter;
 
     private static final int GAME_LOADER = 0;
-    private static final int PARTICIPATE_LOADER = 1;
 
 
     private static final String[] GAME_PROJECTION ={
