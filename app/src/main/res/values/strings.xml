@@ -3,16 +3,19 @@
     <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
     <string name="saved_games_label">Saved Games</string>
-    <string name="profile_label">My Profile</string>
+    <string name="profile_label">Edit Profile</string>
     <string name="about_label">About</string>
     <string name="refresh_label">Refresh</string>
+    <string name="detail_label">Game Detail</string>
+    <string name="create_game_label">Create Game</string>
 
-    <!-- Card View -->
+    <!-- Card View  and detail -->
     <string name="participate_button">Participate</string>
+    <string name="participating_button">Participating</string>
     <string name="share_button">Share</string>
     <string name="organized_by">Organized by </string>
-    <string name="people_needed"> persons needed</string>
-    <string name="person_needed"> person needed</string>
+    <string name="people_needed">persons needed</string>
+    <string name="person_needed">person needed</string>
     <string name="report">Report</string>
     <string name="edit">Edit</string>
 
@@ -24,9 +27,32 @@
     <string name="soccer_label">Soccer</string>
     <string name="tennis_label">Tennis</string>
     <string name="volleyball_label">Volleyball</string>
+    <string name="report_string">Thanks for keeping TeamUp safe by reporting this game to us.</string>
+
+    <!-- static for queries -->
+    <string name="basketball_query_key" translatable="false">Basketball</string>
+    <string name="football_query_key" translatable="false">Football</string>
+    <string name="soccer_query_key" translatable="false">Soccer</string>
+    <string name="tennis_query_key" translatable="false">Tennis</string>
+    <string name="volleyball_query_key" translatable="false">Volleyball</string>
+
+    <!--profile-->
+    <string name= "user_name_edit_text">Username</string>
+    <string name= "first_name_edit_text">First Name</string>
+    <string name= "last_name_edit_text">Last Name</string>
+    <string name= "bio_edit_text">Biography</string>
+    <string name="hint_user_name">Username</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_bio">Biography</string>
+    <string name="err_msg_Uname">Enter your full username</string>
+    <string name="err_msg_Fname">Enter your full first name</string>
+    <string name="err_msg_Lname">Enter your full last name</string>
+    <string name="err_msg_Bio">Enter your full biography</string>
 
     <!-- customs -->
-    <string name="string_bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
 
-    <string name="content_authority">com.duse.android.connectandplay.app</string>
+    <string name="sync_account_type" translatable="false">connectandplay.android.duse.com</string>
+    <string name="content_authority" translatable="false">com.duse.android.connectandplay.app</string>
 </resources>

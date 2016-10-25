@@ -37,15 +37,15 @@ public class GamesProvider  extends ContentProvider {
     private static final int PARTICIPATE_WITH_GAME_ID = 402; //item
 
     //inner joins
-    private static final SQLiteQueryBuilder sGameSportGameQueryBuilder; //inner join with sport and game
+    private static final SQLiteQueryBuilder sGameSportUserQueryBuilder; //inner join with sport and game and user
     private static final SQLiteQueryBuilder sGameParticipateQueryBuilder; //inner join with game and participate
 
     static {
-        sGameSportGameQueryBuilder = new SQLiteQueryBuilder();
+        sGameSportUserQueryBuilder = new SQLiteQueryBuilder();
         /**
          * game INNER JOIN sport ON game.sport_id = sport._id INNER JOIN user ON user._id = game.user_id
          */
-        sGameSportGameQueryBuilder.setTables(
+        sGameSportUserQueryBuilder.setTables(
                 GamesContract.GameEntry.TABLE_NAME + " INNER JOIN " +
                         GamesContract.SportEntry.TABLE_NAME +
                         " ON " + GamesContract.GameEntry.TABLE_NAME +
@@ -60,6 +60,24 @@ public class GamesProvider  extends ContentProvider {
         );
     }
 
+    //game._id = ?
+    private  static final String sGameGameIdSelection =
+            GamesContract.GameEntry.TABLE_NAME +
+                    "." + GamesContract.GameEntry._ID + " = ? ";
+    private Cursor getGamebyGameId(Uri uri, String[] projection, String sortOrder){
+        String gameId = GamesContract.GameEntry.getGameIdFromUri(uri);
+        String selection = sGameGameIdSelection;
+        String[] selectionArgs = new String[]{gameId};
+        return sGameSportUserQueryBuilder.query(
+                mOpenDbHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
     //game.user_id = ?
     private static final String sGameUserIdSelection =
             GamesContract.GameEntry.TABLE_NAME +
@@ -69,7 +87,7 @@ public class GamesProvider  extends ContentProvider {
         String userId = GamesContract.GameEntry.getUserIdFromUri(uri);
         String selection = sGameUserIdSelection;
         String[] selectionArgs = new String[]{userId};
-        return sGameSportGameQueryBuilder.query(
+        return sGameSportUserQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -89,7 +107,7 @@ public class GamesProvider  extends ContentProvider {
         String sportId = GamesContract.GameEntry.getSportIdFromUri(uri);
         String selection = sGameSportIdSelection;
         String[] selectionArgs = new String[]{sportId};
-        return sGameSportGameQueryBuilder.query(
+        return sGameSportUserQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -201,15 +219,7 @@ public class GamesProvider  extends ContentProvider {
                 break;
             }
             case GAME_WITH_ID:{
-                retCursor = mOpenDbHelper.getReadableDatabase().query(
-                        GamesContract.GameEntry.TABLE_NAME,
-                        projection,
-                        GamesContract.GameEntry._ID + " = ? ",
-                        new String[]{String.valueOf(ContentUris.parseId(uri))},
-                        null,
-                        null,
-                        sortOrder
-                );
+                retCursor = getGamebyGameId(uri, projection, sortOrder);
                 break;
             }
             case GAME_WITH_SPORT_ID:{
