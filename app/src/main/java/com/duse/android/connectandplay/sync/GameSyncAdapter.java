@@ -237,7 +237,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
     private long addGame(String gameName, String sport, String time, String date, String location, String description, int peopleNeeded, String organizer){
         long gameId = -1;
         long sportId = -1;
-        long userId = -1; //TODO query gameId
+        long userId = -1;
 
         // /check if game already exists, use different parameters, else add it to db
 
@@ -273,8 +273,10 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
                     new String[]{GamesContract.GameEntry._ID},
                     GamesContract.GameEntry.COLUMN_GAME_NAME + " = ? AND " +
                             GamesContract.GameEntry.COLUMN_SPORT_ID + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? ",
-                    new String[]{gameName, Long.toString(sportId), Long.toString(userId)},
+                            GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? AND " +
+                            GamesContract.GameEntry.COLUMN_LOCATION + " = ? AND " +
+                            GamesContract.GameEntry.COLUMN_DATE + " = ? ",
+                    new String[]{gameName, Long.toString(sportId), Long.toString(userId), location, date},
                     null
             );
             try {

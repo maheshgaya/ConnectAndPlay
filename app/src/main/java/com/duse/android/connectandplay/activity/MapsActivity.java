@@ -104,13 +104,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void addMarker(double latitude, double longitude, String title, String organizer){
         Float[] color = new Float[]{
-                BitmapDescriptorFactory.HUE_MAGENTA,
-                BitmapDescriptorFactory.HUE_GREEN,
-                BitmapDescriptorFactory.HUE_CYAN,
-                BitmapDescriptorFactory.HUE_ORANGE,
-                BitmapDescriptorFactory.HUE_VIOLET,
+                BitmapDescriptorFactory.HUE_GREEN, //basketball
+                BitmapDescriptorFactory.HUE_CYAN, //football
+                BitmapDescriptorFactory.HUE_ORANGE, //tennis
+                BitmapDescriptorFactory.HUE_VIOLET, //volleyball
                 BitmapDescriptorFactory.HUE_ROSE
-        }; //TODO: divide user id by the length and round the result up. This will be the color of the marker
+        }; //TODO: use color per game
 
 
         mMap.addMarker(new MarkerOptions()
