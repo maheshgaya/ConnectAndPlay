@@ -160,4 +160,6 @@ public class GamesContract {
         
 
     }
+
+    //TODO Create a location table to store the  LatLong based on location
 }

@@ -120,6 +120,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setTag(0);
     }
 
+
     /**
      * Inflates menus for this class
      * @param menu
