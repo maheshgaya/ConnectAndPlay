@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.duse.android.connectandplay.R;
 
@@ -41,7 +42,9 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        LoaderManager.LoaderCallbacks<Cursor>, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
+
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
@@ -121,7 +124,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        //can be replaced with latitude and longitude
+
+        //TODO: replace with latitude and longitude
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng position) {
+                Toast.makeText(getApplicationContext(), "lat: " + position.latitude +
+                        " \nlng: " + position.longitude, Toast.LENGTH_SHORT).show();
+                addMarker(position.latitude, position.longitude, "test", "mahesh");
+            }
+        });
+
         setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
         addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
                 "Flag Football this Saturday",
@@ -135,6 +148,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
     }
 
@@ -213,6 +232,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions,
@@ -251,5 +271,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 }
 

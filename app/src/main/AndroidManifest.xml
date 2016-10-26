@@ -87,7 +87,9 @@
         
 
         <!-- gets the latitude and logitude from the physical address -->
-        <service android:name=".service.LatLongService" />
+        <service
+            android:name=".service.FetchAddressIntentService"
+            android:exported="false"/>
 
         <!-- queries the SQLite database -->
         <provider
