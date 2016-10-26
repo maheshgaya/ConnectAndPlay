@@ -1,5 +1,4 @@
 package com.duse.android.connectandplay.activity;
-//package info.androidhive.floatinglabels;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
