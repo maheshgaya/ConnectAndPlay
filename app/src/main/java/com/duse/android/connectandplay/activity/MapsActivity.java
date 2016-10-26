@@ -50,7 +50,8 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        ActivityCompat.OnRequestPermissionsResultCallback{
 
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -60,7 +61,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int REQUEST_LOCATION = 1;
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
-
 
     private boolean mPermissionDenied = false;
 
@@ -74,6 +74,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         //shows Action bar
         setSupportActionBar(mToolbar);
+
 
         //This opens ExploreGamesActivity
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
@@ -228,9 +229,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setTag(0);
     }
 
-
-
-
     /**
      * Inflates menus for this class
      * @param menu
@@ -286,8 +284,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-
-
+    
 }
 
