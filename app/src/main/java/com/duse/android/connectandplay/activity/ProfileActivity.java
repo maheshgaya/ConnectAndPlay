@@ -62,10 +62,6 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        if (!validateBio()) {
-            return;
-        }
-
         Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
     }
 
@@ -104,18 +100,6 @@ public class ProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean validateBio() {
-        if ( mBioEditText.getText().toString().trim().isEmpty()) {
-            inputLayoutBio.setError(getString(R.string.err_msg_Bio));
-            requestFocus(mBioEditText);
-            return false;
-        } else {
-            inputLayoutBio.setErrorEnabled(false);
-        }
-
-        return true;
-    }
-
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -146,9 +130,6 @@ public class ProfileActivity extends AppCompatActivity {
                     break;
                 case R.id.input_last_name:
                     validateLName();
-                    break;
-                case R.id.input_bio:
-                    validateBio();
                     break;
             }
         }

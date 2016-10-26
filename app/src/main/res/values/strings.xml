@@ -41,14 +41,13 @@
     <string name= "first_name_edit_text">First Name</string>
     <string name= "last_name_edit_text">Last Name</string>
     <string name= "bio_edit_text">Biography</string>
-    <string name="hint_user_name">Username</string>
+    <string name="hint_username">Username</string>
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
     <string name="hint_bio">Biography</string>
-    <string name="err_msg_Uname">Enter your full username</string>
-    <string name="err_msg_Fname">Enter your full first name</string>
-    <string name="err_msg_Lname">Enter your full last name</string>
-    <string name="err_msg_Bio">Enter your full biography</string>
+    <string name="err_msg_Uname">Username cannot be empty</string>
+    <string name="err_msg_Fname">First name cannot be empty</string>
+    <string name="err_msg_Lname">Last name cannot be empty</string>
 
     <!-- customs -->
     <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
