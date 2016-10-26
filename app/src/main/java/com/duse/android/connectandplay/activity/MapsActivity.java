@@ -50,8 +50,7 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor>,GoogleApiClient.ConnectionCallbacks ,
-        GoogleApiClient.OnConnectionFailedListener {
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -61,7 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int REQUEST_LOCATION = 1;
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
-    private GoogleApiClient mGoogleApiClient;
+
 
     private boolean mPermissionDenied = false;
 
@@ -75,14 +74,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         //shows Action bar
         setSupportActionBar(mToolbar);
-
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
 
         //This opens ExploreGamesActivity
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
@@ -98,36 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         GameSyncAdapter.initializeSyncAdapter(this);
 
-
-//TODO: NEEDS REVIEW
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            // Check Permissions Now
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    REQUEST_LOCATION);
-//            mMap.setMyLocationEnabled(true);
-//        } else {
-//            Location myLocation =
-//                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//        }
-
-    }
-
-    /**
-     * connects to GoogleApiClient
-     */
-    protected void onStart(){
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    /**
-     * disconnects to GoogleApiClient
-     */
-    protected void onStop(){
-        mGoogleApiClient.disconnect();
-        super.onStop();
     }
 
     @Override
@@ -326,27 +287,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
-
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            Location myLocation =
-                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 
 
 }
