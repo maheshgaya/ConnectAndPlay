@@ -1,10 +1,15 @@
 package com.duse.android.connectandplay.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.design.widget.BottomSheetBehavior;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.duse.android.connectandplay.R;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.duse.android.connectandplay.sync.GameSyncAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,15 +41,16 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor>
-{
+        LoaderManager.LoaderCallbacks<Cursor>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
 
     private GoogleMap mMap;
+    private static final int REQUEST_LOCATION = 1;
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
+    private GoogleApiClient mGoogleApiClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         //shows Action bar
         setSupportActionBar(mToolbar);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
 
         //This opens ExploreGamesActivity
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +80,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         GameSyncAdapter.initializeSyncAdapter(this);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Check Permissions Now
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        } else {
+            Location myLocation =
+                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+
+    }
+
+    protected void onStart(){
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop(){
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -174,6 +210,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if(grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+//                    buildGoogleApiClient();
+//                    Location myLocation =
+//                            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                }
+            } else {
+                // Permission was denied or request was cancelled
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Location myLocation =
+                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }
