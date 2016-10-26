@@ -151,16 +151,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(intent);
         } else if (id == R.id.action_profile){
 
-            //TODO: open intent for profile
+            //dalilah did for mahesh
 
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.action_about){
-            //TODO: open intent for about
-        } /*else if (id == R.id.action_refresh){
+        } else if (id == R.id.action_about) {
+            //dalilah did for mahesh
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.action_refresh){
             updateGames();
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }

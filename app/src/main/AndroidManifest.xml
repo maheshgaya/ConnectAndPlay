@@ -73,7 +73,7 @@
             android:parentActivityName=".activity.MapsActivity"
             android:theme="@style/AppActionBarTheme"/>
 
-
+        <!-- profile added to database -->
         <activity android:name=".activity.ProfileActivity"
             android:label="@string/profile_label"
             android:theme="@style/AppTheme"
@@ -82,6 +82,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
+        </activity>
+
+        <!-- about added to database-->
+        <activity android:name=".activity.AboutActivity"
+            android:label="@string/about_label">
         </activity>
 
 
