@@ -4,14 +4,19 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v4.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,8 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
+import com.duse.android.connectandplay.PermissionUtils;
 import com.duse.android.connectandplay.R;
 
+import com.duse.android.connectandplay.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,7 +50,7 @@ import butterknife.ButterKnife;
  * Created by kristinaneel on 10/16/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
-        LoaderManager.LoaderCallbacks<Cursor>, GoogleApiClient.ConnectionCallbacks,
+        LoaderManager.LoaderCallbacks<Cursor>,GoogleApiClient.ConnectionCallbacks ,
         GoogleApiClient.OnConnectionFailedListener {
 
     //Binding views
@@ -54,6 +62,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
     private GoogleApiClient mGoogleApiClient;
+
+    private boolean mPermissionDenied = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +76,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //shows Action bar
         setSupportActionBar(mToolbar);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
         //This opens ExploreGamesActivity
         mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
@@ -83,24 +98,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         GameSyncAdapter.initializeSyncAdapter(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Check Permissions Now
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        } else {
-            Location myLocation =
-                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        }
+
+//TODO: NEEDS REVIEW
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // Check Permissions Now
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    REQUEST_LOCATION);
+//            mMap.setMyLocationEnabled(true);
+//        } else {
+//            Location myLocation =
+//                    LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+//        }
 
     }
 
+    /**
+     * connects to GoogleApiClient
+     */
     protected void onStart(){
         mGoogleApiClient.connect();
         super.onStart();
     }
 
+    /**
+     * disconnects to GoogleApiClient
+     */
     protected void onStop(){
         mGoogleApiClient.disconnect();
         super.onStop();
@@ -124,7 +148,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
+        enableMyLocation();
         //TODO: replace with latitude and longitude
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -141,6 +165,72 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "Software Engineering Group 2");
     }
 
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, REQUEST_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    public static boolean isPermissionGranted(String[] grantPermissions, int[] grantResults,
+                                              String permission) {
+        for (int i = 0; i < grantPermissions.length; i++) {
+            if (permission.equals(grantPermissions[i])) {
+                return grantResults[i] == PackageManager.PERMISSION_GRANTED;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != REQUEST_LOCATION) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+        }
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
+
+    /**
+     * Set the camera zoom
+     * @param latitude
+     * @param longitude
+     */
     public void setCameraPosition(double latitude, double longitude){
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(latitude, longitude))      // Sets the center of the map
@@ -151,12 +241,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
 
-    }
-
+    /**
+     * Adds a marker on the map
+     * @param latitude
+     * @param longitude
+     * @param title
+     * @param organizer
+     */
     public void addMarker(double latitude, double longitude, String title, String organizer){
         Float[] color = new Float[]{
                 BitmapDescriptorFactory.HUE_GREEN, //basketball
@@ -174,6 +266,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
                 .setTag(0);
     }
+
+
 
 
     /**
@@ -233,25 +327,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            if(grantResults.length == 1
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
 
-//                    buildGoogleApiClient();
-//                    Location myLocation =
-//                            LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                }
-            } else {
-                // Permission was denied or request was cancelled
-            }
-        }
-    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -271,6 +347,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 
 }
 
