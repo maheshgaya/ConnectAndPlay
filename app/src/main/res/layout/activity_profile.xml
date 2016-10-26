@@ -15,10 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:minHeight="0dp"
-        android:theme="PROFILE" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -31,6 +28,7 @@
         android:padding="@dimen/card_padding">
 
         <ImageView
+            android:src="@drawable/ic_placeholder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"/>

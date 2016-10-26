@@ -76,14 +76,14 @@
 
         <activity android:name=".activity.ProfileActivity"
             android:label="@string/profile_label"
-            android:theme="@style/AppActionBarTheme"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activity.MapsActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MapsActivity" />
         </activity>
-        
+
 
         <!-- gets the latitude and logitude from the physical address -->
         <service android:name=".service.LatLongService" />
