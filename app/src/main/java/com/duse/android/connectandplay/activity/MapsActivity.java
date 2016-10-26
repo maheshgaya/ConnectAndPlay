@@ -150,14 +150,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent intent = new Intent(this, YourGamesActivity.class);
             startActivity(intent);
         } else if (id == R.id.action_profile){
-<<<<<<< HEAD
+
             //TODO: open intent for profile
 
-
-=======
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
->>>>>>> origin/master
+
         } else if (id == R.id.action_about){
             //TODO: open intent for about
         } /*else if (id == R.id.action_refresh){
