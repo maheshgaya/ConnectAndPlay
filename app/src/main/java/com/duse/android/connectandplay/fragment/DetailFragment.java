@@ -344,6 +344,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setCameraPosition(latitude, longitude); //sets the camera position
     }
 
+    private void checkPersonNeed(int peopleNeeded){
+        //check to see if peopleNeeded is zero and participate button text is participate
+        //then disable participate
+        if (peopleNeeded == 0 && mParticipateButton.getText().equals(mParticipateStr)){
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark, null));
+            }
+            mParticipateButton.setEnabled(false);
+
+
+
+        } else {
+            mParticipateButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            }
+        }
+    }
 
     /**
      * initializes loaders
@@ -489,21 +515,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
                     //check to see if peopleNeeded is zero and participate button text is participate
                     //then disable participate
-                    if (peopleNeeded == 0 && mParticipateButton.getText().equals(mParticipateStr)){
-                        mParticipateButton.setEnabled(false);
-                        if (Build.VERSION.SDK_INT <= 23){
-                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                        } else {
-                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
-                        }
-                    } else {
-                        mParticipateButton.setEnabled(true);
-                        if (Build.VERSION.SDK_INT <= 23){
-                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
-                        } else {
-                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
-                        }
-                    }
+                    checkPersonNeed(peopleNeeded);
                 }
                 break;
             }
