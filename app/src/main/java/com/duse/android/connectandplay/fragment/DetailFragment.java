@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
+import com.duse.android.connectandplay.activity.MapsActivity;
 import com.duse.android.connectandplay.data.GamesContract;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -66,6 +67,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private String mShareDate;
     private String mShareTime;
     private String mShareGameTitle;
+
+    //for opening mapsActivity
+    private Double mMarkerLatitude;
+    private Double mMarkerLongitude;
 
     //for people needed
     private int mPeopleCount;
@@ -176,6 +181,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             public void onMapReady(GoogleMap googleMap) {
                 mGoogleMap = googleMap;
                 mMapView.onResume();
+                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        openMapsActivity();
+                    }
+                });
             }
         });
 
@@ -220,6 +231,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
         return rootView;
+    }
+
+    public void openMapsActivity(){
+        Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
+        mapIntent.putExtra(Constant.EXTRA_LATITIUDE, mMarkerLatitude);
+        mapIntent.putExtra(Constant.EXTRA_LONGITUDE, mMarkerLongitude);
+        startActivity(mapIntent);
     }
 
     private Intent createShareIntent(){
@@ -509,6 +527,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     String sport = data.getString(Constant.COLUMN_SPORT_NAME);
                     double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    mMarkerLatitude = latitude;
+                    mMarkerLongitude = longitude;
 
                     //add the marker
                     int color;

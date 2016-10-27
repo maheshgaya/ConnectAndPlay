@@ -67,6 +67,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
 
+    private Double mLatitudeArgs;
+    private Double mLongitudeArgs;
+
     private boolean mPermissionDenied = false;
 
     //inner join between game, user, and sport and for colors also
@@ -80,6 +83,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //check if user comes from a detail mapview
+        Intent mapIntent = getIntent();
+        if (getIntent() != null) {
+            mLatitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LATITIUDE);
+            mLongitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LONGITUDE);
+        }
+
+
+
         //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
         ButterKnife.bind(this);
@@ -88,8 +100,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //adds back button
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
@@ -110,7 +120,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap map) {
         mMap = map;
         enableMyLocation();
-        //TODO: replace with latitude and longitude
         /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng position) {
@@ -125,6 +134,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportLoaderManager().restartLoader(GAME_SOCCER_LOADER, null, this);
         getSupportLoaderManager().restartLoader(GAME_TENNIS_LOADER, null, this);
         getSupportLoaderManager().restartLoader(GAME_VOLLEYBALL_LOADER, null, this);
+
+        if (mLatitudeArgs != null && mLongitudeArgs != null){
+            setCameraPosition(mLatitudeArgs, mLongitudeArgs);
+        }
 
 
 

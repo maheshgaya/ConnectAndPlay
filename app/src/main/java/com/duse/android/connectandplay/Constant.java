@@ -105,4 +105,9 @@ public class Constant {
     public static final int GAME_TENNIS_COLOR = 3;
     public static final int GAME_VOLLEYBALL_COLOR = 4;
 
+
+    //For Bundle
+    public static final String EXTRA_LATITIUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
+
 }
