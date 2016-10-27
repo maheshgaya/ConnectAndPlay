@@ -25,6 +25,7 @@ import java.util.Locale;
  * Created by Mahesh Gaya on 10/25/16.
  */
 
+//TODO decide if we should use this or Google Maps Intent
 public class FetchAddressIntentService extends IntentService {
     private static final String TAG = FetchAddressIntentService.class.getSimpleName();
     protected ResultReceiver mReceiver;

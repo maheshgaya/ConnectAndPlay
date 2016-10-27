@@ -61,7 +61,7 @@ public class Constant {
      * for querying database
      */
     //inner join for game, location, sport and user
-    public static final String[] GAME_PROJECTION ={
+    public static final String[] GAME_PROJECTION = {
             GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
             GamesContract.GameEntry.COLUMN_GAME_NAME,
             GamesContract.GameEntry.COLUMN_TIME,
@@ -95,6 +95,7 @@ public class Constant {
 
     public static final int COLUMN_PARTICIPATE_ID = 0;
     public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
+
 
 
     //For colors

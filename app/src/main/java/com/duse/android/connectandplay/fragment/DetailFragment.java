@@ -562,7 +562,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 if (data.getCount() > 0 && data.moveToFirst()){
                     //Allow to remove Participation
                     mParticipateButton.setText(mParticipatingStr);
-                    if (Build.VERSION.SDK_INT <= 23){
+                    if (Build.VERSION.SDK_INT < 23){
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     } else {
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
@@ -571,7 +571,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 } else {
                     //Allow to Participate
                     mParticipateButton.setText(mParticipateStr);
-                    if (Build.VERSION.SDK_INT <= 23){
+                    if (Build.VERSION.SDK_INT < 23){
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
                     } else {
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));

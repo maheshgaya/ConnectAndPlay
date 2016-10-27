@@ -6,14 +6,22 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
+import com.duse.android.connectandplay.adapter.DividerItemDecoration;
+import com.duse.android.connectandplay.adapter.GameAdapter;
 import com.duse.android.connectandplay.data.GamesContract;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -22,6 +30,11 @@ import butterknife.ButterKnife;
  */
 
 public class SavedGamesFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    @BindView(R.id.recycleview_saved_games)RecyclerView mRecycleView;
+    @BindView(R.id.empty_game_recycleview)TextView emptyTextView;
+    private static final int SAVED_LOADER = 0;
+
+    private GameAdapter mGameAdapter;
 
     public SavedGamesFragment(){
         //required empty constructor
@@ -33,27 +46,56 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         setRetainInstance(true);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(SAVED_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_saved_games, container, false);
-        ButterKnife.bind(this, view);
+        View rootView = inflater.inflate(R.layout.fragment_saved_games, container, false);
+        ButterKnife.bind(this, rootView);
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        mGameAdapter = new GameAdapter(getContext(), null);
+        mRecycleView.setHasFixedSize(true);
+        LinearLayoutManager linearTrailerLayoutManager = new LinearLayoutManager(getContext());
+        linearTrailerLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecycleView.setLayoutManager(linearTrailerLayoutManager);
+        mRecycleView.setAdapter(mGameAdapter);
+        mRecycleView.addItemDecoration(itemDecoration);
 
-        return view;
+        return rootView;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new CursorLoader(
+                getContext(),
+                GamesContract.ParticipateEntry.buildParticipateGamesUri(),
+                Constant.GAME_PROJECTION,
+                null,
+                null,
+                null
+        );
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mGameAdapter.swapCursor(cursor);
+        if (cursor.getCount() == 0){
+            mRecycleView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            mRecycleView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        mGameAdapter.swapCursor(null);
     }
 }

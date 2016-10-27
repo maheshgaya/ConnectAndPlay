@@ -155,6 +155,11 @@ public class GamesContract {
                     .appendPath(Long.toString(gameId)).build();
         }
 
+        //content://authority/participate/games
+        public static Uri buildParticipateGamesUri(){
+            return CONTENT_URI.buildUpon().appendPath(GameEntry.TABLE_NAME + "s").build();
+        }
+
         public static String getGameIdFromUri(Uri uri){
             return uri.getLastPathSegment();
         }
