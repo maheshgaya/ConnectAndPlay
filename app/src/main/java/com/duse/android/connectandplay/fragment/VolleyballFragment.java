@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
@@ -32,6 +33,8 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     @BindView(R.id.recycleview_volleyball)
     RecyclerView mRecycleView;
     @BindString(R.string.volleyball_query_key) String mVolleyballQueryKey;
+    @BindView(R.id.empty_game_recycleview)TextView emptyTextView;
+
     private GameAdapter mGameAdapter;
 
     private static final int GAME_LOADER = 0;
@@ -106,6 +109,13 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mGameAdapter.swapCursor(cursor);
+        if (cursor.getCount() == 0){
+            mRecycleView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            mRecycleView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

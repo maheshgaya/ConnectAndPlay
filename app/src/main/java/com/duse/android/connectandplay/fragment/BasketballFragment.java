@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.duse.android.connectandplay.Constant;
@@ -31,8 +32,9 @@ import butterknife.ButterKnife;
  */
 
 public class BasketballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    @BindView(R.id.recycleview_basketball)  RecyclerView mRecycleView;
-    @BindString(R.string.basketball_query_key) String mBasketballQueryKey;
+    @BindView(R.id.recycleview_basketball)RecyclerView mRecycleView;
+    @BindString(R.string.basketball_query_key)String mBasketballQueryKey;
+    @BindView(R.id.empty_game_recycleview)TextView emptyTextView;
 
 
     private GameAdapter mGameAdapter;
@@ -109,6 +111,13 @@ public class BasketballFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mGameAdapter.swapCursor(cursor);
+        if (cursor.getCount() == 0){
+            mRecycleView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            mRecycleView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

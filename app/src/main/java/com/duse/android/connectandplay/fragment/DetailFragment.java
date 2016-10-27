@@ -1,5 +1,8 @@
 package com.duse.android.connectandplay.fragment;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -58,6 +61,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
 
+    //for sharing
+    private String mShareLocation;
+    private String mShareDate;
+    private String mShareTime;
+    private String mShareGameTitle;
+
+    //for people needed
+    private int mPeopleCount;
+
     private GoogleMap mGoogleMap;
 
     //TextViews
@@ -83,7 +95,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @BindString(R.string.report_string)String mReportStr;
     @BindString(R.string.participate_button)String mParticipateStr;
     @BindString(R.string.participating_button)String mParticipatingStr;
-
+    @BindString(R.string.share)String mShareStr;
+    @BindString(R.string.share_date)String mShareDateStr;
+    @BindString(R.string.share_time)String mShareTimeStr;
+    @BindString(R.string.share_join)String mShareJoinStr;
+    @BindString(R.string.share_location)String mShareLocationStr;
+    @BindString(R.string.share_title)String mShareTitleStr;
 
     public DetailFragment(){
         //required default constructor
@@ -151,14 +168,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                //TODO: set zoom for maps based on location table
                 mGoogleMap = googleMap;
-                Log.d(TAG, "onMapReady: ");
-                //can be replaced with latitude and longitude
-                setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
-                addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
-                        "Flag Football this Saturday",
-                        "Software Engineering Group 2");
                 mMapView.onResume();
             }
         });
@@ -167,7 +177,30 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mParticipateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add function for participate
+                int gameId = Integer.parseInt(mUri.getLastPathSegment());
+                String buttonText = mParticipateButton.getText().toString();
+                if (buttonText.equals(mParticipatingStr)){
+                    //remove from db
+                    boolean removeResult = removeParticipate(gameId);
+                    mParticipateButton.setText(mParticipateStr);
+                    if (Build.VERSION.SDK_INT < 23){
+                        mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
+                    } else {
+                        mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
+                    }
+
+                } else if (buttonText.equals(mParticipateStr)) {
+                    //add to db
+                    long favoriteId = addParticipate(gameId);
+                    mParticipateButton.setText(mParticipatingStr);
+                    if (Build.VERSION.SDK_INT < 23){
+                        mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    } else {
+                        mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+                    }
+
+                }
+
 
             }
         });
@@ -175,11 +208,110 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add function for share
+                startActivity(Intent.createChooser(createShareIntent(), mShareTitleStr));
             }
         });
 
+
         return rootView;
+    }
+
+    private Intent createShareIntent(){
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        //I'm interested in "Game Title" on "Date" at "Time" at "Location". Join me!
+        String shareMessage = mShareStr + " " + mShareGameTitle + " " + mShareDateStr +
+                " " + mShareDate + " " + mShareTimeStr + " " + mShareTime +
+                " " + mShareLocationStr + " " + mShareLocation + mShareJoinStr;
+        shareIntent.putExtra(Intent.EXTRA_TEXT,  shareMessage);
+        return shareIntent;
+    }
+
+    private long addParticipate(int gameId) {
+        long participateId;
+        //check if favorite is already in table
+        Cursor participateCursor = getContext().getContentResolver().query(
+                GamesContract.ParticipateEntry.CONTENT_URI,
+                new String[]{GamesContract.ParticipateEntry._ID},
+                GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                new String[]{Integer.toString(gameId)},
+                null
+        );
+
+        try {
+            if (participateCursor.moveToFirst()){
+                //if exists
+                int favoriteIndex = participateCursor.getColumnIndex(GamesContract.ParticipateEntry._ID);
+                participateId = participateCursor.getLong(favoriteIndex);
+            } else {
+                //else add
+                ContentValues favoriteValues = new ContentValues();
+                favoriteValues.put(GamesContract.ParticipateEntry.COLUMN_GAME_ID, gameId);
+                Uri insertUri = getContext().getContentResolver().insert(
+                        GamesContract.ParticipateEntry.CONTENT_URI,
+                        favoriteValues
+                );
+                participateId = ContentUris.parseId(insertUri);
+
+                //update people needed (minus 1)
+                ContentValues gameValues = new ContentValues();
+                gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, mPeopleCount - 1);
+                int updateGameUri = getContext().getContentResolver().update(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        gameValues,
+                        GamesContract.GameEntry._ID + " = ?",
+                        new String[]{mUri.getLastPathSegment()}
+                );
+
+                getLoaderManager().restartLoader(PARTICIPATE_LOADER, null, this);
+                getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+            }
+        }finally {
+            participateCursor.close();
+        }
+
+        return participateId;
+    }
+
+
+    private boolean removeParticipate(int gameId) {
+        //check if movie exists in table
+        Cursor favoriteCursor = getContext().getContentResolver().query(
+                GamesContract.ParticipateEntry.CONTENT_URI,
+                new String[]{GamesContract.ParticipateEntry._ID},
+                GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                new String[]{Integer.toString(gameId)},
+                null
+        );
+        //then remove it
+        try {
+            if (favoriteCursor.moveToFirst()){
+                getContext().getContentResolver().delete(
+                        GamesContract.ParticipateEntry.CONTENT_URI,
+                        GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                        new String[]{Integer.toString(gameId)}
+                );
+
+                //update people needed (add 1)
+                ContentValues gameValues = new ContentValues();
+                gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, mPeopleCount + 1);
+                int updateGameUri = getContext().getContentResolver().update(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        gameValues,
+                        GamesContract.GameEntry._ID + " = ?",
+                        new String[]{mUri.getLastPathSegment()}
+                );
+
+                getLoaderManager().restartLoader(PARTICIPATE_LOADER, null, this);
+                getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            favoriteCursor.close();
+        }
     }
 
     public void setCameraPosition(double latitude, double longitude){
@@ -199,7 +331,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 BitmapDescriptorFactory.HUE_ORANGE, //tennis
                 BitmapDescriptorFactory.HUE_VIOLET, //volleyball
                 BitmapDescriptorFactory.HUE_ROSE
-        }; //TODO: use color per game
+        };
 
 
         mGoogleMap.addMarker(new MarkerOptions()
@@ -208,6 +340,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 .snippet("Organized by " + organizer)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
                 .setTag(0);
+
+        setCameraPosition(latitude, longitude); //sets the camera position
     }
 
 
@@ -322,6 +456,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     }
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
                     String sport = data.getString(Constant.COLUMN_SPORT_NAME);
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+
+                    //add the marker
+                    addMarker(latitude, longitude, title, organizer);
+
+                    //for sharing
+                    mShareDate = date;
+                    mShareTime = time;
+                    mShareLocation = location;
+                    mShareGameTitle = title;
+
+                    //controls the number of people
+                    mPeopleCount = peopleNeeded;
 
                     //sets image
                     int imageUrl = Utility.getIconId(getContext(), sport);
@@ -339,12 +487,29 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     mPeopleNeededTextView.setText(peopleNeeded + " " + peopleNeededStr);
                     mOrganizerTextView.setText(mOrganizedByStr + " " + organizer);
 
+                    //check to see if peopleNeeded is zero and participate button text is participate
+                    //then disable participate
+                    if (peopleNeeded == 0 && mParticipateButton.getText().equals(mParticipateStr)){
+                        mParticipateButton.setEnabled(false);
+                        if (Build.VERSION.SDK_INT <= 23){
+                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                        } else {
+                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
+                        }
+                    } else {
+                        mParticipateButton.setEnabled(true);
+                        if (Build.VERSION.SDK_INT <= 23){
+                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
+                        } else {
+                            mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
+                        }
+                    }
                 }
                 break;
             }
             case PARTICIPATE_LOADER:{
                 if (data.getCount() > 0 && data.moveToFirst()){
-                    //Allow to Unfavorite
+                    //Allow to remove Participation
                     mParticipateButton.setText(mParticipatingStr);
                     if (Build.VERSION.SDK_INT <= 23){
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -353,13 +518,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     }
 
                 } else {
-                    //Allow to Favorite
+                    //Allow to Participate
                     mParticipateButton.setText(mParticipateStr);
                     if (Build.VERSION.SDK_INT <= 23){
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
                     } else {
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
                     }
+
 
                 }
                 break;

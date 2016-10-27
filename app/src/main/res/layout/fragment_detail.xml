@@ -79,36 +79,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_marginTop="@dimen/card_padding"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#c0c0c0"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:divider="@drawable/separator"
-                android:showDividers="middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/game_participate_button"
-                    android:text="@string/participate_button"
-                    android:textColor="@android:color/black"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-                <Button
-                    android:id="@+id/game_share_button"
-                    android:text="@string/share_button"
-                    android:textColor="@android:color/black"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
+        </LinearLayout>
+        <View
+            android:layout_marginTop="@dimen/card_padding"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#c0c0c0"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:divider="@drawable/separator"
+            android:showDividers="middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/game_participate_button"
+                android:text="@string/participate_button"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/game_share_button"
+                android:text="@string/share_button"
+                android:textColor="@android:color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_detail"

@@ -30,7 +30,7 @@
     <string name="volleyball_label">Volleyball</string>
     <string name="report_string">Thanks for keeping TeamUp safe by reporting this game to us.</string>
 
-    <!-- static for queries -->
+    <!-- queries -->
     <string name="basketball_query_key" translatable="false">Basketball</string>
     <string name="football_query_key" translatable="false">Football</string>
     <string name="soccer_query_key" translatable="false">Soccer</string>
@@ -51,11 +51,24 @@
     <string name="err_msg_Lname">Enter your full last name</string>
     <string name="err_msg_Bio">Enter your full biography</string>
 
-    <!-- customs -->
+    <!-- Sync Adapter -->
     <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
-
     <string name="sync_account_type" translatable="false">connectandplay.android.duse.com</string>
     <string name="content_authority" translatable="false">com.duse.android.connectandplay.app</string>
+
+    <!-- empty list -->
+    <string name="no_game_available">No games currently available</string>
+    <string name="no_hosted_game_available">You haven\'t hosted any games yet. Tap on the + button below to add a new game.</string>
+    <string name="no_saved_game_available">No saved games yet! Games that you are participating in will appear here.</string>
+
+
+    <!-- I'm interested in "Game Title" on "Date" at "Time" at "Location". Join me! -->
+    <string name="share_title">Share via</string>
+    <string name="share">I\'m interested in </string>
+    <string name="share_date">on</string>
+    <string name="share_time">at</string>
+    <string name="share_location">at</string>
+    <string name="share_join">. Join me!</string>
 
     <!-- Geocoding -->
     <string name="service_not_available">Service is not available!</string>

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
@@ -31,6 +32,8 @@ import butterknife.ButterKnife;
 public class FootballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     @BindView(R.id.recycleview_football) RecyclerView mRecycleView;
     @BindString(R.string.football_query_key) String mFootballQueryKey;
+    @BindView(R.id.empty_game_recycleview)TextView emptyTextView;
+
     private GameAdapter mGameAdapter;
 
     private static final int GAME_LOADER = 0;
@@ -106,6 +109,13 @@ public class FootballFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mGameAdapter.swapCursor(cursor);
+        if (cursor.getCount() == 0){
+            mRecycleView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            mRecycleView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
