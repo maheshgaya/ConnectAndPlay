@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.duse.android.connectandplay.R;
@@ -17,8 +19,9 @@ import com.duse.android.connectandplay.R;
 public class ProfileActivity extends AppCompatActivity {
 
     private Toolbar mtoolbar;
-    private EditText mUsernameEditText,mFirstNameEditText, mLastNameEditText, mBioEditText;
-    private TextInputLayout inputLayoutUName, inputLayoutFName, inputLayoutLName, inputLayoutBio;
+    private EditText mUsernameEditText,mFirstNameEditText, mLastNameEditText,mBiographyEditText;
+    private TextInputLayout inputLayoutUName, inputLayoutFName, inputLayoutLName, inputLayoutBiography;
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
+        addListenerOnButton();
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -35,20 +39,36 @@ public class ProfileActivity extends AppCompatActivity {
         inputLayoutUName = (TextInputLayout) findViewById(R.id.input_layout_username);
         inputLayoutFName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
         inputLayoutLName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
-        inputLayoutBio = (TextInputLayout) findViewById(R.id.input_layout_bio);
+        inputLayoutBiography = (TextInputLayout) findViewById(R.id.input_layout_bio);
         mUsernameEditText = (EditText) findViewById(R.id.input_username);
         mFirstNameEditText = (EditText) findViewById(R.id.input_first_name);
         mLastNameEditText = (EditText) findViewById(R.id.input_last_name);
-        mBioEditText = (EditText) findViewById(R.id.input_bio);
+        mBiographyEditText = (EditText) findViewById(R.id.input_bio);
+
                 mUsernameEditText.addTextChangedListener(new MyTextWatcher(mUsernameEditText));
                 mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
                 mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
-                mBioEditText.addTextChangedListener(new MyTextWatcher(mBioEditText));
+                mBiographyEditText.addTextChangedListener(new MyTextWatcher(mBiographyEditText));
     }
 
-    /**
-     * Validating form
-     */
+    public void addListenerOnButton() {
+
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+
+        imageButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Toast.makeText(ProfileActivity.this, "Add a profile picture", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+        /**
+         * Validating form
+         */
     private void submitForm() {
         if (!validateUName()) {
             return;
@@ -61,7 +81,9 @@ public class ProfileActivity extends AppCompatActivity {
         if (!validateLName()) {
             return;
         }
-
+        if (!validateBio()) {
+            return;
+        }
         Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
     }
 
@@ -99,7 +121,17 @@ public class ProfileActivity extends AppCompatActivity {
 
         return true;
     }
+    private boolean validateBio() {
+        if ( mBiographyEditText.getText().toString().trim().isEmpty()) {
+            inputLayoutBiography.setError(getString(R.string.err_msg_Bio));
+            requestFocus(mBiographyEditText);
+            return false;
+        } else {
+            inputLayoutBiography.setErrorEnabled(false);
+        }
 
+        return true;
+    }
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -130,6 +162,9 @@ public class ProfileActivity extends AppCompatActivity {
                     break;
                 case R.id.input_last_name:
                     validateLName();
+                    break;
+                case R.id.input_bio:
+                    validateBio();
                     break;
             }
         }

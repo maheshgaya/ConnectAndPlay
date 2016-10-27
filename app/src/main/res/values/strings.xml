@@ -48,6 +48,7 @@
     <string name="err_msg_Uname">Username cannot be empty</string>
     <string name="err_msg_Fname">First name cannot be empty</string>
     <string name="err_msg_Lname">Last name cannot be empty</string>
+    <string name="err_msg_Bio">Biography cannot be empty</string>
 
     <!-- customs -->
     <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
