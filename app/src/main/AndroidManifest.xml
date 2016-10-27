@@ -29,7 +29,7 @@
 
         <!-- main screen, shows the map with all the markers-->
         <activity android:name=".activity.MapsActivity"
-            android:label="@string/explore_games_label"
+            android:label="@string/map_label"
             android:parentActivityName=".activity.ExploreGamesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

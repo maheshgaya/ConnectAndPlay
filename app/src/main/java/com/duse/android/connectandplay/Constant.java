@@ -96,4 +96,12 @@ public class Constant {
     public static final int COLUMN_PARTICIPATE_ID = 0;
     public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
 
+
+    //For colors
+    public static final int GAME_BASKETBALL_COLOR = 0;
+    public static final int GAME_FOOTBALL_COLOR = 1;
+    public static final int GAME_SOCCER_COLOR = 2;
+    public static final int GAME_TENNIS_COLOR = 3;
+    public static final int GAME_VOLLEYBALL_COLOR = 4;
+
 }

@@ -95,6 +95,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @BindString(R.string.report_string)String mReportStr;
     @BindString(R.string.participate_button)String mParticipateStr;
     @BindString(R.string.participating_button)String mParticipatingStr;
+
+    //for sharing
     @BindString(R.string.share)String mShareStr;
     @BindString(R.string.share_date)String mShareDateStr;
     @BindString(R.string.share_time)String mShareTimeStr;
@@ -102,13 +104,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @BindString(R.string.share_location)String mShareLocationStr;
     @BindString(R.string.share_title)String mShareTitleStr;
 
+    //for marker colors
+    @BindString(R.string.basketball_query_key)String mBasketballQueryKey;
+    @BindString(R.string.football_query_key)String mFootballQueryKey;
+    @BindString(R.string.soccer_query_key)String mSoccerQueryKey;
+    @BindString(R.string.tennis_query_key)String mTennisQueryKey;
+    @BindString(R.string.volleyball_query_key)String mVolleyballQueryKey;
+
     public DetailFragment(){
         //required default constructor
     }
 
-
-    //TODO: Add to Participate table
-    //TODO: Remove from Participate table
 
     /**
      * Set Options Menu to true
@@ -191,7 +197,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
                 } else if (buttonText.equals(mParticipateStr)) {
                     //add to db
-                    long favoriteId = addParticipate(gameId);
+                    long participateId = addParticipate(gameId);
                     mParticipateButton.setText(mParticipatingStr);
                     if (Build.VERSION.SDK_INT < 23){
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -229,7 +235,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private long addParticipate(int gameId) {
         long participateId;
-        //check if favorite is already in table
+        //check if participate is already in table
         Cursor participateCursor = getContext().getContentResolver().query(
                 GamesContract.ParticipateEntry.CONTENT_URI,
                 new String[]{GamesContract.ParticipateEntry._ID},
@@ -241,15 +247,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         try {
             if (participateCursor.moveToFirst()){
                 //if exists
-                int favoriteIndex = participateCursor.getColumnIndex(GamesContract.ParticipateEntry._ID);
-                participateId = participateCursor.getLong(favoriteIndex);
+                int participateIndex = participateCursor.getColumnIndex(GamesContract.ParticipateEntry._ID);
+                participateId = participateCursor.getLong(participateIndex);
             } else {
                 //else add
-                ContentValues favoriteValues = new ContentValues();
-                favoriteValues.put(GamesContract.ParticipateEntry.COLUMN_GAME_ID, gameId);
+                ContentValues participateValues = new ContentValues();
+                participateValues.put(GamesContract.ParticipateEntry.COLUMN_GAME_ID, gameId);
                 Uri insertUri = getContext().getContentResolver().insert(
                         GamesContract.ParticipateEntry.CONTENT_URI,
-                        favoriteValues
+                        participateValues
                 );
                 participateId = ContentUris.parseId(insertUri);
 
@@ -276,7 +282,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private boolean removeParticipate(int gameId) {
         //check if movie exists in table
-        Cursor favoriteCursor = getContext().getContentResolver().query(
+        Cursor participateCursor = getContext().getContentResolver().query(
                 GamesContract.ParticipateEntry.CONTENT_URI,
                 new String[]{GamesContract.ParticipateEntry._ID},
                 GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
@@ -285,7 +291,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         );
         //then remove it
         try {
-            if (favoriteCursor.moveToFirst()){
+            if (participateCursor.moveToFirst()){
                 getContext().getContentResolver().delete(
                         GamesContract.ParticipateEntry.CONTENT_URI,
                         GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
@@ -310,7 +316,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 return false;
             }
         } finally {
-            favoriteCursor.close();
+            participateCursor.close();
         }
     }
 
@@ -324,21 +330,40 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
-    public void addMarker(double latitude, double longitude, String title, String organizer){
-        Float[] color = new Float[]{
-                BitmapDescriptorFactory.HUE_GREEN, //basketball
-                BitmapDescriptorFactory.HUE_CYAN, //football
-                BitmapDescriptorFactory.HUE_ORANGE, //tennis
-                BitmapDescriptorFactory.HUE_VIOLET, //volleyball
-                BitmapDescriptorFactory.HUE_ROSE
-        };
-
+    public void addMarker(double latitude, double longitude, String title, String organizer, int color){
+        Float bitMapColor;
+        switch (color){
+            case Constant.GAME_BASKETBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_GREEN; //basketball
+                break;
+            }
+            case Constant.GAME_FOOTBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_CYAN; //football
+                break;
+            }
+            case Constant.GAME_SOCCER_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ORANGE; //soccer
+                break;
+            }
+            case Constant.GAME_TENNIS_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_VIOLET; //tennis
+                break;
+            }
+            case Constant.GAME_VOLLEYBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ROSE; //volleyball
+                break;
+            }
+            default:{
+                bitMapColor = BitmapDescriptorFactory.HUE_RED;
+                break;
+            }
+        }
 
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet("Organized by " + organizer)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .icon(BitmapDescriptorFactory.defaultMarker(bitMapColor)))
                 .setTag(0);
 
         setCameraPosition(latitude, longitude); //sets the camera position
@@ -486,7 +511,21 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
 
                     //add the marker
-                    addMarker(latitude, longitude, title, organizer);
+                    int color;
+                    if (sport.equals(mBasketballQueryKey)){
+                        color = Constant.GAME_BASKETBALL_COLOR;
+                    } else if (sport.equals(mFootballQueryKey)){
+                        color = Constant.GAME_FOOTBALL_COLOR;
+                    } else if (sport.equals(mSoccerQueryKey)){
+                        color = Constant.GAME_SOCCER_COLOR;
+                    } else if (sport.equals(mTennisQueryKey)){
+                        color = Constant.GAME_TENNIS_COLOR;
+                    } else if (sport.equals(mVolleyballQueryKey)){
+                        color = Constant.GAME_VOLLEYBALL_COLOR;
+                    } else {
+                        color = -1; //will pickup default color if not changed
+                    }
+                    addMarker(latitude, longitude, title, organizer, color);
 
                     //for sharing
                     mShareDate = date;

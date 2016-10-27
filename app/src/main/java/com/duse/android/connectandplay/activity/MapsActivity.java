@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.os.ResultReceiver;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.PermissionUtils;
 import com.duse.android.connectandplay.R;
 
+import com.duse.android.connectandplay.data.GamesContract;
 import com.duse.android.connectandplay.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +44,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -55,7 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
+//    @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
 
     private GoogleMap mMap;
     private static final int REQUEST_LOCATION = 1;
@@ -64,11 +69,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private boolean mPermissionDenied = false;
 
+    //inner join between game, user, and sport and for colors also
+    private static final int GAME_BASKETBALL_LOADER = 0;
+    private static final int GAME_FOOTBALL_LOADER = 1;
+    private static final int GAME_SOCCER_LOADER = 2;
+    private static final int GAME_TENNIS_LOADER = 3;
+    private static final int GAME_VOLLEYBALL_LOADER = 4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //@assignee: Mahesh TODO: get last marker used /location
         //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
         ButterKnife.bind(this);
@@ -83,16 +94,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
+        getSupportLoaderManager().initLoader(GAME_BASKETBALL_LOADER, null, this);
+        getSupportLoaderManager().initLoader(GAME_FOOTBALL_LOADER, null, this);
+        getSupportLoaderManager().initLoader(GAME_SOCCER_LOADER, null, this);
+        getSupportLoaderManager().initLoader(GAME_TENNIS_LOADER, null, this);
+        getSupportLoaderManager().initLoader(GAME_VOLLEYBALL_LOADER, null, this);
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        //@assignee: Mahesh TODO: save last location / marker used
-    }
-
 
 
     /**
@@ -104,19 +111,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = map;
         enableMyLocation();
         //TODO: replace with latitude and longitude
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng position) {
                 Toast.makeText(getApplicationContext(), "lat: " + position.latitude +
                         " \nlng: " + position.longitude, Toast.LENGTH_SHORT).show();
-                addMarker(position.latitude, position.longitude, "test", "mahesh");
             }
-        });
+        });*/
 
-        setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
-        addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
-                "Flag Football this Saturday",
-                "Software Engineering Group 2");
+        //Get markers
+        getSupportLoaderManager().restartLoader(GAME_BASKETBALL_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(GAME_FOOTBALL_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(GAME_SOCCER_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(GAME_TENNIS_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(GAME_VOLLEYBALL_LOADER, null, this);
+
+
+
+
     }
 
     /**
@@ -203,34 +215,253 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param title
      * @param organizer
      */
-    public void addMarker(double latitude, double longitude, String title, String organizer){
-        Float[] color = new Float[]{
-                BitmapDescriptorFactory.HUE_GREEN, //basketball
-                BitmapDescriptorFactory.HUE_CYAN, //football
-                BitmapDescriptorFactory.HUE_ORANGE, //tennis
-                BitmapDescriptorFactory.HUE_VIOLET, //volleyball
-                BitmapDescriptorFactory.HUE_ROSE
-        }; //TODO: use color per game
-
+    public void addMarker(double latitude, double longitude, String title, String organizer, int color){
+        Float bitMapColor;
+        switch (color){
+            case GAME_BASKETBALL_LOADER:{
+                bitMapColor = BitmapDescriptorFactory.HUE_GREEN; //basketball
+                break;
+            }
+            case GAME_FOOTBALL_LOADER:{
+                bitMapColor = BitmapDescriptorFactory.HUE_CYAN; //football
+                break;
+            }
+            case GAME_SOCCER_LOADER:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ORANGE; //soccer
+                break;
+            }
+            case GAME_TENNIS_LOADER:{
+                bitMapColor = BitmapDescriptorFactory.HUE_VIOLET; //tennis
+                break;
+            }
+            case GAME_VOLLEYBALL_LOADER:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ROSE; //volleyball
+                break;
+            }
+            default:{
+                bitMapColor = BitmapDescriptorFactory.HUE_RED;
+                break;
+            }
+        }
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet("Organized by " + organizer)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .icon(BitmapDescriptorFactory.defaultMarker(bitMapColor)))
                 .setTag(0);
     }
 
 
-    //TODO: @assignee Mahesh create markers from database
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        switch (id){
+            case GAME_BASKETBALL_LOADER:{
+                Cursor sportCursor = this.getContentResolver().query(
+                        GamesContract.SportEntry.CONTENT_URI,
+                        new String[]{GamesContract.SportEntry._ID},
+                        GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                        new String[]{getResources().getString(R.string.basketball_query_key)},
+                        null
+                );
+                long sportId = 0;
+                try {
+                    if (sportCursor.moveToFirst()) {
+                        int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                        sportId = sportCursor.getLong(sportIndex);
+                    }
+                } finally {
+                    sportCursor.close();
+                }
+
+
+                return new CursorLoader(
+                        getApplicationContext(),
+                        GamesContract.GameEntry.buildGameSportUri(sportId),
+                        Constant.GAME_PROJECTION,
+                        null,
+                        null,
+                        null
+                        );
+            }
+            case GAME_FOOTBALL_LOADER:{
+                Cursor sportCursor = this.getContentResolver().query(
+                        GamesContract.SportEntry.CONTENT_URI,
+                        new String[]{GamesContract.SportEntry._ID},
+                        GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                        new String[]{getResources().getString(R.string.football_query_key)},
+                        null
+                );
+                long sportId = 0;
+                try {
+                    if (sportCursor.moveToFirst()) {
+                        int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                        sportId = sportCursor.getLong(sportIndex);
+                    }
+                } finally {
+                    sportCursor.close();
+                }
+
+
+                return new CursorLoader(
+                        getApplicationContext(),
+                        GamesContract.GameEntry.buildGameSportUri(sportId),
+                        Constant.GAME_PROJECTION,
+                        null,
+                        null,
+                        null
+                );
+            }
+            case GAME_SOCCER_LOADER:{
+                Cursor sportCursor = this.getContentResolver().query(
+                        GamesContract.SportEntry.CONTENT_URI,
+                        new String[]{GamesContract.SportEntry._ID},
+                        GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                        new String[]{getResources().getString(R.string.soccer_query_key)},
+                        null
+                );
+                long sportId = 0;
+                try {
+                    if (sportCursor.moveToFirst()) {
+                        int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                        sportId = sportCursor.getLong(sportIndex);
+                    }
+                } finally {
+                    sportCursor.close();
+                }
+
+
+                return new CursorLoader(
+                        getApplicationContext(),
+                        GamesContract.GameEntry.buildGameSportUri(sportId),
+                        Constant.GAME_PROJECTION,
+                        null,
+                        null,
+                        null
+                );
+            }
+            case GAME_TENNIS_LOADER:{
+                Cursor sportCursor = this.getContentResolver().query(
+                        GamesContract.SportEntry.CONTENT_URI,
+                        new String[]{GamesContract.SportEntry._ID},
+                        GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                        new String[]{getResources().getString(R.string.tennis_query_key)},
+                        null
+                );
+                long sportId = 0;
+                try {
+                    if (sportCursor.moveToFirst()) {
+                        int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                        sportId = sportCursor.getLong(sportIndex);
+                    }
+                } finally {
+                    sportCursor.close();
+                }
+
+
+                return new CursorLoader(
+                        getApplicationContext(),
+                        GamesContract.GameEntry.buildGameSportUri(sportId),
+                        Constant.GAME_PROJECTION,
+                        null,
+                        null,
+                        null
+                );
+            }
+            case GAME_VOLLEYBALL_LOADER:{
+                Cursor sportCursor = this.getContentResolver().query(
+                        GamesContract.SportEntry.CONTENT_URI,
+                        new String[]{GamesContract.SportEntry._ID},
+                        GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                        new String[]{getResources().getString(R.string.volleyball_query_key)},
+                        null
+                );
+                long sportId = 0;
+                try {
+                    if (sportCursor.moveToFirst()) {
+                        int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                        sportId = sportCursor.getLong(sportIndex);
+                    }
+                } finally {
+                    sportCursor.close();
+                }
+
+
+                return new CursorLoader(
+                        getApplicationContext(),
+                        GamesContract.GameEntry.buildGameSportUri(sportId),
+                        Constant.GAME_PROJECTION,
+                        null,
+                        null,
+                        null
+                );
+            }
+            default:{
+                return null;
+            }
+        }
+
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        switch (loader.getId()){
+            case GAME_BASKETBALL_LOADER:{
+                while (data.moveToNext()){
+                    //get latitude, longitude, title and organizer
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    addMarker(latitude, longitude, title, organizer, GAME_BASKETBALL_LOADER);
+                }
+                break;
+            }
+            case GAME_FOOTBALL_LOADER:{
+                while (data.moveToNext()){
+                    //get latitude, longitude, title and organizer
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    addMarker(latitude, longitude, title, organizer, GAME_FOOTBALL_LOADER);
+                }
+                break;
+            }
+            case GAME_SOCCER_LOADER:{
+                while (data.moveToNext()){
+                    //get latitude, longitude, title and organizer
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    addMarker(latitude, longitude, title, organizer, GAME_SOCCER_LOADER);
+                }
+                break;
+            }
+            case GAME_TENNIS_LOADER:{
+                while (data.moveToNext()){
+                    //get latitude, longitude, title and organizer
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    addMarker(latitude, longitude, title, organizer, GAME_TENNIS_LOADER);
+                }
+                break;
+            }
+            case GAME_VOLLEYBALL_LOADER:{
+                while (data.moveToNext()){
+                    //get latitude, longitude, title and organizer
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    addMarker(latitude, longitude, title, organizer, GAME_VOLLEYBALL_LOADER);
+                }
+                break;
+            }
+        }
     }
 
     @Override
