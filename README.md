@@ -1,4 +1,4 @@
-# TEAM UP
+# TeamUp App
 code name: Connect&Play
 
 This app allows users to connect and team up with other players to play sport games.
