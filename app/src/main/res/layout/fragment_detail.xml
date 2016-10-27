@@ -13,12 +13,10 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/card_padding"
-            android:paddingEnd="@dimen/card_padding"
-            android:paddingStart="@dimen/card_padding">
+            android:layout_height="wrap_content">
             <RelativeLayout
+                android:background="@color/colorDetailTitle"
+                android:padding="@dimen/card_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -33,23 +31,33 @@
                     tools:text="November 30, 2016 | 02:00 pm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:layout_below="@+id/game_title_text_view"/>
                 <TextView
                     android:id="@+id/game_location_text_view"
                     tools:text="2719 Forest Ave, Des Moines, IA 50311"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:layout_below="@+id/game_date_time_text_view"/>
 
                 <ImageButton
                     android:id="@+id/game_icon"
                     tools:src="@mipmap/ic_sport_football"
+                    android:scaleType="centerCrop"
                     android:layout_width="@dimen/game_icon_size"
                     android:layout_height="@dimen/game_icon_size"
                     android:background="@android:color/transparent"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/card_padding"
+            android:paddingStart="@dimen/card_padding">
 
             <TextView
                 android:paddingTop="@dimen/card_padding"
@@ -100,11 +108,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-            <View
-                android:layout_marginBottom="@dimen/card_padding"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#c0c0c0"/>
+
         </LinearLayout>
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_detail"

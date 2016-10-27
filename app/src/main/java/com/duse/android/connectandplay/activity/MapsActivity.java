@@ -74,21 +74,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ButterKnife.bind(this);
         //shows Action bar
         setSupportActionBar(mToolbar);
+        //adds back button
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        //This opens ExploreGamesActivity
-        mBottomSheetLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExploreGamesActivity.class);
-                startActivity(intent);
-            }
-        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        GameSyncAdapter.initializeSyncAdapter(this);
+
 
     }
 
@@ -99,9 +94,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void updateGames(){
-        GameSyncAdapter.syncImmediately(this);
-    }
 
     /**
      * Configures maps when it is ready
@@ -229,45 +221,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setTag(0);
     }
 
-    /**
-     * Inflates menus for this class
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.map_menu, menu);
-        return true;
-    }
-
-    /**
-     * Adds logic to the menus for this class
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.pref_general.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_saved_games) {
-            Intent intent = new Intent(this, YourGamesActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_profile){
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_about){
-            //TODO: open intent for about
-        } /*else if (id == R.id.action_refresh){
-            updateGames();
-        }*/
-
-        return super.onOptionsItemSelected(item);
-    }
 
     //TODO: @assignee Mahesh create markers from database
     @Override
@@ -284,6 +237,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-    
+
 }
 

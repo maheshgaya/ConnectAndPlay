@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
 import com.duse.android.connectandplay.data.GamesContract;
@@ -83,38 +84,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @BindString(R.string.participate_button)String mParticipateStr;
     @BindString(R.string.participating_button)String mParticipatingStr;
 
-
-    //for game inner join table
-    private static final String[] GAME_PROJECTION ={
-            GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
-            GamesContract.GameEntry.COLUMN_GAME_NAME,
-            GamesContract.GameEntry.COLUMN_TIME,
-            GamesContract.GameEntry.COLUMN_DATE,
-            GamesContract.GameEntry.COLUMN_SHORT_DESC,
-            GamesContract.GameEntry.COLUMN_LOCATION,
-            GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED,
-            GamesContract.UserEntry.TABLE_NAME + "." + GamesContract.UserEntry.COLUMN_USERNAME,
-            GamesContract.SportEntry.TABLE_NAME + "." + GamesContract.SportEntry.COLUMN_SPORT_NAME
-    };
-
-    public static final int COLUMN_GAME_ID = 0;
-    public static final int COLUMN_GAME_NAME = 1;
-    public static final int COLUMN_TIME = 2;
-    public static final int COLUMN_DATE = 3;
-    public static final int COLUMN_DESCRIPTION = 4;
-    public static final int COLUMN_LOCATION = 5;
-    public static final int COLUMN_PEOPLE_NEEDED = 6;
-    public static final int COLUMN_USERNAME = 7;
-    public static final int COLUMN_SPORT_NAME = 8;
-
-    //For participate table
-    private static final String[] PARTICIPATE_PROJECTION = {
-            GamesContract.ParticipateEntry.TABLE_NAME + "." + GamesContract.ParticipateEntry._ID,
-            GamesContract.ParticipateEntry.COLUMN_GAME_ID
-    };
-
-    public static final int COLUMN_PARTICIPATE_ID = 0;
-    public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
 
     public DetailFragment(){
         //required default constructor
@@ -304,7 +273,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 return new CursorLoader(
                         getActivity(),
                         mUri, //GAME_WITH_ID
-                        GAME_PROJECTION,
+                        Constant.GAME_PROJECTION,
                         null,
                         null,
                         null
@@ -316,7 +285,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 return new CursorLoader(
                         getActivity(),
                         participateUri,
-                        PARTICIPATE_PROJECTION,
+                        Constant.PARTICIPATE_PROJECTION,
                         GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ?",
                         new String[]{Integer.toString(gameId)},
                         null
@@ -339,20 +308,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         switch (loader.getId()){
             case DETAIL_LOADER:{
                 if (data.getCount() > 0 && data.moveToFirst()){
-                    String title = data.getString(COLUMN_GAME_NAME);
-                    String time = data.getString(COLUMN_TIME);
-                    String date = data.getString(COLUMN_DATE);
-                    String location = data.getString(COLUMN_LOCATION);
-                    String desc = data.getString(COLUMN_DESCRIPTION);
-                    int peopleNeeded = data.getInt(COLUMN_PEOPLE_NEEDED);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String time = data.getString(Constant.COLUMN_TIME);
+                    String date = data.getString(Constant.COLUMN_DATE);
+                    String location = data.getString(Constant.COLUMN_ADDRESS);
+                    String desc = data.getString(Constant.COLUMN_DESCRIPTION);
+                    int peopleNeeded = data.getInt(Constant.COLUMN_PEOPLE_NEEDED);
                     String peopleNeededStr;
                     if (peopleNeeded <= 1){
                         peopleNeededStr = mPersonStr;
                     } else {
                         peopleNeededStr = mPeopleStr;
                     }
-                    String organizer = data.getString(COLUMN_USERNAME);
-                    String sport = data.getString(COLUMN_SPORT_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    String sport = data.getString(Constant.COLUMN_SPORT_NAME);
 
                     //sets image
                     int imageUrl = Utility.getIconId(getContext(), sport);

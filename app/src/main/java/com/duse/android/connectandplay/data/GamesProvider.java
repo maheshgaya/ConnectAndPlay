@@ -36,16 +36,19 @@ public class GamesProvider  extends ContentProvider {
     private static final int PARTICIPATE_WITH_ID = 401; //item
     private static final int PARTICIPATE_WITH_GAME_ID = 402; //item
 
+    private static final int LOCATION = 500; //dir
+
     //inner joins
-    private static final SQLiteQueryBuilder sGameSportUserQueryBuilder; //inner join with sport and game and user
+    private static final SQLiteQueryBuilder sGameSportUserLocationQueryBuilder; //inner join with sport and game and user and location
     private static final SQLiteQueryBuilder sGameParticipateQueryBuilder; //inner join with game and participate
 
     static {
-        sGameSportUserQueryBuilder = new SQLiteQueryBuilder();
+        sGameSportUserLocationQueryBuilder = new SQLiteQueryBuilder();
         /**
-         * game INNER JOIN sport ON game.sport_id = sport._id INNER JOIN user ON user._id = game.user_id
+         * game INNER JOIN sport ON game.sport_id = sport._id INNER JOIN user ON user._id = user_id
+         * INNER JOIN locatin ON location._id = location_id
          */
-        sGameSportUserQueryBuilder.setTables(
+        sGameSportUserLocationQueryBuilder.setTables(
                 GamesContract.GameEntry.TABLE_NAME + " INNER JOIN " +
                         GamesContract.SportEntry.TABLE_NAME +
                         " ON " + GamesContract.GameEntry.TABLE_NAME +
@@ -55,7 +58,11 @@ public class GamesProvider  extends ContentProvider {
                         " INNER JOIN " + GamesContract.UserEntry.TABLE_NAME +
                         " ON " + GamesContract.UserEntry.TABLE_NAME +
                         "." + GamesContract.UserEntry._ID +
-                        " = " + GamesContract.GameEntry.COLUMN_ORGANIZER_ID
+                        " = " + GamesContract.GameEntry.COLUMN_ORGANIZER_ID +
+                        " INNER JOIN " + GamesContract.LocationEntry.TABLE_NAME +
+                        " ON " + GamesContract.LocationEntry.TABLE_NAME +
+                        "." + GamesContract.LocationEntry._ID +
+                        " = " + GamesContract.GameEntry.COLUMN_LOCATION_ID
 
         );
     }
@@ -68,7 +75,7 @@ public class GamesProvider  extends ContentProvider {
         String gameId = GamesContract.GameEntry.getGameIdFromUri(uri);
         String selection = sGameGameIdSelection;
         String[] selectionArgs = new String[]{gameId};
-        return sGameSportUserQueryBuilder.query(
+        return sGameSportUserLocationQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -87,7 +94,7 @@ public class GamesProvider  extends ContentProvider {
         String userId = GamesContract.GameEntry.getUserIdFromUri(uri);
         String selection = sGameUserIdSelection;
         String[] selectionArgs = new String[]{userId};
-        return sGameSportUserQueryBuilder.query(
+        return sGameSportUserLocationQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -107,7 +114,7 @@ public class GamesProvider  extends ContentProvider {
         String sportId = GamesContract.GameEntry.getSportIdFromUri(uri);
         String selection = sGameSportIdSelection;
         String[] selectionArgs = new String[]{sportId};
-        return sGameSportUserQueryBuilder.query(
+        return sGameSportUserLocationQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -192,6 +199,8 @@ public class GamesProvider  extends ContentProvider {
         matcher.addURI(authority, GamesContract.ParticipateEntry.TABLE_NAME +
                 "/" + GamesContract.GameEntry.TABLE_NAME + "/#", PARTICIPATE_WITH_GAME_ID);
 
+        //content://authority/location
+        matcher.addURI(authority, GamesContract.LocationEntry.TABLE_NAME, LOCATION);
         return matcher;
     }
 
@@ -318,6 +327,18 @@ public class GamesProvider  extends ContentProvider {
                 retCursor = getParticipateByGameId(uri, projection, sortOrder);
                 break;
             }
+            case LOCATION:{
+                retCursor = mOpenDbHelper.getReadableDatabase().query(
+                        GamesContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:{
                 // Bad URI
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -367,6 +388,9 @@ public class GamesProvider  extends ContentProvider {
             case PARTICIPATE_WITH_GAME_ID: {
                 return GamesContract.ParticipateEntry.CONTENT_ITEM_TYPE;
             }
+            case LOCATION:{
+                return GamesContract.LocationEntry.CONTENT_TYPE;
+            }
         }
         return null;
     }
@@ -414,6 +438,15 @@ public class GamesProvider  extends ContentProvider {
                 }
                 break;
             }
+            case LOCATION:{
+                long _id = db.insert(GamesContract.LocationEntry.TABLE_NAME, null, contentValues);
+                if (_id > 0) {
+                    returnUri = GamesContract.LocationEntry.buildLocationUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -451,6 +484,12 @@ public class GamesProvider  extends ContentProvider {
             case PARTICIPATE: {
                 rowsDeleted = db.delete(
                         GamesContract.ParticipateEntry.TABLE_NAME, selection, selectionArgs
+                );
+                break;
+            }
+            case LOCATION:{
+                rowsDeleted = db.delete(
+                        GamesContract.LocationEntry.TABLE_NAME, selection, selectionArgs
                 );
                 break;
             }
@@ -495,6 +534,12 @@ public class GamesProvider  extends ContentProvider {
             case PARTICIPATE: {
                 rowsUpdated = db.update(
                         GamesContract.ParticipateEntry.TABLE_NAME, contentValues, selection, selectionArgs
+                );
+                break;
+            }
+            case LOCATION:{
+                rowsUpdated = db.update(
+                        GamesContract.LocationEntry.TABLE_NAME, contentValues, selection, selectionArgs
                 );
                 break;
             }

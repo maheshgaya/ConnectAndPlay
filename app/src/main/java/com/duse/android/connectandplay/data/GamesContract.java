@@ -18,6 +18,7 @@ public class GamesContract {
     public static final String PATH_USER = "user";
     public static final String PATH_SPORT = "sport";
     public static final String PATH_PARTICIPATE = "participate";
+    public static final String PATH_LOCATION = "location";
 
     public static final class GameEntry implements BaseColumns{
         //defining types and path
@@ -38,7 +39,7 @@ public class GamesContract {
         public static final String COLUMN_SPORT_ID = "sport_id"; //foreign key
         public static final String COLUMN_TIME = "time";
         public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_LOCATION = "location";
+        public static final String COLUMN_LOCATION_ID = "location_id";
         public static final String COLUMN_SHORT_DESC = "description";
         public static final String COLUMN_PEOPLE_NEEDED = "people_needed";
         public static final String COLUMN_ORGANIZER_ID = "user_id";
@@ -161,5 +162,27 @@ public class GamesContract {
 
     }
 
-    //TODO Create a location table to store the  LatLong based on location
+    public static final class LocationEntry implements BaseColumns{
+        //defining types and path
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_LOCATION).build();
+        //dir type
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+        //item type
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
+
+        //Define table
+        public static final String TABLE_NAME = "location";
+        public static final String COLUMN_ADDRESS = "address";
+        public static final String COLUMN_LATITUDE = "latitude";
+        public static final String COLUMN_LONGITUDE = "longitude";
+
+        //content://authority/location/[_id]
+        public static Uri buildLocationUri(long id){
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+    }
 }

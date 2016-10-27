@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TeamUp</string>
+    <string name="app_name">TeamUp App</string>
     <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
     <string name="saved_games_label">Saved Games</string>
@@ -8,6 +8,7 @@
     <string name="refresh_label">Refresh</string>
     <string name="detail_label">Game Detail</string>
     <string name="create_game_label">Create Game</string>
+    <string name="map_label">Map View</string>
 
     <!-- Card View  and detail -->
     <string name="participate_button">Participate</string>

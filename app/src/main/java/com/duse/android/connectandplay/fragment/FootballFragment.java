@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.adapter.DividerItemDecoration;
 import com.duse.android.connectandplay.adapter.GameAdapter;
@@ -34,37 +35,6 @@ public class FootballFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final int GAME_LOADER = 0;
 
-
-    private static final String[] GAME_PROJECTION ={
-            GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
-            GamesContract.GameEntry.COLUMN_GAME_NAME,
-            GamesContract.GameEntry.COLUMN_TIME,
-            GamesContract.GameEntry.COLUMN_DATE,
-            GamesContract.GameEntry.COLUMN_SHORT_DESC,
-            GamesContract.GameEntry.COLUMN_LOCATION,
-            GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED,
-            GamesContract.UserEntry.TABLE_NAME + "." + GamesContract.UserEntry.COLUMN_USERNAME,
-            GamesContract.SportEntry.TABLE_NAME + "." + GamesContract.SportEntry.COLUMN_SPORT_NAME
-    };
-
-    public static final int COLUMN_GAME_ID = 0;
-    public static final int COLUMN_GAME_NAME = 1;
-    public static final int COLUMN_TIME = 2;
-    public static final int COLUMN_DATE = 3;
-    public static final int COLUMN_DESCRIPTION = 4;
-    public static final int COLUMN_LOCATION = 5;
-    public static final int COLUMN_PEOPLE_NEEDED = 6;
-    public static final int COLUMN_USERNAME = 7;
-    public static final int COLUMN_SPORT_NAME = 8;
-
-
-    private static final String[] PARTICIPATE_PROJECTION = {
-            GamesContract.ParticipateEntry.TABLE_NAME + "." + GamesContract.ParticipateEntry._ID,
-            GamesContract.ParticipateEntry.COLUMN_GAME_ID
-    };
-
-    public static final int COLUMN_PARTICIPATE_ID = 0;
-    public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
 
     public FootballFragment(){
         //required empty constructor
@@ -127,7 +97,7 @@ public class FootballFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(getActivity(),
                 gameUri,
-                GAME_PROJECTION,
+                Constant.GAME_PROJECTION,
                 null,
                 null,
                 null);

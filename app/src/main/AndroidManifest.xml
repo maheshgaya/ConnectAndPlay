@@ -29,7 +29,15 @@
 
         <!-- main screen, shows the map with all the markers-->
         <activity android:name=".activity.MapsActivity"
+            android:label="@string/explore_games_label"
+            android:parentActivityName=".activity.ExploreGamesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ExploreGamesActivity" />
+        </activity>
 
+        <!-- shows all the games, categorized by sport -->
+        <activity android:name=".activity.ExploreGamesActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,24 +45,15 @@
             </intent-filter>
         </activity>
 
-        <!-- shows all the games, categorized by sport -->
-        <activity android:name=".activity.ExploreGamesActivity"
-            android:label="@string/explore_games_label"
-            android:parentActivityName=".activity.MapsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MapsActivity" />
-        </activity>
-
 
         <!-- shows saved games and hosted games -->
 
         <activity android:name=".activity.YourGamesActivity"
             android:label="@string/your_games_label"
-            android:parentActivityName=".activity.MapsActivity">
+            android:parentActivityName=".activity.ExploreGamesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MapsActivity" />
+                android:value=".activity.ExploreGamesActivity" />
         </activity>
 
         <!-- provides the details about a card -->
@@ -71,18 +70,22 @@
         <!-- creates a game to add to database -->
         <activity android:name=".activity.CreateGameActivity"
             android:label="@string/create_game_label"
-            android:parentActivityName=".activity.MapsActivity"
-            android:theme="@style/AppActionBarTheme"/>
+            android:parentActivityName=".activity.ExploreGamesActivity"
+            android:theme="@style/AppActionBarTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ExploreGamesActivity" />
+        </activity>
 
 
         <activity android:name=".activity.ProfileActivity"
             android:label="@string/profile_label"
             android:theme="@style/AppActionBarTheme"
-            android:parentActivityName=".activity.MapsActivity">
+            android:parentActivityName=".activity.ExploreGamesActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MapsActivity" />
+                android:value=".activity.ExploreGamesActivity" />
         </activity>
         
 
