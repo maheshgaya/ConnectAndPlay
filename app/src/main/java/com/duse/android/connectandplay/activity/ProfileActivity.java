@@ -39,7 +39,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageButton imageButton;
     private static String userChoosenTask;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -134,6 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CAMERA);
     }
+
     public class Utility {
         public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -169,6 +170,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
         /**
          * Validating form
