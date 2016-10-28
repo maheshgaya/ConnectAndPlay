@@ -1,5 +1,8 @@
 package com.duse.android.connectandplay.fragment;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -24,8 +27,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
+import com.duse.android.connectandplay.activity.MapsActivity;
 import com.duse.android.connectandplay.data.GamesContract;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,6 +62,19 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final double DRAKE_UNIVERSITY_STADIUM_LAT = 41.605007;
     private static final double DRAKE_UNIVERSITY_STADIUM_LNG = -93.6563355;
 
+    //for sharing
+    private String mShareLocation;
+    private String mShareDate;
+    private String mShareTime;
+    private String mShareGameTitle;
+
+    //for opening mapsActivity
+    private Double mMarkerLatitude;
+    private Double mMarkerLongitude;
+
+    //for people needed
+    private int mPeopleCount;
+
     private GoogleMap mGoogleMap;
 
     //TextViews
@@ -83,46 +101,25 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @BindString(R.string.participate_button)String mParticipateStr;
     @BindString(R.string.participating_button)String mParticipatingStr;
 
+    //for sharing
+    @BindString(R.string.share)String mShareStr;
+    @BindString(R.string.share_date)String mShareDateStr;
+    @BindString(R.string.share_time)String mShareTimeStr;
+    @BindString(R.string.share_join)String mShareJoinStr;
+    @BindString(R.string.share_location)String mShareLocationStr;
+    @BindString(R.string.share_title)String mShareTitleStr;
 
-    //for game inner join table
-    private static final String[] GAME_PROJECTION ={
-            GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
-            GamesContract.GameEntry.COLUMN_GAME_NAME,
-            GamesContract.GameEntry.COLUMN_TIME,
-            GamesContract.GameEntry.COLUMN_DATE,
-            GamesContract.GameEntry.COLUMN_SHORT_DESC,
-            GamesContract.GameEntry.COLUMN_LOCATION,
-            GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED,
-            GamesContract.UserEntry.TABLE_NAME + "." + GamesContract.UserEntry.COLUMN_USERNAME,
-            GamesContract.SportEntry.TABLE_NAME + "." + GamesContract.SportEntry.COLUMN_SPORT_NAME
-    };
-
-    public static final int COLUMN_GAME_ID = 0;
-    public static final int COLUMN_GAME_NAME = 1;
-    public static final int COLUMN_TIME = 2;
-    public static final int COLUMN_DATE = 3;
-    public static final int COLUMN_DESCRIPTION = 4;
-    public static final int COLUMN_LOCATION = 5;
-    public static final int COLUMN_PEOPLE_NEEDED = 6;
-    public static final int COLUMN_USERNAME = 7;
-    public static final int COLUMN_SPORT_NAME = 8;
-
-    //For participate table
-    private static final String[] PARTICIPATE_PROJECTION = {
-            GamesContract.ParticipateEntry.TABLE_NAME + "." + GamesContract.ParticipateEntry._ID,
-            GamesContract.ParticipateEntry.COLUMN_GAME_ID
-    };
-
-    public static final int COLUMN_PARTICIPATE_ID = 0;
-    public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
+    //for marker colors
+    @BindString(R.string.basketball_query_key)String mBasketballQueryKey;
+    @BindString(R.string.football_query_key)String mFootballQueryKey;
+    @BindString(R.string.soccer_query_key)String mSoccerQueryKey;
+    @BindString(R.string.tennis_query_key)String mTennisQueryKey;
+    @BindString(R.string.volleyball_query_key)String mVolleyballQueryKey;
 
     public DetailFragment(){
         //required default constructor
     }
 
-
-    //TODO: Add to Participate table
-    //TODO: Remove from Participate table
 
     /**
      * Set Options Menu to true
@@ -182,15 +179,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                //TODO: set zoom for maps based on location table
                 mGoogleMap = googleMap;
-                Log.d(TAG, "onMapReady: ");
-                //can be replaced with latitude and longitude
-                setCameraPosition(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG);
-                addMarker(DRAKE_UNIVERSITY_STADIUM_LAT, DRAKE_UNIVERSITY_STADIUM_LNG,
-                        "Flag Football this Saturday",
-                        "Software Engineering Group 2");
                 mMapView.onResume();
+                mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        openMapsActivity();
+                    }
+                });
             }
         });
 
@@ -198,7 +194,30 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mParticipateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add function for participate
+                int gameId = Integer.parseInt(mUri.getLastPathSegment());
+                String buttonText = mParticipateButton.getText().toString();
+                if (buttonText.equals(mParticipatingStr)){
+                    //remove from db
+                    boolean removeResult = removeParticipate(gameId);
+                    mParticipateButton.setText(mParticipateStr);
+                    if (Build.VERSION.SDK_INT < 23){
+                        mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
+                    } else {
+                        mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
+                    }
+
+                } else if (buttonText.equals(mParticipateStr)) {
+                    //add to db
+                    long participateId = addParticipate(gameId);
+                    mParticipateButton.setText(mParticipatingStr);
+                    if (Build.VERSION.SDK_INT < 23){
+                        mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    } else {
+                        mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+                    }
+
+                }
+
 
             }
         });
@@ -206,11 +225,117 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add function for share
+                startActivity(Intent.createChooser(createShareIntent(), mShareTitleStr));
             }
         });
 
+
         return rootView;
+    }
+
+    public void openMapsActivity(){
+        Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
+        mapIntent.putExtra(Constant.EXTRA_LATITIUDE, mMarkerLatitude);
+        mapIntent.putExtra(Constant.EXTRA_LONGITUDE, mMarkerLongitude);
+        startActivity(mapIntent);
+    }
+
+    private Intent createShareIntent(){
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        //I'm interested in "Game Title" on "Date" at "Time" at "Location". Join me!
+        String shareMessage = mShareStr + " " + mShareGameTitle + " " + mShareDateStr +
+                " " + mShareDate + " " + mShareTimeStr + " " + mShareTime +
+                " " + mShareLocationStr + " " + mShareLocation + mShareJoinStr;
+        shareIntent.putExtra(Intent.EXTRA_TEXT,  shareMessage);
+        return shareIntent;
+    }
+
+    private long addParticipate(int gameId) {
+        long participateId;
+        //check if participate is already in table
+        Cursor participateCursor = getContext().getContentResolver().query(
+                GamesContract.ParticipateEntry.CONTENT_URI,
+                new String[]{GamesContract.ParticipateEntry._ID},
+                GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                new String[]{Integer.toString(gameId)},
+                null
+        );
+
+        try {
+            if (participateCursor.moveToFirst()){
+                //if exists
+                int participateIndex = participateCursor.getColumnIndex(GamesContract.ParticipateEntry._ID);
+                participateId = participateCursor.getLong(participateIndex);
+            } else {
+                //else add
+                ContentValues participateValues = new ContentValues();
+                participateValues.put(GamesContract.ParticipateEntry.COLUMN_GAME_ID, gameId);
+                Uri insertUri = getContext().getContentResolver().insert(
+                        GamesContract.ParticipateEntry.CONTENT_URI,
+                        participateValues
+                );
+                participateId = ContentUris.parseId(insertUri);
+
+                //update people needed (minus 1)
+                ContentValues gameValues = new ContentValues();
+                gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, mPeopleCount - 1);
+                int updateGameUri = getContext().getContentResolver().update(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        gameValues,
+                        GamesContract.GameEntry._ID + " = ?",
+                        new String[]{mUri.getLastPathSegment()}
+                );
+
+                getLoaderManager().restartLoader(PARTICIPATE_LOADER, null, this);
+                getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+            }
+        }finally {
+            participateCursor.close();
+        }
+
+        return participateId;
+    }
+
+
+    private boolean removeParticipate(int gameId) {
+        //check if movie exists in table
+        Cursor participateCursor = getContext().getContentResolver().query(
+                GamesContract.ParticipateEntry.CONTENT_URI,
+                new String[]{GamesContract.ParticipateEntry._ID},
+                GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                new String[]{Integer.toString(gameId)},
+                null
+        );
+        //then remove it
+        try {
+            if (participateCursor.moveToFirst()){
+                getContext().getContentResolver().delete(
+                        GamesContract.ParticipateEntry.CONTENT_URI,
+                        GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ? ",
+                        new String[]{Integer.toString(gameId)}
+                );
+
+                //update people needed (add 1)
+                ContentValues gameValues = new ContentValues();
+                gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, mPeopleCount + 1);
+                int updateGameUri = getContext().getContentResolver().update(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        gameValues,
+                        GamesContract.GameEntry._ID + " = ?",
+                        new String[]{mUri.getLastPathSegment()}
+                );
+
+                getLoaderManager().restartLoader(PARTICIPATE_LOADER, null, this);
+                getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            participateCursor.close();
+        }
     }
 
     public void setCameraPosition(double latitude, double longitude){
@@ -223,24 +348,80 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
-    public void addMarker(double latitude, double longitude, String title, String organizer){
-        Float[] color = new Float[]{
-                BitmapDescriptorFactory.HUE_GREEN, //basketball
-                BitmapDescriptorFactory.HUE_CYAN, //football
-                BitmapDescriptorFactory.HUE_ORANGE, //tennis
-                BitmapDescriptorFactory.HUE_VIOLET, //volleyball
-                BitmapDescriptorFactory.HUE_ROSE
-        }; //TODO: use color per game
-
+    public void addMarker(double latitude, double longitude, String title, String organizer, int color){
+        Float bitMapColor;
+        switch (color){
+            case Constant.GAME_BASKETBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_GREEN; //basketball
+                break;
+            }
+            case Constant.GAME_FOOTBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_CYAN; //football
+                break;
+            }
+            case Constant.GAME_SOCCER_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ORANGE; //soccer
+                break;
+            }
+            case Constant.GAME_TENNIS_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_VIOLET; //tennis
+                break;
+            }
+            case Constant.GAME_VOLLEYBALL_COLOR:{
+                bitMapColor = BitmapDescriptorFactory.HUE_ROSE; //volleyball
+                break;
+            }
+            default:{
+                bitMapColor = BitmapDescriptorFactory.HUE_RED;
+                break;
+            }
+        }
 
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet("Organized by " + organizer)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+                .icon(BitmapDescriptorFactory.defaultMarker(bitMapColor)))
                 .setTag(0);
+
+        setCameraPosition(latitude, longitude); //sets the camera position
     }
 
+    private void checkPersonNeed(int peopleNeeded){
+        //check to see if peopleNeeded is zero and participate button text is participate
+        //then disable participate
+        if (peopleNeeded == 0 && mParticipateButton.getText().equals(mParticipateStr)){
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark, null));
+            }
+            mParticipateButton.setEnabled(false);
+
+
+
+        } else if (peopleNeeded > 0 && mParticipateButton.getText().equals(mParticipatingStr)){
+            mParticipateButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            }
+        } else if (peopleNeeded > 0 && mParticipateButton.getText().equals(mParticipateStr)){
+            mParticipateButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            }
+        }
+    }
 
     /**
      * initializes loaders
@@ -304,7 +485,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 return new CursorLoader(
                         getActivity(),
                         mUri, //GAME_WITH_ID
-                        GAME_PROJECTION,
+                        Constant.GAME_PROJECTION,
                         null,
                         null,
                         null
@@ -316,7 +497,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 return new CursorLoader(
                         getActivity(),
                         participateUri,
-                        PARTICIPATE_PROJECTION,
+                        Constant.PARTICIPATE_PROJECTION,
                         GamesContract.ParticipateEntry.COLUMN_GAME_ID + " = ?",
                         new String[]{Integer.toString(gameId)},
                         null
@@ -339,20 +520,50 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         switch (loader.getId()){
             case DETAIL_LOADER:{
                 if (data.getCount() > 0 && data.moveToFirst()){
-                    String title = data.getString(COLUMN_GAME_NAME);
-                    String time = data.getString(COLUMN_TIME);
-                    String date = data.getString(COLUMN_DATE);
-                    String location = data.getString(COLUMN_LOCATION);
-                    String desc = data.getString(COLUMN_DESCRIPTION);
-                    int peopleNeeded = data.getInt(COLUMN_PEOPLE_NEEDED);
+                    String title = data.getString(Constant.COLUMN_GAME_NAME);
+                    String time = data.getString(Constant.COLUMN_TIME);
+                    String date = data.getString(Constant.COLUMN_DATE);
+                    String location = data.getString(Constant.COLUMN_ADDRESS);
+                    String desc = data.getString(Constant.COLUMN_DESCRIPTION);
+                    int peopleNeeded = data.getInt(Constant.COLUMN_PEOPLE_NEEDED);
                     String peopleNeededStr;
                     if (peopleNeeded <= 1){
                         peopleNeededStr = mPersonStr;
                     } else {
                         peopleNeededStr = mPeopleStr;
                     }
-                    String organizer = data.getString(COLUMN_USERNAME);
-                    String sport = data.getString(COLUMN_SPORT_NAME);
+                    String organizer = data.getString(Constant.COLUMN_USERNAME);
+                    String sport = data.getString(Constant.COLUMN_SPORT_NAME);
+                    double latitude = data.getDouble(Constant.COLUMN_LATITUDE);
+                    double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
+                    mMarkerLatitude = latitude;
+                    mMarkerLongitude = longitude;
+
+                    //add the marker
+                    int color;
+                    if (sport.equals(mBasketballQueryKey)){
+                        color = Constant.GAME_BASKETBALL_COLOR;
+                    } else if (sport.equals(mFootballQueryKey)){
+                        color = Constant.GAME_FOOTBALL_COLOR;
+                    } else if (sport.equals(mSoccerQueryKey)){
+                        color = Constant.GAME_SOCCER_COLOR;
+                    } else if (sport.equals(mTennisQueryKey)){
+                        color = Constant.GAME_TENNIS_COLOR;
+                    } else if (sport.equals(mVolleyballQueryKey)){
+                        color = Constant.GAME_VOLLEYBALL_COLOR;
+                    } else {
+                        color = -1; //will pickup default color if not changed
+                    }
+                    addMarker(latitude, longitude, title, organizer, color);
+
+                    //for sharing
+                    mShareDate = date;
+                    mShareTime = time;
+                    mShareLocation = location;
+                    mShareGameTitle = title;
+
+                    //controls the number of people
+                    mPeopleCount = peopleNeeded;
 
                     //sets image
                     int imageUrl = Utility.getIconId(getContext(), sport);
@@ -370,27 +581,32 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     mPeopleNeededTextView.setText(peopleNeeded + " " + peopleNeededStr);
                     mOrganizerTextView.setText(mOrganizedByStr + " " + organizer);
 
+                    //check to see if peopleNeeded is zero and participate button text is participate
+                    //then disable participate
+                    checkPersonNeed(peopleNeeded);
                 }
                 break;
             }
             case PARTICIPATE_LOADER:{
+                //if there are id in table
                 if (data.getCount() > 0 && data.moveToFirst()){
-                    //Allow to Unfavorite
+                    //Allow to remove Participation
                     mParticipateButton.setText(mParticipatingStr);
-                    if (Build.VERSION.SDK_INT <= 23){
+                    if (Build.VERSION.SDK_INT < 23){
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     } else {
                         mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
                     }
 
                 } else {
-                    //Allow to Favorite
+                    //Allow to Participate
                     mParticipateButton.setText(mParticipateStr);
-                    if (Build.VERSION.SDK_INT <= 23){
+                    if (Build.VERSION.SDK_INT < 23){
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
                     } else {
                         mParticipateButton.setTextColor(getResources().getColor(android.R.color.black, null));
                     }
+
 
                 }
                 break;

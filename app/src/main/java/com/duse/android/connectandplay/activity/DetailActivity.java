@@ -20,7 +20,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
 
-            //get uri for content
+            //add fragment to activity
             DetailFragment fragment = new DetailFragment();
 
             getSupportFragmentManager().beginTransaction()

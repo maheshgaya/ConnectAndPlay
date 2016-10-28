@@ -14,10 +14,16 @@
         android:orderInCategory="200"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_about"
-        android:title="@string/about_label"
+        android:id="@+id/action_map"
+        android:title="@string/map_label"
         android:orderInCategory="300"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about_label"
+        android:orderInCategory="400"
+        app:showAsAction="never"/>
+
 
     <!--<item-->
         <!--android:id="@+id/action_refresh"-->

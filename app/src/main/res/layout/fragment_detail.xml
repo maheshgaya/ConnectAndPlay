@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,61 +11,77 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/card_padding">
-        <RelativeLayout
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                tools:text="Title"
-                android:id="@+id/game_title_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/game_detail_title_text_size"
-                android:textColor="@android:color/black"/>
-            <TextView
-                android:id="@+id/game_date_time_text_view"
-                tools:text="November 30, 2016 | 02:00 pm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/game_title_text_view"/>
-            <TextView
-                android:id="@+id/game_location_text_view"
-                tools:text="2719 Forest Ave, Des Moines, IA 50311"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/game_date_time_text_view"/>
+            <RelativeLayout
+                android:background="@color/colorDetailTitle"
+                android:padding="@dimen/card_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    tools:text="Title"
+                    android:id="@+id/game_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/game_detail_title_text_size"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:id="@+id/game_date_time_text_view"
+                    tools:text="November 30, 2016 | 02:00 pm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_below="@+id/game_title_text_view"/>
+                <TextView
+                    android:id="@+id/game_location_text_view"
+                    tools:text="2719 Forest Ave, Des Moines, IA 50311"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_below="@+id/game_date_time_text_view"/>
 
-            <ImageButton
-                android:id="@+id/game_icon"
-                tools:src="@mipmap/ic_sport_football"
-                android:layout_width="@dimen/game_icon_size"
-                android:layout_height="@dimen/game_icon_size"
-                android:background="@android:color/transparent"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-
-        <TextView
-            android:paddingTop="@dimen/card_padding"
-            android:paddingBottom="@dimen/card_padding"
-            android:textColor="@android:color/black"
-            android:id="@+id/game_desc_text_view"
-            tools:text="We are organizing a fun soccer game at the Drake Stadium. You are all invited to participate. You are also allowed to bring a friend"
+                <ImageButton
+                    android:id="@+id/game_icon"
+                    tools:src="@mipmap/ic_sport_football"
+                    android:scaleType="centerCrop"
+                    android:layout_width="@dimen/game_icon_size"
+                    android:layout_height="@dimen/game_icon_size"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/game_people_needed_text_view"
-            tools:text="9 persons needed"
-            android:textColor="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/organizer_text_view"
-            tools:text="Organized by Mahesh Gaya"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/card_padding"
+            android:paddingStart="@dimen/card_padding">
 
+            <TextView
+                android:paddingTop="@dimen/card_padding"
+                android:paddingBottom="@dimen/card_padding"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/game_detail_desc_text_size"
+                android:id="@+id/game_desc_text_view"
+                tools:text="We are organizing a fun soccer game at the Drake Stadium. You are all invited to participate. You are also allowed to bring a friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/game_people_needed_text_view"
+                tools:text="9 persons needed"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/organizer_text_view"
+                tools:text="Organized by Mahesh Gaya"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
         <View
             android:layout_marginTop="@dimen/card_padding"
             android:layout_width="fill_parent"
@@ -76,7 +93,6 @@
             android:showDividers="middle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <Button
                 android:id="@+id/game_participate_button"
                 android:text="@string/participate_button"
@@ -94,18 +110,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <View
-            android:layout_marginBottom="@dimen/card_padding"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#c0c0c0"/>
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_detail"
             android:apiKey="@string/google_maps_key"
             android:clickable="true"
-            android:enabled="true"
+            android:onClick="openMapsActivity"
+            map:uiZoomGestures="false"
+            map:uiRotateGestures="false"
+            map:uiScrollGestures="false"
+            map:uiTiltGestures="false"
             android:layout_width="match_parent"
             android:layout_height="@dimen/map_detail" />
     </LinearLayout>
+
 
 </ScrollView>

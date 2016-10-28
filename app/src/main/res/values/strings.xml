@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TeamUp</string>
+    <string name="app_name">TeamUp App</string>
     <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
     <string name="saved_games_label">Saved Games</string>
@@ -8,6 +8,7 @@
     <string name="refresh_label">Refresh</string>
     <string name="detail_label">Game Detail</string>
     <string name="create_game_label">Create Game</string>
+    <string name="map_label">Map View</string>
 
     <!-- Card View  and detail -->
     <string name="participate_button">Participate</string>
@@ -29,7 +30,7 @@
     <string name="volleyball_label">Volleyball</string>
     <string name="report_string">Thanks for keeping TeamUp safe by reporting this game to us.</string>
 
-    <!-- static for queries -->
+    <!-- queries -->
     <string name="basketball_query_key" translatable="false">Basketball</string>
     <string name="football_query_key" translatable="false">Football</string>
     <string name="soccer_query_key" translatable="false">Soccer</string>
@@ -50,9 +51,43 @@
     <string name="err_msg_Lname">Last name cannot be empty</string>
     <string name="err_msg_Bio">Biography cannot be empty</string>
 
-    <!-- customs -->
+    <!-- Sync Adapter -->
     <string name="string_bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
-
     <string name="sync_account_type" translatable="false">connectandplay.android.duse.com</string>
     <string name="content_authority" translatable="false">com.duse.android.connectandplay.app</string>
+
+    <!-- empty list -->
+    <string name="no_game_available">No games currently available</string>
+    <string name="no_hosted_game_available">You haven\'t hosted any games yet. Tap on the + button below to add a new game.</string>
+    <string name="no_saved_game_available">No saved games yet! Games that you are participating in will appear here.</string>
+
+
+    <!-- I'm interested in "Game Title" on "Date" at "Time" at "Location". Join me! -->
+    <string name="share_title">Share via</string>
+    <string name="share">I\'m interested in </string>
+    <string name="share_date">on</string>
+    <string name="share_time">at</string>
+    <string name="share_location">at</string>
+    <string name="share_join">. Join me!</string>
+
+    <!-- Geocoding -->
+    <string name="service_not_available">Service is not available!</string>
+    <string name="invalid_lat_long_used">Invalid Latitude or Longitude value!</string>
+    <string name="no_address_found">No address found!</string>
+    <string name="address_found">Address found</string>
+    <string name="no_geocoder_available">No Geocoder available!</string>
+
+    <!-- Permissions -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="permission_required_toast">Location permission is required for this app.</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'TeamUp\'.</string>
+
+    <!-- Creating a new game -->
+    <string name="game_title_hint">Title</string>
+    <string name="game_time_hint">Time (HH:MM AM)</string>
+    <string name="game_date_hint">Date (MM/dd/yyyy)</string>
+    <string name="game_sport_hint">Sport</string>
+    <string name="game_location_hint">Location</string>
+    <string name="game_description_hint">Description</string>
+    <string name="game_people_needed_hint">People Needed</string>
 </resources>

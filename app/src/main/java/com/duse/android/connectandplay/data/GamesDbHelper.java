@@ -11,13 +11,30 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class GamesDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "games.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     public GamesDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //LOCATION TABLE
+        /**
+         * CREATE TABLE location (
+         * _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+         * address TEXT NOT NULL,
+         * latitude REAL NOT NULL,
+         * longitude REAL NOT NULL
+         * );
+         */
+        final String SQL_CREATE_LOCATION_TABLE =
+                "CREATE TABLE " + GamesContract.LocationEntry.TABLE_NAME + "(" +
+                        GamesContract.LocationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        GamesContract.LocationEntry.COLUMN_ADDRESS + " TEXT NOT NULL, " +
+                        GamesContract.LocationEntry.COLUMN_LATITUDE + " REAL NOT NULL, " +
+                        GamesContract.LocationEntry.COLUMN_LONGITUDE + " REAL NOT NULL " +
+                        ");";
+
         //PARTICIPATE TABLE
         /**
          * CREATE TABLE participate (
@@ -76,12 +93,13 @@ public class GamesDbHelper extends SQLiteOpenHelper {
          * sport_id INTEGER NOT NULL,
          * time TEXT NOT NULL,
          * date TEXT NOT NULL,
-         * location TEXT NOT NULL,
+         * location_id INTEGER NOT NULL,
          * description TEXT NOT NULL,
          * people_needed INTEGER NOT NULL,
          * user_id INTEGER NOT NULL,
          * FOREIGN KEY (sport_id) REFERENCES sport(_id),
-         * FOREIGN KEY (user_id) REFERENCES user(_id)
+         * FOREIGN KEY (user_id) REFERENCES user(_id),
+         * FOREIGN KEY (location_id) REFERENCES location(_id)
          * );
          */
         final String SQL_CREATE_GAME_TABLE =
@@ -91,18 +109,20 @@ public class GamesDbHelper extends SQLiteOpenHelper {
                         GamesContract.GameEntry.COLUMN_SPORT_ID + " INTEGER NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_TIME + " TEXT NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_DATE + " TEXT NOT NULL, " +
-                        GamesContract.GameEntry.COLUMN_LOCATION + " TEXT NOT NULL, " +
+                        GamesContract.GameEntry.COLUMN_LOCATION_ID + " INTEGER NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED + " INTEGER NOT NULL, " +
                         GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " INTEGER NOT NULL, " +
                         "FOREIGN KEY (" + GamesContract.GameEntry.COLUMN_SPORT_ID + ") " +
-                        "REFERENCES " + GamesContract.SportEntry.TABLE_NAME + "(" + GamesContract.SportEntry._ID + ")," +
+                            "REFERENCES " + GamesContract.SportEntry.TABLE_NAME + "(" + GamesContract.SportEntry._ID + ")," +
                         "FOREIGN KEY (" + GamesContract.GameEntry.COLUMN_ORGANIZER_ID + ") " +
-                        "REFERENCES " + GamesContract.UserEntry.TABLE_NAME + "(" + GamesContract.UserEntry._ID + ")" +
+                            "REFERENCES " + GamesContract.UserEntry.TABLE_NAME + "(" + GamesContract.UserEntry._ID + ")," +
+                        "FOREIGN KEY (" + GamesContract.GameEntry.COLUMN_LOCATION_ID + ") " +
+                            "REFERENCES " + GamesContract.LocationEntry.TABLE_NAME + "(" + GamesContract.LocationEntry._ID + ")" +
                         ");";
 
         //Create tables in sqlite
-
+        sqLiteDatabase.execSQL(SQL_CREATE_LOCATION_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_SPORT_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_TABLE);
@@ -115,6 +135,7 @@ public class GamesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.GameEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.UserEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.SportEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GamesContract.LocationEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

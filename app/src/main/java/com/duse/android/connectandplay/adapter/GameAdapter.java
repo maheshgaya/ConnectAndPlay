@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.activity.DetailActivity;
 import com.duse.android.connectandplay.data.GamesContract;
@@ -39,15 +40,15 @@ public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolde
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
         final int position = cursor.getPosition() + 1;
-        final long gameId = cursor.getLong(BasketballFragment.COLUMN_GAME_ID);
-        String title = cursor.getString(BasketballFragment.COLUMN_GAME_NAME);
+        final long gameId = cursor.getLong(Constant.COLUMN_GAME_ID);
+        String title = cursor.getString(Constant.COLUMN_GAME_NAME);
         viewHolder.titleTextView.setText(title);
 
-        String dateTime  = cursor.getString(BasketballFragment.COLUMN_DATE) + " | " +
-                cursor.getString(BasketballFragment.COLUMN_TIME);
+        String dateTime  = cursor.getString(Constant.COLUMN_DATE) + " | " +
+                cursor.getString(Constant.COLUMN_TIME);
         viewHolder.dateTimeTextView.setText(dateTime);
 
-        String location = cursor.getString(BasketballFragment.COLUMN_LOCATION);
+        String location = cursor.getString(Constant.COLUMN_ADDRESS);
         viewHolder.locationTextView.setText(location);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

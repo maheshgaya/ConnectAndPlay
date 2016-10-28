@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="icon_authors">
+        <![CDATA[
+        <p>
+<a href=\"http://www.flaticon.com/free-icon/volleyball_184042\">Volleyball</a> - <a href=\"http://www.flaticon.com/authors/Freepik\">Freepik</a><br>
+<a href=\"http://www.flaticon.com/free-icon/basketball_140378\">Basketball</a> - <a href=\"http://www.flaticon.com/authors/madebyoliver\">madebyoliver</a><br>
+<a href=\"http://www.flaticon.com/free-icon/american-football_140333\">Football</a> - <a href=\"http://www.flaticon.com/authors/madebyoliver\">madebyoliver</a><br>
+<a href=\"http://www.flaticon.com/free-icon/soccer_140389\">Soccer</a> - <a href=\"http://www.flaticon.com/authors/madebyoliver\">madebyoliver</a><br>
+<a href=\"http://www.flaticon.com/free-icon/tennis_140341\">Tennis</a> - <a href=\"http://www.flaticon.com/authors/madebyoliver\">madebyoliver</a><br>
+        <p>]]>
+    </string>
+</resources>

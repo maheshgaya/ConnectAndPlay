@@ -44,38 +44,42 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        String gamesJson;
-        String sportJson;
-        String usersJson;
-
         try{
             //for games
-            InputStream inputStream = getContext().getAssets().open("games.json");
+            InputStream inputStream = getContext().getAssets().open(Constant.GAME_JSON);
             int size = inputStream.available();
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            gamesJson = new String(buffer, "UTF-8");
+            String gamesJson = new String(buffer, "UTF-8");
 
-            inputStream = getContext().getAssets().open("sports.json");
+            inputStream = getContext().getAssets().open(Constant.SPORT_JSON);
             size = inputStream.available();
             buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            sportJson = new String(buffer, "UTF-8");
+            String sportJson = new String(buffer, "UTF-8");
 
-            inputStream = getContext().getAssets().open("users.json");
+            inputStream = getContext().getAssets().open(Constant.USER_JSON);
             size = inputStream.available();
             buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            usersJson = new String(buffer, "UTF-8");
+            String usersJson = new String(buffer, "UTF-8");
+
+            inputStream = getContext().getAssets().open(Constant.LOCATION_JSON);
+            size = inputStream.available();
+            buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            String locationJson = new String(buffer, "UTF-8");
 
             try {
                 readSportsJson(sportJson);
                 readUsersJson(usersJson);
                 readGamesJson(gamesJson);
-                Log.d(TAG, "doInBackground: Wow, this is done correctly!");
+                readLocationJson(locationJson);
+                Log.d(TAG, "onPerformSync: Wow, this is done correctly!");
             }catch (JSONException e){
                 e.printStackTrace();
                 return;
@@ -234,14 +238,18 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
 
         return userId;
     }
-    private long addGame(String gameName, String sport, String time, String date, String location, String description, int peopleNeeded, String organizer){
+    //gameName, sport, time, date, location, description, peopleNeeded, organizer
+    private long addGame(String gameName, String sport, String time, String date,
+                         String location, String description, int peopleNeeded,
+                         String organizer){
         long gameId = -1;
         long sportId = -1;
         long userId = -1;
+        long locationId = -1;
 
         // /check if game already exists, use different parameters, else add it to db
 
-        //User and sport should always be there, if not cannot add to database
+        //User, sport and location should always be there, if not cannot add to database
         Cursor sportCursor = getContext().getContentResolver().query(
                 GamesContract.SportEntry.CONTENT_URI,
                 new String[]{GamesContract.SportEntry._ID},
@@ -258,6 +266,14 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
                 null
         );
 
+        Cursor locationCursor = getContext().getContentResolver().query(
+                GamesContract.LocationEntry.CONTENT_URI,
+                new String[]{GamesContract.LocationEntry._ID},
+                GamesContract.LocationEntry.COLUMN_ADDRESS + " = ? ",
+                new String[]{location},
+                null
+        );
+
         if (sportCursor.moveToFirst()){
             int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
             sportId = sportCursor.getLong(sportIndex);
@@ -266,48 +282,56 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             int userIndex = userCursor.getColumnIndex(GamesContract.UserEntry._ID);
             userId = userCursor.getLong(userIndex);
         }
+        if (locationCursor.moveToFirst()) {
+            int locationIndex = locationCursor.getColumnIndex(GamesContract.LocationEntry._ID);
+            locationId = locationCursor.getLong(locationIndex);
+        }
 
-        if (userCursor.getCount() > 0 && sportCursor.getCount() > 0) {
-            Cursor gameCursor = getContext().getContentResolver().query(
-                    GamesContract.GameEntry.CONTENT_URI,
-                    new String[]{GamesContract.GameEntry._ID},
-                    GamesContract.GameEntry.COLUMN_GAME_NAME + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_SPORT_ID + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_LOCATION + " = ? AND " +
-                            GamesContract.GameEntry.COLUMN_DATE + " = ? ",
-                    new String[]{gameName, Long.toString(sportId), Long.toString(userId), location, date},
-                    null
-            );
-            try {
-                if (gameCursor.moveToFirst()){
-                    //if record exists, return that record
-                    int gameIndex = gameCursor.getColumnIndex(GamesContract.GameEntry._ID);
-                    gameId = gameCursor.getLong(gameIndex);
-                } else {
-                    //Create contentValue to hold the data
-                    ContentValues gameValues = new ContentValues();
-                    gameValues.put(GamesContract.GameEntry.COLUMN_GAME_NAME, gameName);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_SPORT_ID, sportId);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_ORGANIZER_ID, userId);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_TIME, time);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_DATE, date);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_LOCATION, location);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_SHORT_DESC, description);
-                    gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, peopleNeeded);
+        try {
+            if (userCursor.getCount() > 0 && sportCursor.getCount() > 0 && locationCursor.getCount() > 0) {
+                Cursor gameCursor = getContext().getContentResolver().query(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        new String[]{GamesContract.GameEntry._ID},
+                        GamesContract.GameEntry.COLUMN_GAME_NAME + " = ? AND " +
+                                GamesContract.GameEntry.COLUMN_SPORT_ID + " = ? AND " +
+                                GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? AND " +
+                                GamesContract.GameEntry.COLUMN_LOCATION_ID + " = ? AND " +
+                                GamesContract.GameEntry.COLUMN_DATE + " = ? ",
+                        new String[]{gameName, Long.toString(sportId), Long.toString(userId), Long.toString(locationId), date},
+                        null
+                );
+                try {
+                    if (gameCursor.moveToFirst()) {
+                        //if record exists, return that record
+                        int gameIndex = gameCursor.getColumnIndex(GamesContract.GameEntry._ID);
+                        gameId = gameCursor.getLong(gameIndex);
+                    } else {
+                        //Create contentValue to hold the data
+                        ContentValues gameValues = new ContentValues();
+                        gameValues.put(GamesContract.GameEntry.COLUMN_GAME_NAME, gameName);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_SPORT_ID, sportId);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_ORGANIZER_ID, userId);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_TIME, time);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_DATE, date);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_LOCATION_ID, locationId);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_SHORT_DESC, description);
+                        gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, peopleNeeded);
 
-                    //insert the record into database
-                    Uri insertUri = getContext().getContentResolver().insert(
-                            GamesContract.GameEntry.CONTENT_URI,
-                            gameValues
-                    );
-                    gameId = ContentUris.parseId(insertUri);
+                        //insert the record into database
+                        Uri insertUri = getContext().getContentResolver().insert(
+                                GamesContract.GameEntry.CONTENT_URI,
+                                gameValues
+                        );
+                        gameId = ContentUris.parseId(insertUri);
+                    }
+                } finally {
+                    gameCursor.close();
                 }
-            }finally {
-                userCursor.close();
-                sportCursor.close();
-                gameCursor.close();
             }
+        } finally {
+            userCursor.close();
+            sportCursor.close();
+            locationCursor.close();
         }
         return gameId;
     }
@@ -339,11 +363,48 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
                 );
                 sportId = ContentUris.parseId(insertUri);
             }
-        }finally {
+        } finally {
             sportCursor.close();
         }
 
         return sportId;
+    }
+
+    private long addLocation(String address, double latitude, double longitude){
+        long locationId;
+        //check if location already exists, else add it to db
+        Cursor locationCursor = getContext().getContentResolver().query(
+                GamesContract.LocationEntry.CONTENT_URI,
+                new String[]{GamesContract.LocationEntry._ID},
+                GamesContract.LocationEntry.COLUMN_LATITUDE + " = ? AND " +
+                        GamesContract.LocationEntry.COLUMN_LONGITUDE + " = ? ",
+                new String[]{Double.toString(latitude), Double.toString(longitude)},
+                null
+        );
+
+        try{
+            if (locationCursor.moveToFirst()){
+                //if record exists, return that record
+                int locationIndex = locationCursor.getColumnIndex(GamesContract.SportEntry._ID);
+                locationId = locationCursor.getLong(locationIndex);
+            } else {
+                //Create contentValue to hold the data
+                ContentValues locationValues = new ContentValues();
+                //insert the record into database
+                locationValues.put(GamesContract.LocationEntry.COLUMN_ADDRESS, address);
+                locationValues.put(GamesContract.LocationEntry.COLUMN_LATITUDE, latitude);
+                locationValues.put(GamesContract.LocationEntry.COLUMN_LONGITUDE, longitude);
+
+                Uri insertUri = getContext().getContentResolver().insert(
+                        GamesContract.LocationEntry.CONTENT_URI,
+                        locationValues
+                );
+                locationId = ContentUris.parseId(insertUri);
+            }
+        } finally {
+            locationCursor.close();
+        }
+        return  locationId;
     }
 
     /**************************
@@ -379,6 +440,21 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             String sportName = sportObject.getString(Constant.SPORT_NAME);
 
             addSport(sportName); //add to db
+        }
+    }
+
+    private void readLocationJson(String locationJson)
+        throws JSONException{
+        //read the json from the buffer
+        JSONObject locationsJsonObject = new JSONObject(locationJson);
+        JSONArray locationsJsonArray = locationsJsonObject.getJSONArray(Constant.LOCATION_ARRAY);
+
+        for (int i = 0; i < locationsJsonArray.length(); i++){
+            JSONObject locationObject = locationsJsonArray.getJSONObject(i);
+            String address = locationObject.getString(Constant.LOCATION_ADDRESS);
+            Double latitude = locationObject.getDouble(Constant.LOCATION_LATITUDE);
+            Double longitude = locationObject.getDouble(Constant.LOCATION_LONGITUDE);
+            addLocation(address, latitude, longitude); //add to db
         }
     }
 

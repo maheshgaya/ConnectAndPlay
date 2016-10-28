@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorIndigo50">#e8eaf6</color>
+
+    <color name="colorDetailTitle">@color/colorIndigo50</color>
 
     <color name="color_bottom_sheet">@color/colorWhite</color>
 </resources>

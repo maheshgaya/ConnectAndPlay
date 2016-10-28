@@ -19,16 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/fragment_maps"/>
     <!-- Bottom Sheet Layout: Explore Games -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_more_vert"/>
-    <RelativeLayout
+
+    <!--RelativeLayout
         android:id="@+id/layout_explore_bottom_sheet"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -49,6 +45,6 @@
             android:textSize="@dimen/explore_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>
