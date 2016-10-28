@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -83,8 +85,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //check if user comes from a detail mapview
-        Intent mapIntent = getIntent();
-
         if (getIntent().getExtras() != null) {
             mLatitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LATITIUDE);
             mLongitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LONGITUDE);
@@ -129,6 +129,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                //open Detail Activity
+                Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+                detailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                detailIntent.setData(Uri.parse(marker.getTag().toString()));
+                getApplicationContext().startActivity(detailIntent);
+                return true;
+            }
+        });
+
         //Get markers
         getSupportLoaderManager().restartLoader(GAME_BASKETBALL_LOADER, null, this);
         getSupportLoaderManager().restartLoader(GAME_FOOTBALL_LOADER, null, this);
@@ -140,9 +152,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             setCameraPosition(mLatitudeArgs, mLongitudeArgs);
         }
 
+    }
 
 
+    /**
+     * Inflates menus for this class
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.map_menu, menu);
+        return true;
+    }
 
+    /**
+     * Adds logic to the menus for this class
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.pref_general.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_saved_games) {
+            Intent intent = new Intent(this, YourGamesActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_profile){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -229,7 +275,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param title
      * @param organizer
      */
-    public void addMarker(double latitude, double longitude, String title, String organizer, int color){
+    public void addMarker(double latitude, double longitude, String title, String organizer, int color, final Uri uri){
         Float bitMapColor;
         switch (color){
             case GAME_BASKETBALL_LOADER:{
@@ -263,7 +309,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .title(title)
                 .snippet("Organized by " + organizer)
                 .icon(BitmapDescriptorFactory.defaultMarker(bitMapColor)))
-                .setTag(0);
+                .setTag(uri);
+
     }
 
 
@@ -427,7 +474,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
                     String title = data.getString(Constant.COLUMN_GAME_NAME);
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
-                    addMarker(latitude, longitude, title, organizer, GAME_BASKETBALL_LOADER);
+
+                    //get gameId also to set tag
+                    long gameId = data.getLong(Constant.COLUMN_GAME_ID);
+                    Uri gameUri = GamesContract.GameEntry.buildGameUri(gameId);
+
+                    addMarker(latitude, longitude, title, organizer, GAME_BASKETBALL_LOADER, gameUri);
                 }
                 break;
             }
@@ -438,7 +490,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
                     String title = data.getString(Constant.COLUMN_GAME_NAME);
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
-                    addMarker(latitude, longitude, title, organizer, GAME_FOOTBALL_LOADER);
+
+                    //get gameId also to set tag
+                    long gameId = data.getLong(Constant.COLUMN_GAME_ID);
+                    Uri gameUri = GamesContract.GameEntry.buildGameUri(gameId);
+                    addMarker(latitude, longitude, title, organizer, GAME_FOOTBALL_LOADER, gameUri);
                 }
                 break;
             }
@@ -449,7 +505,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
                     String title = data.getString(Constant.COLUMN_GAME_NAME);
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
-                    addMarker(latitude, longitude, title, organizer, GAME_SOCCER_LOADER);
+
+                    //get gameId also to set tag
+                    long gameId = data.getLong(Constant.COLUMN_GAME_ID);
+                    Uri gameUri = GamesContract.GameEntry.buildGameUri(gameId);
+                    addMarker(latitude, longitude, title, organizer, GAME_SOCCER_LOADER, gameUri);
                 }
                 break;
             }
@@ -460,7 +520,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
                     String title = data.getString(Constant.COLUMN_GAME_NAME);
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
-                    addMarker(latitude, longitude, title, organizer, GAME_TENNIS_LOADER);
+
+                    //get gameId also to set tag
+                    long gameId = data.getLong(Constant.COLUMN_GAME_ID);
+                    Uri gameUri = GamesContract.GameEntry.buildGameUri(gameId);
+                    addMarker(latitude, longitude, title, organizer, GAME_TENNIS_LOADER, gameUri);
                 }
                 break;
             }
@@ -471,7 +535,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = data.getDouble(Constant.COLUMN_LONGITUDE);
                     String title = data.getString(Constant.COLUMN_GAME_NAME);
                     String organizer = data.getString(Constant.COLUMN_USERNAME);
-                    addMarker(latitude, longitude, title, organizer, GAME_VOLLEYBALL_LOADER);
+
+                    //get gameId also to set tag
+                    long gameId = data.getLong(Constant.COLUMN_GAME_ID);
+                    Uri gameUri = GamesContract.GameEntry.buildGameUri(gameId);
+                    addMarker(latitude, longitude, title, organizer, GAME_VOLLEYBALL_LOADER, gameUri);
                 }
                 break;
             }
