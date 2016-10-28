@@ -96,6 +96,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ExploreGamesActivity" />
+            <uses-permission android:name="android.permission.SELECT_FILE"/>
+            <uses-permission android:name="android.permission.REQUEST_CAMERA"/>
+
         </activity>
 
         <!-- queries the SQLite database -->
