@@ -89,6 +89,14 @@
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
 
+        <activity android:name=".activity.AboutActivity"
+            android:label="@string/about_label"
+            android:theme="@style/AppActionBarTheme"
+            android:parentActivityName=".activity.ExploreGamesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.ExploreGamesActivity" />
+        </activity>
 
         <!-- queries the SQLite database -->
         <provider
