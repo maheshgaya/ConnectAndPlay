@@ -132,7 +132,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void cameraIntent()
     {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        startActivityForResult(intent,REQUEST_CAMERA);
     }
     public class Utility {
         public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -143,8 +143,8 @@ public class ProfileActivity extends AppCompatActivity {
             int currentAPIVersion = Build.VERSION.SDK_INT;
             if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
             {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
                         alertBuilder.setCancelable(true);
                         alertBuilder.setTitle("Permission necessary");
@@ -152,13 +152,13 @@ public class ProfileActivity extends AppCompatActivity {
                         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                             }
                         });
                         AlertDialog alert = alertBuilder.create();
                         alert.show();
                     } else {
-                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        ActivityCompat.requestPermissions((Activity) context, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                     }
                     return false;
                 } else {
