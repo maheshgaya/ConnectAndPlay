@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-
+    <!-- Theme without toolbar -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -9,6 +9,7 @@
         <item name="android:textColorPrimary">@color/colorWhite</item>
     </style>
 
+    <!-- Theme with toolbar -->
     <style name="AppActionBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

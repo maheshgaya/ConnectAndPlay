@@ -1,0 +1,71 @@
+{
+	"locations":[
+		{
+			"Address": "3410 South 22nd Street, West Des Moines, IA, 50265",
+			"Latitude": 41.5206186,
+			"Longitude": -93.737937
+		},
+		{
+			"Address": "2600 Hartford Avenue, Des Moines, IA, 50320",
+			"Latitude": 41.5643039,
+			"Longitude": -93.5691752
+		},
+		{
+			"Address": "6226 Grand Avenue, Des Moines, IA, 50312",
+			"Latitude": 41.579612,
+			"Longitude": -93.7040817
+		},
+		{
+			"Address": "6095 NE Industry Dr, Des Moines, IA, 50313",
+			"Latitude":41.6713877,
+			"Longitude": -93.5961213
+		},
+		{
+			"Address": "720 East 19th Street, Des Moines, IA, 50316",
+			"Latitude": 41.5970977,
+			"Longitude": -93.5871307
+		},
+		{
+			"Address": "4822 Observatory Road, Des Moines, IA, 50311",
+			"Latitude": 41.5952291,
+			"Longitude": -93.6853571
+		},
+		{
+			"Address": "2099 49th Street, Des Moines, Iowa, 50310",
+			"Latitude": 41.6127999,
+			"Longitude": -93.6872851
+		},
+		{
+			"Address": "1631 37th Street, Des Moines, IA, 50310",
+			"Latitude": 41.6076962,
+			"Longitude": -93.669134
+		},
+		{
+			"Address": "2358 Drake Park Avenue, Des Moines, IA, 50311",
+			"Latitude": 41.598076,
+			"Longitude": -93.6512681
+		},
+		{
+			"Address": "1591 East University Avenue, Des Moines, IA, 50316",
+			"Latitude": 41.600224,
+			"Longitude": -93.5973007
+		},
+		{
+			"Address": "10930 Hickman Rd, Des Moines, IA, 50325",
+			"Latitude": 41.6136559,
+			"Longitude": -93.7699895
+		},
+		{
+			"Address": "601 East University Avenue, Des Moines, IA, 50316",
+			"Latitude": 41.6003733,
+			"Longitude": -93.6141519
+		},
+		{
+			"Address": "4600 Park Avenue, Des Moines, IA, 50321",
+			"Latitude": 41.5542477,
+			"Longitude": -93.6827073
+		}
+	]
+}
+
+
