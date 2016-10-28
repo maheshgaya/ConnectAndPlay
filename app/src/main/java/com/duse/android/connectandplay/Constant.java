@@ -96,7 +96,14 @@ public class Constant {
     public static final int COLUMN_PARTICIPATE_ID = 0;
     public static final int COLUMN_PARTICIPATE_GAME_ID = 1;
 
+    //Sport projection
+    public static final String[] SPORT_PROJECTION = {
+            GamesContract.SportEntry._ID,
+            GamesContract.SportEntry.COLUMN_SPORT_NAME
+    };
 
+    public static final int COLUMN_SPORT_ID = 0;
+    public static final int COLUMN_SPORTNAME = 1;
 
     //For colors
     public static final int GAME_BASKETBALL_COLOR = 0;

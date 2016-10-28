@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -38,7 +38,8 @@
 
         <!-- shows all the games, categorized by sport -->
         <activity android:name=".activity.ExploreGamesActivity"
-            android:label="@string/app_name">
+            android:label=""
+            android:icon="@drawable/ic_actionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -88,11 +89,6 @@
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
         
-
-        <!-- gets the latitude and logitude from the physical address -->
-        <service
-            android:name=".service.FetchAddressIntentService"
-            android:exported="false"/>
 
         <!-- queries the SQLite database -->
         <provider

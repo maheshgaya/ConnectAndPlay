@@ -15,6 +15,7 @@
             android:id="@+id/empty_game_recycleview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="@dimen/card_padding"
             android:gravity="center"
             android:visibility="gone"
             android:text="@string/no_hosted_game_available" />

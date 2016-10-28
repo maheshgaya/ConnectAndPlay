@@ -579,6 +579,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 break;
             }
             case PARTICIPATE_LOADER:{
+                //if there are id in table
                 if (data.getCount() > 0 && data.moveToFirst()){
                     //Allow to remove Participation
                     mParticipateButton.setText(mParticipatingStr);

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-
+    <!-- Theme without toolbar -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -9,10 +9,21 @@
         <item name="android:textColorPrimary">@color/colorWhite</item>
     </style>
 
+    <!-- Theme with toolbar -->
     <style name="AppActionBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!-- Main Activity Action Bar with Logo -->
+    <style name="ExploreGameTheme" parent="AppTheme">
+        <item name="actionBarStyle">@style/ActionBar.Solid.Games</item>
+    </style>
+    <!-- Toolbar with icon -->
+    <style name="ActionBar.Solid.Games" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_actionbar</item>
+    </style>
 </resources>

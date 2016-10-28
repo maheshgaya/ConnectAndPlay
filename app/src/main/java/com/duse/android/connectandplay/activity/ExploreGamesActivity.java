@@ -50,6 +50,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
 
     //Binding drawables
     @BindDrawable(R.drawable.ic_close) Drawable closeIcon;
+    @BindDrawable(R.drawable.ic_actionbar)Drawable logo;
 
     //Binding strings
     @BindString(R.string.basketball_label) String basketballLabel;
@@ -72,7 +73,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
 
         //creates the toolbar
         setSupportActionBar(mToolbar);
-
+        getSupportActionBar().setLogo(logo);
         //handles tabs and fragments
         setupViewPage(mViewPager);
 
@@ -80,8 +81,8 @@ public class ExploreGamesActivity extends AppCompatActivity{
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: replace this with CreateGameActivity
-                Toast.makeText(getApplicationContext(), "Fab is tapped", Toast.LENGTH_SHORT).show();
+                Intent createGameIntent = new Intent(getApplicationContext(), CreateGameActivity.class);
+                startActivity(createGameIntent);
             }
         });
 

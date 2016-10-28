@@ -30,7 +30,6 @@ import com.duse.android.connectandplay.PermissionUtils;
 import com.duse.android.connectandplay.R;
 
 import com.duse.android.connectandplay.data.GamesContract;
-import com.duse.android.connectandplay.service.FetchAddressIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -85,10 +84,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         //check if user comes from a detail mapview
         Intent mapIntent = getIntent();
-        if (getIntent() != null) {
+
+        if (getIntent().getExtras() != null) {
             mLatitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LATITIUDE);
             mLongitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LONGITUDE);
         }
+
 
 
 
