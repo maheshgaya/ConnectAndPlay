@@ -36,29 +36,17 @@
                 android:layout_centerVertical="true" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Sport -->
-        <TextView
-            android:text="@string/game_sport_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <Spinner
-            android:id="@+id/create_game_sport_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <!-- Date -->
+        <!-- description -->
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/game_date_text_input_layout"
+            android:id="@+id/game_description_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
-                tools:text="Date"
+                tools:text="Description"
                 android:textColor="@android:color/black"
-                android:hint="@string/game_date_hint"
-                android:id="@+id/create_game_date_edit_text"
-                android:inputType="date"
-                android:lines="1"
+                android:hint="@string/game_description_hint"
+                android:id="@+id/create_game_description_edit_text"
+                android:inputType="textMultiLine"
                 android:ems="10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,27 +54,54 @@
                 android:layout_centerVertical="true" />
         </android.support.design.widget.TextInputLayout>
 
-
-
-
-        <!-- Time -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/game_time_text_input_layout"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
-                tools:text="Time"
-                android:textColor="@android:color/black"
-                android:hint="@string/game_time_hint"
-                android:id="@+id/create_game_time_edit_text"
-                android:inputType="date"
-                android:lines="1"
-                android:ems="10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
-        </android.support.design.widget.TextInputLayout>
+            <!-- Date -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/game_date_text_input_layout"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    tools:text="Date"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/game_date_hint"
+                    android:id="@+id/create_game_date_edit_text"
+                    android:inputType="date"
+                    android:lines="1"
+                    android:ems="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- Time -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/game_time_text_input_layout"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    tools:text="Time"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/game_time_hint"
+                    android:id="@+id/create_game_time_edit_text"
+                    android:inputType="date"
+                    android:lines="1"
+                    android:ems="10"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
 
         <!-- location -->
         <android.support.design.widget.TextInputLayout
@@ -106,41 +121,49 @@
                 android:layout_centerVertical="true" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- description -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/game_description_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                tools:text="Description"
-                android:textColor="@android:color/black"
-                android:hint="@string/game_description_hint"
-                android:id="@+id/create_game_description_edit_text"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
-        </android.support.design.widget.TextInputLayout>
 
-        <!-- people needed -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/game_people_needed_text_input_layout"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
-                tools:text="People Needed"
-                android:textColor="@android:color/black"
-                android:hint="@string/game_people_needed_hint"
-                android:id="@+id/create_game_people_needed_edit_text"
-                android:inputType="number"
-                android:ems="10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
-        </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <!-- Sport -->
+                <TextView
+                    android:text="@string/game_sport_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/create_game_sport_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <!-- people needed -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/game_people_needed_text_input_layout"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    tools:text="People Needed"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/game_people_needed_hint"
+                    android:id="@+id/create_game_people_needed_edit_text"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

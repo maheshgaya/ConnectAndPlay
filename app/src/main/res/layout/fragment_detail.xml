@@ -64,6 +64,7 @@
                 android:paddingTop="@dimen/card_padding"
                 android:paddingBottom="@dimen/card_padding"
                 android:textColor="@android:color/black"
+                android:textSize="@dimen/game_detail_desc_text_size"
                 android:id="@+id/game_desc_text_view"
                 tools:text="We are organizing a fun soccer game at the Drake Stadium. You are all invited to participate. You are also allowed to bring a friend"
                 android:layout_width="match_parent"

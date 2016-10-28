@@ -402,7 +402,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
 
-        } else {
+        } else if (peopleNeeded >= 0 && mParticipateButton.getText().equals(mParticipatingStr)){
+            mParticipateButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT < 23){
+                mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            } else {
+                mParticipateButton.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+                mPeopleNeededTextView.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            }
+        } else if (peopleNeeded >= 0 && mParticipateButton.getText().equals(mParticipateStr)){
             mParticipateButton.setEnabled(true);
             if (Build.VERSION.SDK_INT < 23){
                 mParticipateButton.setTextColor(getResources().getColor(android.R.color.black));
