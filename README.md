@@ -4,7 +4,7 @@ code name: Connect&Play
 This app allows users to connect and team up with other players to play sport games.
 
 ## Disclaimer
-- Sport icons obtained from [Icons8](https://icons8.com/web-app/new-icons/all)
+- Sport icons obtained from [Flaticon](http://www.flaticon.com/)
 - Material icons from [Google](https://design.google.com/icons/)
 
 ## Using the Source Code in Android Studio
