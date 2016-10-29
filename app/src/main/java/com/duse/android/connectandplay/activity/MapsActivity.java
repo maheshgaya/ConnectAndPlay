@@ -275,7 +275,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param title
      * @param organizer
      */
-    public void addMarker(double latitude, double longitude, String title, String organizer, int color, final Uri uri){
+    public void addMarker(double latitude, double longitude, String title, String organizer, int color, Uri uri){
         Float bitMapColor;
         switch (color){
             case GAME_BASKETBALL_LOADER:{
