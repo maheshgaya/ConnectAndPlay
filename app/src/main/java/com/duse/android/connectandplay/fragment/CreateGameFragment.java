@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,11 @@ import android.widget.Toast;
 
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 
 import java.sql.Time;
@@ -43,11 +49,11 @@ import butterknife.ButterKnife;
  */
 
 public class CreateGameFragment extends Fragment {
+    private static final String TAG = CreateGameFragment.class.getSimpleName();
     //Spinner
     @BindView(R.id.create_game_sport_spinner)Spinner mSportSpinner;
     //Autocomplete Location
-    @BindView(R.id.create_game_location_autocomplete_text)AutoCompleteTextView mLocationAutoCompleteTextView;
-
+    SupportPlaceAutocompleteFragment autocompleteFragment;
     //TextInputLayout
     @BindView(R.id.game_title_text_input_layout)TextInputLayout mTitleInputLayout;
     @BindView(R.id.game_description_text_input_layout)TextInputLayout mDescriptionInputLayout;
@@ -59,9 +65,19 @@ public class CreateGameFragment extends Fragment {
     @BindString(R.string.error_message_required_field)String mRequiredFieldErrorMessage;
     @BindString(R.string.error_message_more_descriptive)String mMoreDescriptiveErrorMessage;
     @BindString(R.string.error_message_people_needed)String mPeopleNeededErrorMessage;
+    @BindString(R.string.game_location_hint)String mLocationHint;
 
-    public String mTime;
-    public String mDate;
+    private String mTitle;
+    private String mDescription;
+    private double mLatitude;
+    private double mLongitude;
+    private int mPeopleNeeded;
+    private String mSport;
+    private String mLocation;
+    private String mTime;
+    private String mDate;
+
+
 
     public CreateGameFragment(){
         //required default constructor
@@ -74,12 +90,26 @@ public class CreateGameFragment extends Fragment {
 
     }
 
+    public long addGameToDB(){
+        long gameId = 0;
+        //TODO check if current user exists
+        //TODO get sport id
+        //TODO check if location already exists if not create a new record in location
+        //TODO add to games
+
+        return gameId;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_create_game, container, false);
         //initialize the views
         ButterKnife.bind(this, rootView);
+
+        autocompleteFragment = (SupportPlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setHint(mLocationHint);
 
         //Initialize the spinner
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -94,7 +124,7 @@ public class CreateGameFragment extends Fragment {
         mSportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), mSportSpinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                mSport = mSportSpinner.getSelectedItem().toString();
             }
 
             @Override
@@ -106,10 +136,14 @@ public class CreateGameFragment extends Fragment {
         Calendar calender = Calendar.getInstance();
         int[] dateInt = currentDateTime();
         String[] date = Utility.normalizeDate(dateInt[0], dateInt[1], dateInt[2]);
-        mDateButton.setText(date[0] + " " + date[1] + "," + date[2]);
+        String dateStr = date[0] + " " + date[1] + "," + date[2];
+        mDateButton.setText(dateStr);
+        mDate = dateStr;
 
         String[] time = Utility.normalizeTime(dateInt[3], dateInt[4]);
-        mTimeButton.setText(time[0] + ":" + time[1] + " " + time[2]);
+        String timeStr = time[0] + ":" + time[1] + " " + time[2];
+        mTimeButton.setText(timeStr);
+        mTime = timeStr;
 
 
         return rootView;
@@ -134,6 +168,7 @@ public class CreateGameFragment extends Fragment {
     }
 
     private void setupPeopleNeeded() {
+        mPeopleNeededInputLayout.getEditText().setText("0");
         mPeopleNeededInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence text, int start, int count, int after) {
@@ -148,6 +183,9 @@ public class CreateGameFragment extends Fragment {
                 } else {
                     mPeopleNeededInputLayout.setErrorEnabled(false);
                 }
+                if (text.length() != 0) {
+                    mPeopleNeeded = Integer.parseInt(text.toString());
+                }
 
             }
 
@@ -158,21 +196,22 @@ public class CreateGameFragment extends Fragment {
         });
     }
 
+
     private void setupLocation() {
-        mLocationAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
-
+            public void onPlaceSelected(Place place) {
+                // Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getAddress());
+                mLocation = place.getAddress().toString();
+                mLatitude = place.getLatLng().latitude;
+                mLongitude = place.getLatLng().longitude;
             }
 
             @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
             }
         });
     }
@@ -214,6 +253,7 @@ public class CreateGameFragment extends Fragment {
                 } else {
                     mDescriptionInputLayout.setErrorEnabled(false);
                 }
+                mDescription = text.toString();
             }
 
             @Override
@@ -243,10 +283,11 @@ public class CreateGameFragment extends Fragment {
                 } else {
                     mTitleInputLayout.setErrorEnabled(false);
                 }
+                mTitle = text.toString();
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable editable) {
 
             }
         });
@@ -273,6 +314,9 @@ public class CreateGameFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_create_game) {
             //TODO create a new record
+            Log.d(TAG, mTitle + "; " + mDescription + "; " + mDate + "; " + mTime + "; " +
+                    mLocation + "; " + mLatitude + "; " + mLongitude + "; " + mSport + "; " +
+                    mPeopleNeeded);
             Toast.makeText(getContext(), "Game Created", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -325,7 +369,9 @@ public class CreateGameFragment extends Fragment {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             String[] time = Utility.normalizeTime(hourOfDay, minute);
-            mTimeButton.setText(time[0] + ":" + time[1] + " " + time[2]);
+            String timeStr = time[0] + ":" + time[1] + " " + time[2];
+            mTimeButton.setText(timeStr);
+            mTime = timeStr;
         }
     };
 
@@ -381,8 +427,9 @@ public class CreateGameFragment extends Fragment {
                               int dayOfMonth) {
 
             String[] date = Utility.normalizeDate(monthOfYear, dayOfMonth, year);
-            mDateButton.setText(date[0] + " " + date[1]
-                    + "," + date[2]);
+            String dateStr = date[0] + " " + date[1] + "," + date[2];
+            mDateButton.setText(dateStr);
+            mDate = dateStr;
         }
     };
 

@@ -89,7 +89,8 @@
     <string name="game_date_hint">Select Date</string>
     <string name="game_date">November 28, 2016</string>
     <string name="game_sport_hint">Sport</string>
-    <string name="game_location_hint">Location*</string>
+    <string name="game_location">Location*</string>
+    <string name="game_location_hint">Enter Location</string>
     <string name="game_description_hint">Description*</string>
     <string name="game_people_needed_hint">People Needed*</string>
     <string name="game_required_message">Fields with * are required</string>

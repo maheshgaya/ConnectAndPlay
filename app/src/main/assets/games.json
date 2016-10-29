@@ -5,7 +5,7 @@
       "Sport": "Soccer",
       "Time": "01:00 pm",
       "Date": "December 12, 2016",
-      "Location": "3410 South 22nd Street, West Des Moines, IA, 50265",
+      "Location": "3410 South 22nd Street, West Des Moines, IA, 50265, USA",
       "Short Description": "Indoor game",
       "Number of People Needed": 8,
       "Organizer": "izzy_hernandez90"
@@ -15,7 +15,7 @@
       "Sport": "Soccer",
       "Time": "02:00 pm",
       "Date": "December 20, 2016",
-      "Location": "6226 Grand Avenue, Des Moines, IA, 50312",
+      "Location": "6226 Grand Avenue, Des Moines, IA, 50312, USA",
       "Short Description": "Just want to practice scoring",
       "Number of People Needed": 6,
       "Organizer": "brian_clark97"
@@ -25,7 +25,7 @@
       "Sport": "Soccer",
       "Time": "11:00 am",
       "Date": "December 06, 2016",
-      "Location": "2600 Hartford Avenue, Des Moines, IA, 50320",
+      "Location": "2600 Hartford Avenue, Des Moines, IA, 50320, USA",
       "Short Description": "We need some people for a fun indoor game",
       "Number of People Needed": 13,
       "Organizer": "paul_moore87"
@@ -35,7 +35,7 @@
       "Sport": "Soccer",
       "Time": "05:30 pm",
       "Date": "December 28, 2016",
-      "Location": "6226 Grand Avenue, Des Moines, IA, 50312",
+      "Location": "6226 Grand Avenue, Des Moines, IA, 50312, USA",
       "Short Description": "Soccer is fun. Join us!",
       "Number of People Needed": 9,
       "Organizer": "izzy_hernandez90"
@@ -45,7 +45,7 @@
       "Sport": "Soccer",
       "Time": "10:00 am",
       "Date": "December 04, 2016",
-      "Location": "6226 Grand Avenue, Des Moines, IA, 50312",
+      "Location": "6226 Grand Avenue, Des Moines, IA, 50312, USA",
       "Short Description": "We are practicing some tricks. Join us if you\'re interested.",
       "Number of People Needed": 5,
       "Organizer": "brian_clark97"
@@ -55,7 +55,7 @@
       "Sport": "Basketball",
       "Time": "07:00 pm",
       "Date": "December 02, 2016",
-      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313",
+      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313, USA",
       "Short Description": "Recreation four on four game of basketball.",
       "Number of People Needed": 7,
       "Organizer": "jim_scott93"
@@ -65,7 +65,7 @@
       "Sport": "Basketball",
       "Time": "09:30 am",
       "Date": "December 09, 2016",
-      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313",
+      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313, USA",
       "Short Description": "Trying to improve in three pointers",
       "Number of People Needed": 5,
       "Organizer": "jim_scott93"
@@ -75,7 +75,7 @@
       "Sport": "Basketball",
       "Time": "05:30 pm",
       "Date": "December 09, 2016",
-      "Location": "720 East 19th Street, Des Moines, IA, 50316",
+      "Location": "720 East 19th Street, Des Moines, IA, 50316, USA",
       "Short Description": "Come and join us for a 5 vs 5 game.",
       "Number of People Needed": 9,
       "Organizer": "chris_lee89"
@@ -85,7 +85,7 @@
       "Sport": "Basketball",
       "Time": "05:30 pm",
       "Date": "December 19, 2016",
-      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313",
+      "Location": "6095 NE Industry Dr, Des Moines, IA, 50313, USA",
       "Short Description": "Some guys and I just want to play a game or two of pickup",
       "Number of People Needed": 0,
       "Organizer": "chris_lee89"
@@ -95,7 +95,7 @@
       "Sport": "Basketball",
       "Time": "09:45 am",
       "Date": "December 22, 2016",
-      "Location": "720 East 19th Street, Des Moines, IA, 50316",
+      "Location": "720 East 19th Street, Des Moines, IA, 50316, USA",
       "Short Description": "Come and play with our team.",
       "Number of People Needed": 4,
       "Organizer": "em_turner96"
@@ -105,7 +105,7 @@
       "Sport": "Tennis",
       "Time": "07:15 pm",
       "Date": "December 08, 2016",
-      "Location": "4822 Observatory Road, Des Moines, IA, 50311",
+      "Location": "4822 Observatory Road, Des Moines, IA, 50311, USA",
       "Short Description": "Non-competitive 1 on 1 play.",
       "Number of People Needed": 1,
       "Organizer": "maggie_brown95"
@@ -115,7 +115,7 @@
       "Sport": "Tennis",
       "Time": "07:15 pm",
       "Date": "December 13, 2016",
-      "Location": "2099 49th Street, Des Moines, Iowa, 50310",
+      "Location": "2099 49th Street, Des Moines, Iowa, 50310, USA",
       "Short Description": "We need some people to play tennis. Join us!",
       "Number of People Needed": 3,
       "Organizer": "maggie_brown95"
@@ -125,7 +125,7 @@
       "Sport": "Tennis",
       "Time": "08:45 am",
       "Date": "December 15, 2016",
-      "Location": "4822 Observatory Road, Des Moines, IA, 50311",
+      "Location": "4822 Observatory Road, Des Moines, IA, 50311, USA",
       "Short Description": "Two matches of tennis - 4 on 4",
       "Number of People Needed": 7,
       "Organizer": "paul_moore87"
@@ -135,7 +135,7 @@
       "Sport": "Tennis",
       "Time": "07:15 am",
       "Date": "December 15, 2016",
-      "Location": "1631 37th Street, Des Moines, IA, 50310",
+      "Location": "1631 37th Street, Des Moines, IA, 50310, USA",
       "Short Description": "This will be a fun non-competitive game. Join us if you can.",
       "Number of People Needed": 3,
       "Organizer": "paul_moore87"
@@ -145,7 +145,7 @@
       "Sport": "Tennis",
       "Time": "08:45 pm",
       "Date": "December 19, 2016",
-      "Location": "2358 Drake Park Avenue, Des Moines, IA, 50311",
+      "Location": "2358 Drake Park Avenue, Des Moines, IA, 50311, USA",
       "Short Description": "I just want to practice some tennis",
       "Number of People Needed": 1,
       "Organizer": "paul_moore87"
@@ -155,7 +155,7 @@
       "Sport": "Football",
       "Time": "09:00 am",
       "Date": "December 17, 2016",
-      "Location": "1591 East University Avenue, Des Moines, IA, 50316",
+      "Location": "1591 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Any college footballs want to play a game?",
       "Number of People Needed": 7,
       "Organizer": "william_thomas97"
@@ -165,7 +165,7 @@
       "Sport": "Football",
       "Time": "09:00 am",
       "Date": "December 07, 2016",
-      "Location": "1591 East University Avenue, Des Moines, IA, 50316",
+      "Location": "1591 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Practicing some drills",
       "Number of People Needed": 9,
       "Organizer": "william_thomas97"
@@ -175,7 +175,7 @@
       "Sport": "Football",
       "Time": "09:00 am",
       "Date": "December 23, 2016",
-      "Location": "1591 East University Avenue, Des Moines, IA, 50316",
+      "Location": "1591 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Flag football 5 on 5",
       "Number of People Needed": 8,
       "Organizer": "william_thomas97"
@@ -185,7 +185,7 @@
       "Sport": "Football",
       "Time": "09:00 am",
       "Date": "December 26, 2016",
-      "Location": "1591 East University Avenue, Des Moines, IA, 50316",
+      "Location": "1591 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Flag football style game",
       "Number of People Needed": 10,
       "Organizer": "brian_clark97"
@@ -195,7 +195,7 @@
       "Sport": "Football",
       "Time": "09:00 am",
       "Date": "December 03, 2016",
-      "Location": "1591 East University Avenue, Des Moines, IA, 50316",
+      "Location": "1591 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "We need some people for a fun football game. If you can, join us.",
       "Number of People Needed": 3,
       "Organizer": "brian_clark97"
@@ -205,7 +205,7 @@
       "Sport": "Volleyball",
       "Time": "08:00 pm",
       "Date": "December 09, 2016",
-      "Location": "4600 Park Avenue, Des Moines, IA, 50321",
+      "Location": "4600 Park Avenue, Des Moines, IA, 50321, USA",
       "Short Description": "Fun volleyball game. Join us!",
       "Number of People Needed": 3,
       "Organizer": "jenny_roberts92"
@@ -215,7 +215,7 @@
       "Sport": "Volleyball",
       "Time": "10:00 pm",
       "Date": "December 16, 2016",
-      "Location": "10930 Hickman Rd, Des Moines, IA, 50325",
+      "Location": "10930 Hickman Rd, Des Moines, IA, 50325, USA",
       "Short Description": "Three matches, two games until 21 and last one up to 15",
       "Number of People Needed": 11,
       "Organizer": "jenny_roberts92"
@@ -225,7 +225,7 @@
       "Sport": "Volleyball",
       "Time": "09:30 am",
       "Date": "December 08, 2016",
-      "Location": "601 East University Avenue, Des Moines, IA, 50316",
+      "Location": "601 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Awesome volleyball game. Please participate",
       "Number of People Needed": 7,
       "Organizer": "maria_perez87"
@@ -235,7 +235,7 @@
       "Sport": "Volleyball",
       "Time": "08:45 am",
       "Date": "December 29, 2016",
-      "Location": "4600 Park Avenue, Des Moines, IA, 50321",
+      "Location": "4600 Park Avenue, Des Moines, IA, 50321, USA",
       "Short Description": "A couple friends and I are up for a casual game - game point 21",
       "Number of People Needed": 3,
       "Organizer": "izzy_hernandez90"
@@ -245,7 +245,7 @@
       "Sport": "Volleyball",
       "Time": "11:00 am",
       "Date": "December 27, 2016",
-      "Location": "601 East University Avenue, Des Moines, IA, 50316",
+      "Location": "601 East University Avenue, Des Moines, IA, 50316, USA",
       "Short Description": "Friendly volleyball game. Bring your friends.",
       "Number of People Needed": 5,
       "Organizer": "izzy_hernandez90"

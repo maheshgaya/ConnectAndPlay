@@ -107,15 +107,17 @@
 
 
         <!-- location -->
-        <AutoCompleteTextView
-            tools:text="Location"
-            android:textColor="@android:color/black"
-            android:hint="@string/game_location_hint"
-            android:id="@+id/create_game_location_autocomplete_text"
-            android:maxLines="1"
-            android:ems="10"
+        <TextView
+            android:text="@string/game_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+            />
+
 
 
 
