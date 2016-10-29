@@ -83,11 +83,18 @@
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'TeamUp\'.</string>
 
     <!-- Creating a new game -->
-    <string name="game_title_hint">Title</string>
-    <string name="game_time_hint">Time (HH:MM AM)</string>
-    <string name="game_date_hint">Date (MM/dd/yyyy)</string>
+    <string name="game_title_hint">Title*</string>
+    <string name="game_time_hint">Time (HH:MM AM)*</string>
+    <string name="game_date_hint">Date (MM/dd/yyyy)*</string>
     <string name="game_sport_hint">Sport</string>
-    <string name="game_location_hint">Location</string>
-    <string name="game_description_hint">Description</string>
-    <string name="game_people_needed_hint">People Needed</string>
+    <string name="game_location_hint">Location*</string>
+    <string name="game_description_hint">Description*</string>
+    <string name="game_people_needed_hint">People Needed*</string>
+    <string name="game_required_message">Fields with * are required</string>
+
+    <!-- error messages -->
+    <string name="error_message_required_field">Required Field!</string>
+    <string name="error_message_more_descriptive">Make it more descriptive!</string>
+    <string name="error_message_people_needed">Cannot be more than 20!</string>
+
 </resources>
