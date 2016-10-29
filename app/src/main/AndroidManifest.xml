@@ -14,6 +14,10 @@
     <uses-permission
         android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
+    <!-- for camera and pictures -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,10 +42,7 @@
 
         <!-- shows all the games, categorized by sport -->
         <activity android:name=".activity.ExploreGamesActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
 
@@ -76,7 +77,16 @@
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
 
+        <!-- launcher activity -->
+        <activity android:name=".activity.LaunchActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
+        <!-- Profile Activity -->
         <activity android:name=".activity.ProfileActivity"
             android:label="@string/profile_label"
             android:theme="@style/AppActionBarTheme"
@@ -87,6 +97,7 @@
                 android:value=".activity.ExploreGamesActivity" />
         </activity>
 
+        <!-- About Activity -->
         <activity android:name=".activity.AboutActivity"
             android:label="@string/about_label"
             android:theme="@style/AppActionBarTheme"
@@ -94,8 +105,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ExploreGamesActivity" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         </activity>
 
         <!-- queries the SQLite database -->

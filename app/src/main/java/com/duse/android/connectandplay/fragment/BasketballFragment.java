@@ -74,7 +74,6 @@ public class BasketballFragment extends Fragment implements LoaderManager.Loader
         mRecycleView.setLayoutManager(linearTrailerLayoutManager);
         mRecycleView.setAdapter(mGameAdapter);
         mRecycleView.addItemDecoration(itemDecoration);
-        getLoaderManager().restartLoader(GAME_LOADER, null, this);
         return rootView;
     }
 

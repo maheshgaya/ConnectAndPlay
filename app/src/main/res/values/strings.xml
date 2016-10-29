@@ -3,7 +3,8 @@
     <!-- activities -->
     <string name="explore_games_label">Explore Games</string>
     <string name="saved_games_label">Saved Games</string>
-    <string name="profile_label">Edit Profile</string>
+    <string name="profile_label">Profile</string>
+    <string name="profile_edit_label">Edit Profile</string>
     <string name="about_label">About</string>
     <string name="refresh_label">Refresh</string>
     <string name="detail_label">Game Detail</string>
@@ -88,7 +89,7 @@
     <string name="game_time">00:00 AM</string>
     <string name="game_date_hint">Select Date</string>
     <string name="game_date">November 28, 2016</string>
-    <string name="game_sport_hint">Sport</string>
+    <string name="game_sport_hint">Sport*</string>
     <string name="game_location">Location*</string>
     <string name="game_location_hint">Enter Location</string>
     <string name="game_description_hint">Description*</string>
@@ -100,7 +101,7 @@
     <string name="error_message_more_descriptive">Make it more descriptive!</string>
     <string name="error_message_people_needed">Cannot be zero!</string>
     <string name="error_message_toast_not_created">Failed to create game!</string>
-    <string name="error_message_toast_user_not_updated">Failed to update information!</string>
+    <string name="error_message_toast_user_not_updated">Failed to save user information!</string>
 
 
 </resources>

@@ -68,7 +68,6 @@ public class ExploreGamesActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //sets the view layout
-        GameSyncAdapter.initializeSyncAdapter(this);
         setContentView(R.layout.activity_explore_games);
         ButterKnife.bind(this);
 

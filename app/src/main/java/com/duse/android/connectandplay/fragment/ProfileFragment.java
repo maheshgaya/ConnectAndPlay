@@ -4,6 +4,7 @@ package com.duse.android.connectandplay.fragment;
 import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
+import com.duse.android.connectandplay.activity.ExploreGamesActivity;
 import com.duse.android.connectandplay.activity.ProfileActivity;
 import com.duse.android.connectandplay.data.GamesContract;
 
@@ -127,20 +128,20 @@ public class ProfileFragment extends Fragment{
                     getActivity().finish();
 
                 } else if (!currentUser){
-                    userId = Integer.parseInt(userCursor.getString(Constant.COLUMN_USER_ID));
                     ContentValues userValues = new ContentValues();
                     userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, mUsername);
                     userValues.put(GamesContract.UserEntry.COLUMN_FIRST_NAME, mFirstName);
                     userValues.put(GamesContract.UserEntry.COLUMN_LAST_NAME, mLastName);
                     userValues.put(GamesContract.UserEntry.COLUMN_BIOGRAPHY, mBiography);
-                    userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, 1);
+                    userValues.put(GamesContract.UserEntry.COLUMN_CURRENT_USER, 1);
 
                     Uri insertUri = getContext().getContentResolver().insert(
                             GamesContract.UserEntry.CONTENT_URI,
                             userValues
                     );
                     Log.d(TAG, "onOptionsItemSelected: User added: " + insertUri);
-                    getActivity().finish();
+                    Intent intent = new Intent(getActivity(), ExploreGamesActivity.class);
+                    startActivity(intent);
                 }
             } else {
                 Toast.makeText(getContext(), userErrorMessage, Toast.LENGTH_SHORT).show();

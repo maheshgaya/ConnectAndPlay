@@ -71,7 +71,6 @@ public class FootballFragment extends Fragment implements LoaderManager.LoaderCa
         mRecycleView.setLayoutManager(linearTrailerLayoutManager);
         mRecycleView.setAdapter(mGameAdapter);
         mRecycleView.addItemDecoration(itemDecoration);
-        getLoaderManager().restartLoader(GAME_LOADER, null, this);
         return rootView;
     }
 

@@ -15,5 +15,6 @@
     <dimen name="map_detail">250dp</dimen>
 
     <dimen name="profile_icon_size">120dp</dimen>
+    <dimen name="launcher_icon_size">240dp</dimen>
 
 </resources>
