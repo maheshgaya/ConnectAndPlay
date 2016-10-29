@@ -182,15 +182,15 @@ public class ProfileFragment extends Fragment{
         mFirstNameEditText.addTextChangedListener(new MyTextWatcher(mFirstNameEditText));
         mLastNameEditText.addTextChangedListener(new MyTextWatcher(mLastNameEditText));
         mBiographyEditText.addTextChangedListener(new MyTextWatcher(mBiographyEditText));
-//        imageButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Toast.makeText(getContext(), "Image upload to be implemented in version 2.0.0", Toast.LENGTH_SHORT).show();
 //               selectImage();
-//
-//            }
-//        });
+
+            }
+        });
         return rootView;
     }
 
