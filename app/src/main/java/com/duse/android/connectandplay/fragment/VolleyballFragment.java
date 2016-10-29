@@ -45,18 +45,33 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
         //required empty constructor
     }
 
+    /**
+     * retains the instance
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
 
+    /**
+     * initializes the cursor loader
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(GAME_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * inflates the recycleview and the layout for this fragment
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +90,12 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
         return rootView;
     }
 
+    /**
+     * requests data from database for games
+     * @param id
+     * @param args
+     * @return cursor loader
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         long sportId = 0;
@@ -108,6 +129,11 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
                 null);
     }
 
+    /**
+     * gets the data from the cursor and puts that into the adapter
+     * @param loader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mGameAdapter.swapCursor(cursor);
@@ -120,6 +146,10 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
+    /**
+     * resets the adapter
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mGameAdapter.swapCursor(null);

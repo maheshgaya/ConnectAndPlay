@@ -74,6 +74,14 @@ public class GamesProvider  extends ContentProvider {
     private  static final String sGameGameIdSelection =
             GamesContract.GameEntry.TABLE_NAME +
                     "." + GamesContract.GameEntry._ID + " = ? ";
+
+    /**
+     * gets game data by game id
+     * @param uri
+     * @param projection
+     * @param sortOrder
+     * @return cursor
+     */
     private Cursor getGamebyGameId(Uri uri, String[] projection, String sortOrder){
         String gameId = GamesContract.GameEntry.getGameIdFromUri(uri);
         String selection = sGameGameIdSelection;
@@ -93,6 +101,13 @@ public class GamesProvider  extends ContentProvider {
             GamesContract.GameEntry.TABLE_NAME +
                     "." + GamesContract.GameEntry.COLUMN_ORGANIZER_ID + " = ? ";
 
+    /**
+     * gets game data by user id
+     * @param uri
+     * @param projection
+     * @param sortOrder
+     * @return cursor
+     */
     private Cursor getGameByUserId(Uri uri, String[] projection, String sortOrder) {
         String userId = GamesContract.GameEntry.getUserIdFromUri(uri);
         String selection = sGameUserIdSelection;
@@ -113,6 +128,13 @@ public class GamesProvider  extends ContentProvider {
             GamesContract.GameEntry.TABLE_NAME +
                     "." + GamesContract.GameEntry.COLUMN_SPORT_ID + " = ? ";
 
+    /**
+     * gets game data by sport
+     * @param uri
+     * @param projection
+     * @param sortOrder
+     * @return cursor
+     */
     private Cursor getGameBySportId(Uri uri, String[] projection, String sortOrder) {
         String sportId = GamesContract.GameEntry.getSportIdFromUri(uri);
         String selection = sGameSportIdSelection;
@@ -151,6 +173,13 @@ public class GamesProvider  extends ContentProvider {
             GamesContract.GameEntry.TABLE_NAME +
                     "." + GamesContract.GameEntry._ID + " = ? ";
 
+    /**
+     * gets participate data by game id
+     * @param uri
+     * @param projection
+     * @param sortOrder
+     * @return cursor
+     */
     private Cursor getParticipateByGameId(Uri uri, String[] projection, String sortOrder){
         String gameId = GamesContract.ParticipateEntry.getGameIdFromUri(uri);
         String selection = sParticipateGameIdSelection;
@@ -196,6 +225,13 @@ public class GamesProvider  extends ContentProvider {
         );
     }
 
+    /**
+     * gets all paricipate data (inner join among all the tables)
+     * @param uri
+     * @param projection
+     * @param sortOrder
+     * @return cursor
+     */
     private Cursor getParticipateGameSportUserLocation(Uri uri, String[] projection, String sortOrder){
         return sParticipateGameSportUserLocationQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
@@ -253,12 +289,25 @@ public class GamesProvider  extends ContentProvider {
         return matcher;
     }
 
+    /**
+     * initializes the DBHelper
+     * @return false
+     */
     @Override
     public boolean onCreate() {
         mOpenDbHelper = new GamesDbHelper(getContext());
         return false;
     }
 
+    /**
+     * returns data requested to be queried
+     * @param uri
+     * @param projection
+     * @param selection
+     * @param selectionArgs
+     * @param sortOrder
+     * @return cursor
+     */
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -397,10 +446,16 @@ public class GamesProvider  extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
         }
+        //notifies changes
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
 
+    /**
+     * get the type of each uri
+     * @param uri
+     * @return type
+     */
     @Nullable
     @Override
     public String getType(Uri uri) {
@@ -451,6 +506,12 @@ public class GamesProvider  extends ContentProvider {
         return null;
     }
 
+    /**
+     * insert data into table
+     * @param uri
+     * @param contentValues
+     * @return the single unique uri
+     */
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -507,10 +568,18 @@ public class GamesProvider  extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
+        //notifies changes
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;
     }
 
+    /**
+     * delete data into the database
+     * @param uri
+     * @param selection
+     * @param selectionArgs
+     * @return how many records were deleted
+     */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenDbHelper.getWritableDatabase();
@@ -562,6 +631,14 @@ public class GamesProvider  extends ContentProvider {
         return rowsDeleted;
     }
 
+    /**
+     * update data in database
+     * @param uri
+     * @param contentValues
+     * @param selection
+     * @param selectionArgs
+     * @return how many records were updated
+     */
     @Override
     public int update (Uri uri, ContentValues contentValues, String selection, String[] selectionArgs){
         final SQLiteDatabase db = mOpenDbHelper.getWritableDatabase();

@@ -38,13 +38,27 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 60 * 24;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
 
+    /**
+     * constructor for initializing GameSyncAdapter class
+     * @param context
+     * @param autoInitialize
+     */
     public GameSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 
+    /**
+     * Read data from JSON. In real life this would be reading JSON from a server
+     * @param account
+     * @param bundle
+     * @param s
+     * @param contentProviderClient
+     * @param syncResult
+     */
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         try{
+            //read from the file and put that in buffer
             //for games
             InputStream inputStream = getContext().getAssets().open(Constant.GAME_JSON);
             int size = inputStream.available();
@@ -53,6 +67,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             inputStream.close();
             String gamesJson = new String(buffer, "UTF-8");
 
+            //for sports
             inputStream = getContext().getAssets().open(Constant.SPORT_JSON);
             size = inputStream.available();
             buffer = new byte[size];
@@ -60,6 +75,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             inputStream.close();
             String sportJson = new String(buffer, "UTF-8");
 
+            //for users
             inputStream = getContext().getAssets().open(Constant.USER_JSON);
             size = inputStream.available();
             buffer = new byte[size];
@@ -67,6 +83,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             inputStream.close();
             String usersJson = new String(buffer, "UTF-8");
 
+            //for locations
             inputStream = getContext().getAssets().open(Constant.LOCATION_JSON);
             size = inputStream.available();
             buffer = new byte[size];
@@ -74,6 +91,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             inputStream.close();
             String locationJson = new String(buffer, "UTF-8");
 
+            //get data from JSON
             try {
                 readLocationJson(locationJson);
                 readSportsJson(sportJson);
@@ -84,7 +102,6 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
                 e.printStackTrace();
                 return;
             }
-
 
         }catch (IOException e){
             e.printStackTrace();
@@ -192,12 +209,13 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
      **************************/
 
     /**
-     *
+     * Adds a user to the database. It first checks to see if the user is in database,
+     * if not then it adds it
      * @param username
      * @param firstname
      * @param lastname
      * @param biography
-     * @return
+     * @return userId
      */
     private long addUser(String username, String firstname, String lastname, String biography){
         long userId;
@@ -238,7 +256,19 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
 
         return userId;
     }
-    //gameName, sport, time, date, location, description, peopleNeeded, organizer
+
+    /**
+     * Adds game to database. Check to see if game already exists first
+     * @param gameName
+     * @param sport
+     * @param time
+     * @param date
+     * @param location
+     * @param description
+     * @param peopleNeeded
+     * @param organizer
+     * @return gameId
+     */
     private long addGame(String gameName, String sport, String time, String date,
                          String location, String description, int peopleNeeded,
                          String organizer){
@@ -247,9 +277,9 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         long userId = -1;
         long locationId = -1;
 
-        // /check if game already exists, use different parameters, else add it to db
+        //check if game already exists, use different parameters, else add it to db
 
-        //User, sport and location should always be there, if not cannot add to database
+        //User, sport and location should always be there, if not then cannot add to database
         Cursor sportCursor = getContext().getContentResolver().query(
                 GamesContract.SportEntry.CONTENT_URI,
                 new String[]{GamesContract.SportEntry._ID},
@@ -340,6 +370,11 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         return gameId;
     }
 
+    /**
+     * Adds sport to database. It first check to see if the sport is already there
+     * @param sportName
+     * @return sportId
+     */
     private long addSport(String sportName){
         long sportId;
         //check if sport already exists, else add it to db
@@ -374,6 +409,13 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         return sportId;
     }
 
+    /**
+     * Adds address to database. Checks first if the address is already in database
+     * @param address
+     * @param latitude
+     * @param longitude
+     * @return locationId
+     */
     private long addLocation(String address, double latitude, double longitude){
         long locationId;
         //check if location already exists, else add it to db
@@ -414,10 +456,14 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
     /**************************
      * Read from JSON
      **************************/
+    /**
+     * read data from users JSON
+     * @param usersJson
+     * @throws JSONException
+     */
     private void readUsersJson(String usersJson)
             throws JSONException{
         //read the json from the buffer
-
         JSONObject usersJsonObject  = new JSONObject(usersJson);
         JSONArray usersJsonArray = usersJsonObject.getJSONArray(Constant.USER_ARRAY);
 
@@ -432,6 +478,12 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
     }
+
+    /**
+     * read data from sports JSON
+     * @param sportsJson
+     * @throws JSONException
+     */
     private void readSportsJson(String sportsJson)
             throws JSONException{
         //read the json from the buffer
@@ -447,6 +499,11 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    /**
+     * reads data from location JSON
+     * @param locationJson
+     * @throws JSONException
+     */
     private void readLocationJson(String locationJson)
         throws JSONException{
         //read the json from the buffer
@@ -462,6 +519,11 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    /**
+     * reads data from games JSON
+     * @param gamesJson
+     * @throws JSONException
+     */
     private void readGamesJson(String gamesJson)
             throws JSONException{
         //read the json from the buffer
@@ -482,7 +544,5 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             Log.d(TAG, "readGamesJson: " + gameName + " " + sport + " " + time + " " + date + " " + location);
             addGame(gameName, sport, time, date, location, description, peopleNeeded, organizer);//add to db
         }
-
-
     }
 }

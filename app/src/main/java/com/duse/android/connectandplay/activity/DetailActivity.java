@@ -14,6 +14,10 @@ import com.google.android.gms.maps.SupportMapFragment;
  */
 
 public class DetailActivity extends AppCompatActivity {
+    /**
+     * adds the detail fragment to the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

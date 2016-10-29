@@ -40,24 +40,33 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         //required empty constructor
     }
 
+    /**
+     * retains the instance
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
 
+    /**
+     * initializes the loader
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(SAVED_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getLoaderManager().restartLoader(SAVED_LOADER, null, this);
-    }
-
+    /**
+     * initializes the views
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return rootView
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +84,12 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         return rootView;
     }
 
+    /**
+     * gets participate data from table
+     * @param id
+     * @param args
+     * @return cursor loader
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(
@@ -87,6 +102,11 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         );
     }
 
+    /**
+     * swaps data to adapter
+     * @param loader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mGameAdapter.swapCursor(cursor);
@@ -99,6 +119,10 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
+    /**
+     * resets the adapter
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mGameAdapter.swapCursor(null);

@@ -9,7 +9,7 @@
     <string name="refresh_label">Refresh</string>
     <string name="detail_label">Game Detail</string>
     <string name="create_game_label">Create Game</string>
-    <string name="map_label">Map View</string>
+    <string name="map_label">Map</string>
 
     <!-- Card View  and detail -->
     <string name="participate_button">Participate</string>
@@ -94,7 +94,8 @@
     <string name="game_location_hint">Enter Location</string>
     <string name="game_description_hint">Description*</string>
     <string name="game_people_needed_hint">People Needed*</string>
-    <string name="game_required_message">Fields with * are required</string>
+    <string name="game_required_message">Fields with * are required!</string>
+    <string name="game_username_message">Username can only be set once!</string>
 
     <!-- error messages -->
     <string name="error_message_required_field">Required Field!</string>

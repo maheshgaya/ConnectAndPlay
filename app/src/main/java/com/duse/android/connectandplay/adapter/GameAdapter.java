@@ -30,6 +30,10 @@ import butterknife.ButterKnife;
  * Created by Mahesh Gaya on 10/24/16.
  */
 
+/**
+ * For recyclview list
+ * shows the whole list of the games requested
+ */
 public class GameAdapter extends CursorRecyclerViewAdapter<GameAdapter.ViewHolder> {
     private Context mContext;
     public GameAdapter(Context context, Cursor cursor){

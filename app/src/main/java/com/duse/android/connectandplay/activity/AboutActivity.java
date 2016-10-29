@@ -14,7 +14,10 @@ import com.duse.android.connectandplay.fragment.DetailFragment;
 
 public class AboutActivity extends AppCompatActivity {
 
-
+    /**
+     * adds About Fragment to the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

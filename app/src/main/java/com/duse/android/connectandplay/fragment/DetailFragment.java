@@ -165,7 +165,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return rootView
      */
     @Nullable
     @Override
@@ -190,7 +190,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+        //gets the uri from the intent
         mUri = getActivity().getIntent().getData();
+
+        //changes participate text according to user interaction
+        //also adds the date to or remove the data from our database
         mParticipateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,6 +226,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+        //opens intent to share the game
         mShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,6 +238,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    /**
+     * opens the MapsActivity and zooms on the marker
+     */
     public void openMapsActivity(){
         Intent mapIntent = new Intent(getActivity(), MapsActivity.class);
         mapIntent.putExtra(Constant.EXTRA_LATITIUDE, mMarkerLatitude);
@@ -240,6 +248,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         startActivity(mapIntent);
     }
 
+    /**
+     * Creates the share message and returns the sharing intent
+     * @return intent
+     */
     private Intent createShareIntent(){
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
@@ -251,6 +263,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return shareIntent;
     }
 
+    /**
+     * Writes to database to add participate information
+     * @param gameId
+     * @return gameId
+     */
     private long addParticipate(int gameId) {
         long participateId;
         //check if participate is already in table
@@ -298,6 +315,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
 
+    /**
+     * removes participate from database
+     * @param gameId
+     * @return boolean (is it successful or not)
+     */
     private boolean removeParticipate(int gameId) {
         //check if movie exists in table
         Cursor participateCursor = getContext().getContentResolver().query(
@@ -338,6 +360,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
+    /**
+     * zooms on marker
+     * @param latitude
+     * @param longitude
+     */
     public void setCameraPosition(double latitude, double longitude){
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(latitude, longitude))      // Sets the center of the map
@@ -348,8 +375,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     }
 
+    /**
+     * Adds marker on the MapView
+     * @param latitude
+     * @param longitude
+     * @param title
+     * @param organizer
+     * @param color
+     */
     public void addMarker(double latitude, double longitude, String title, String organizer, int color){
         Float bitMapColor;
+        //has different color for each sport
         switch (color){
             case Constant.GAME_BASKETBALL_COLOR:{
                 bitMapColor = BitmapDescriptorFactory.HUE_GREEN; //basketball
@@ -377,6 +413,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
         }
 
+        //adds the marker to the MapView
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
@@ -387,6 +424,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setCameraPosition(latitude, longitude); //sets the camera position
     }
 
+    /**
+     * checks if peopleNeeded is singular or plural
+     * if peopleNeeded is zero or 1, then text is person
+     * else it is people
+     * @param peopleNeeded
+     */
     private void checkPersonNeed(int peopleNeeded){
         //check to see if peopleNeeded is zero and participate button text is participate
         //then disable participate
@@ -434,6 +477,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         super.onActivityCreated(savedInstanceState);
     }
 
+    /*******************************
+     * Lifecycle calls for mapView
+     *******************************/
     @Override
     public void onPause() {
         super.onPause();
@@ -448,7 +494,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState); mMapView.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
     @Override
@@ -472,7 +519,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
      * query the content provider via loaders
      * @param id
      * @param args
-     * @return
+     * @return cursor Loader
      */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

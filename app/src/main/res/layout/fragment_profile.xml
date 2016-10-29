@@ -22,6 +22,11 @@
             android:textColor="@android:color/holo_red_dark"
             android:text="@string/game_required_message"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="@string/game_username_message"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/card_padding"/>
 

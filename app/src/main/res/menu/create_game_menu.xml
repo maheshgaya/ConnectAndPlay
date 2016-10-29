@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.CreateGameActivity">
     <item
-        android:id="@+id/action_create_game"
+        android:id="@+id/action_create"
         android:title="@string/create_game_label"
         android:icon="@drawable/ic_check"
         android:orderInCategory="100"

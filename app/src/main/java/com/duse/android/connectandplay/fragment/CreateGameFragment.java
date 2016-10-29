@@ -92,6 +92,10 @@ public class CreateGameFragment extends Fragment {
         //required default constructor
     }
 
+    /**
+     * Will use menu here for the check box (Save button)
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -101,9 +105,8 @@ public class CreateGameFragment extends Fragment {
 
     /**
      * Adds Game to Database
-     * @return
+     * @return gameId
      */
-
     public long addGameToDB(){
         long gameId = 0;
         long sportId = 0;
@@ -196,7 +199,7 @@ public class CreateGameFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return rootView
      */
     @Nullable
     @Override
@@ -231,6 +234,8 @@ public class CreateGameFragment extends Fragment {
             }
         });
 
+        //initializes the date on the buttons for time and date
+        //this shows the current date
         Calendar calender = Calendar.getInstance();
         int[] dateInt = currentDateTime();
         String[] date = Utility.normalizeDate(dateInt[0], dateInt[1], dateInt[2]);
@@ -249,7 +254,7 @@ public class CreateGameFragment extends Fragment {
 
     /**
      * gets the current date and time in an integer array
-     * @return
+     * @return current date in Integer{MONTH, DAY, YEAR, HOUR, MINUTE}
      */
     public int[] currentDateTime(){
         Calendar calendar = Calendar.getInstance();
@@ -262,7 +267,7 @@ public class CreateGameFragment extends Fragment {
     }
 
     /**
-     * Listens for edit texts
+     * Setups and adds listeners for the edit text
      */
     private void setupEditTexts(){
         setupTitle(); //For Title
@@ -273,6 +278,10 @@ public class CreateGameFragment extends Fragment {
         setupPeopleNeeded(); //for people needed
     }
 
+    /**
+     * setup people needed
+     * listens for changes in text
+     */
     private void setupPeopleNeeded() {
         mPeopleNeededInputLayout.getEditText().setText("0");
         mPeopleNeededInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
@@ -303,6 +312,10 @@ public class CreateGameFragment extends Fragment {
     }
 
 
+    /**
+     * setup location
+     * opens Google Places API search fragment to search for addresses
+     */
     private void setupLocation() {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -328,6 +341,9 @@ public class CreateGameFragment extends Fragment {
         });
     }
 
+    /**
+     * Opens dialog box for time
+     */
     private void setupTime() {
         mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,6 +354,9 @@ public class CreateGameFragment extends Fragment {
 
     }
 
+    /**
+     * opens dialog box for date
+     */
     private void setupDate() {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,6 +366,10 @@ public class CreateGameFragment extends Fragment {
         });
     }
 
+    /**
+     * setups description
+     * listens for changes in text
+     */
     private void setupDescription() {
         mDescriptionInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -375,6 +398,10 @@ public class CreateGameFragment extends Fragment {
         });
     }
 
+    /**
+     * setups the title
+     * listens for changes in title
+     */
     private void setupTitle(){
         //For Title
         mTitleInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
@@ -382,7 +409,6 @@ public class CreateGameFragment extends Fragment {
             public void beforeTextChanged(CharSequence text, int start, int count, int after) {
 
             }
-
 
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
@@ -424,7 +450,8 @@ public class CreateGameFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_create_game) {
+        //Creates a new game
+        if (id == R.id.action_create) {
             //create a new record
             Log.d(TAG, mTitle + "; " + mDescription + "; " + mDate + "; " + mTime + "; " +
                     mLocation + "; " + mLatitude + "; " + mLongitude + "; " + mSport + "; " +
@@ -441,7 +468,7 @@ public class CreateGameFragment extends Fragment {
                 Log.d(TAG, "onOptionsItemSelected: Game added to database @record: " + gameId);
                 getActivity().finish();
             } else {
-                //throw error
+                //throws error
                 //error for title
                 if (mTitle.equals("")){
                     mTitleInputLayout.setError(mRequiredFieldErrorMessage);

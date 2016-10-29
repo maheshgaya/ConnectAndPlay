@@ -18,6 +18,12 @@ import com.duse.android.connectandplay.sync.GameSyncAdapter;
 
 public class LaunchActivity extends AppCompatActivity {
 
+    /**
+     * Splash screen
+     * then go to Explore Activity if current user already exists
+     * else go to Profile Activity for user to create a profile
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

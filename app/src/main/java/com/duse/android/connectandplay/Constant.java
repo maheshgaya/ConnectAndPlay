@@ -7,9 +7,9 @@ import com.duse.android.connectandplay.data.GamesContract;
  */
 
 public class Constant {
-    /**
+    /*****************************
      * Add JSON Tags
-     */
+     ****************************/
 
     //Games
     public static final String GAME_JSON = "games.json";
@@ -43,23 +43,9 @@ public class Constant {
     public static final String LOCATION_LATITUDE = "Latitude";
     public static final String LOCATION_LONGITUDE = "Longitude";
 
-    /**
-     * For Geocoding
-     */
-
-    public static final int SUCCESS_RESULT = 0;
-    public static final int FAILURE_RESULT = 1;
-    public static final String PACKAGE_NAME =
-            "com.duse.android.connectandplay";
-    public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
-    public static final String RESULT_DATA_KEY = PACKAGE_NAME +
-            ".RESULT_DATA_KEY";
-    public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME +
-            ".LOCATION_DATA_EXTRA";
-
-    /**
+    /****************************
      * for querying database
-     */
+     ****************************/
     //inner join for game, location, sport and user
     public static final String[] GAME_PROJECTION = {
             GamesContract.GameEntry.TABLE_NAME + "." + GamesContract.GameEntry._ID,
@@ -122,6 +108,9 @@ public class Constant {
     public static final int COLUMN_USER_BIOGRAPHY = 4;
     public static final int COLUMN_USER_CURRENT_USER = 5;
 
+    /****************************
+     * Customization for markers
+     ****************************/
     //For colors
     public static final int GAME_BASKETBALL_COLOR = 0;
     public static final int GAME_FOOTBALL_COLOR = 1;
@@ -129,12 +118,14 @@ public class Constant {
     public static final int GAME_TENNIS_COLOR = 3;
     public static final int GAME_VOLLEYBALL_COLOR = 4;
 
-
+    /*****************************
+     * For bundle and activities
+     ****************************/
     //For Bundle
     public static final String EXTRA_LATITIUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
 
-    //Request Code
+    //Request Code for startActivityForResult
     public static final int CREATE_GAME_REQUEST_CODE = 1;
     public static final int UPDATE_USER_REQUEST_CODE = 2;
 }

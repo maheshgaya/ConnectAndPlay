@@ -61,7 +61,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Binding views
     @BindView(R.id.toolbar) Toolbar mToolbar;
-//    @BindView(R.id.layout_explore_bottom_sheet) View mBottomSheetLayout;
 
     private GoogleMap mMap;
     private static final int REQUEST_LOCATION = 1;
@@ -89,9 +88,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mLatitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LATITIUDE);
             mLongitudeArgs = getIntent().getExtras().getDouble(Constant.EXTRA_LONGITUDE);
         }
-
-
-
 
         //inflate layout
         setContentView(R.layout.activity_maps_bottomsheet);
@@ -121,13 +117,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap map) {
         mMap = map;
         enableMyLocation();
-        /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng position) {
-                Toast.makeText(getApplicationContext(), "lat: " + position.latitude +
-                        " \nlng: " + position.longitude, Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -141,7 +130,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        //Get markers
+        //Get markers,
+        // restart loaders in case Map was not ready
         getSupportLoaderManager().restartLoader(GAME_BASKETBALL_LOADER, null, this);
         getSupportLoaderManager().restartLoader(GAME_FOOTBALL_LOADER, null, this);
         getSupportLoaderManager().restartLoader(GAME_SOCCER_LOADER, null, this);
@@ -280,6 +270,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * queries data from content provider
+     * @param id
+     * @param args
+     * @return
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
@@ -430,6 +426,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * sets markers on the map
+     * @param loader
+     * @param data
+     */
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()){
@@ -512,6 +514,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * does nothing
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 

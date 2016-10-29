@@ -13,6 +13,10 @@ import com.duse.android.connectandplay.fragment.DetailFragment;
  */
 
 public class CreateGameActivity extends AppCompatActivity {
+    /**
+     * adds Create Game Fragment to the activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

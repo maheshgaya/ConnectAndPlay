@@ -105,44 +105,49 @@ public class ProfileFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_create_game) {
+        //adds or update the profile
+        if (id == R.id.action_create) {
             //update record
             boolean result = validateOnSubmit();
             if (result) {
-                int userId = 0;
-                if (userCursor.moveToFirst() && currentUser) {
+                try {
+                    if (userCursor.moveToFirst() && currentUser) {
+                        //updates the profile
+                        ContentValues userValues = new ContentValues();
+                        userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, mUsername);
+                        userValues.put(GamesContract.UserEntry.COLUMN_FIRST_NAME, mFirstName);
+                        userValues.put(GamesContract.UserEntry.COLUMN_LAST_NAME, mLastName);
+                        userValues.put(GamesContract.UserEntry.COLUMN_BIOGRAPHY, mBiography);
+                        int updateUri = getContext().getContentResolver().update(
+                                GamesContract.UserEntry.CONTENT_URI,
+                                userValues,
+                                GamesContract.UserEntry.COLUMN_CURRENT_USER + " = ? ",
+                                new String[]{"1"}
+                        );
+                        Log.d(TAG, "onOptionsItemSelected: User Updated" + updateUri);
+                        getActivity().finish();
 
-                    userId = Integer.parseInt(userCursor.getString(Constant.COLUMN_USER_ID));
-                    ContentValues userValues = new ContentValues();
-                    userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, mUsername);
-                    userValues.put(GamesContract.UserEntry.COLUMN_FIRST_NAME, mFirstName);
-                    userValues.put(GamesContract.UserEntry.COLUMN_LAST_NAME, mLastName);
-                    userValues.put(GamesContract.UserEntry.COLUMN_BIOGRAPHY, mBiography);
-                    int updateUri = getContext().getContentResolver().update(
-                            GamesContract.UserEntry.CONTENT_URI,
-                            userValues,
-                            GamesContract.UserEntry.COLUMN_CURRENT_USER + " = ? ",
-                            new String[]{"1"}
-                    );
-                    Log.d(TAG, "onOptionsItemSelected: User Updated" + updateUri);
-                    getActivity().finish();
+                    } else if (!currentUser) {
+                        //creates the user if not already exists
+                        ContentValues userValues = new ContentValues();
+                        userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, mUsername);
+                        userValues.put(GamesContract.UserEntry.COLUMN_FIRST_NAME, mFirstName);
+                        userValues.put(GamesContract.UserEntry.COLUMN_LAST_NAME, mLastName);
+                        userValues.put(GamesContract.UserEntry.COLUMN_BIOGRAPHY, mBiography);
+                        userValues.put(GamesContract.UserEntry.COLUMN_CURRENT_USER, 1);
 
-                } else if (!currentUser){
-                    ContentValues userValues = new ContentValues();
-                    userValues.put(GamesContract.UserEntry.COLUMN_USERNAME, mUsername);
-                    userValues.put(GamesContract.UserEntry.COLUMN_FIRST_NAME, mFirstName);
-                    userValues.put(GamesContract.UserEntry.COLUMN_LAST_NAME, mLastName);
-                    userValues.put(GamesContract.UserEntry.COLUMN_BIOGRAPHY, mBiography);
-                    userValues.put(GamesContract.UserEntry.COLUMN_CURRENT_USER, 1);
-
-                    Uri insertUri = getContext().getContentResolver().insert(
-                            GamesContract.UserEntry.CONTENT_URI,
-                            userValues
-                    );
-                    Log.d(TAG, "onOptionsItemSelected: User added: " + insertUri);
-                    Intent intent = new Intent(getActivity(), ExploreGamesActivity.class);
-                    startActivity(intent);
+                        Uri insertUri = getContext().getContentResolver().insert(
+                                GamesContract.UserEntry.CONTENT_URI,
+                                userValues
+                        );
+                        Log.d(TAG, "onOptionsItemSelected: User added: " + insertUri);
+                        Intent intent = new Intent(getActivity(), ExploreGamesActivity.class);
+                        startActivity(intent);
+                    }
+                } finally {
+                    userCursor.close();
                 }
+
             } else {
                 Toast.makeText(getContext(), userErrorMessage, Toast.LENGTH_SHORT).show();
             }
@@ -151,8 +156,22 @@ public class ProfileFragment extends Fragment{
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onStop() {
+        //close cursor to avoid leaks
+        if (userCursor.getCount() != 0){
+            userCursor.close();
+        }
+        super.onStop();
+    }
 
-
+    /**
+     * initializes the views
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return rootView
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,6 +182,8 @@ public class ProfileFragment extends Fragment{
                 GamesContract.UserEntry.COLUMN_CURRENT_USER + " = ? ",
                 new String[]{"1"},
                 null);
+        //Check if current user exists. If this is the case
+        //then get the information and display it
         if (userCursor.moveToFirst()) {
             currentUser = true; //current user exists
             mUsername = userCursor.getString(Constant.COLUMN_USER_USERNAME);
@@ -173,6 +194,7 @@ public class ProfileFragment extends Fragment{
             mFirstNameEditText.setText(mFirstName);
             mLastNameEditText.setText(mLastName);
             mBiographyEditText.setText(mBiography);
+            mUsernameEditText.setEnabled(false);
         } else {
             currentUser = false; //new user
         }
@@ -316,6 +338,10 @@ public class ProfileFragment extends Fragment{
         return true;
     }
 
+    /**
+     * validate username
+     * @return boolean
+     */
     private boolean validateUName() {
         if ( mUsernameEditText.getText().toString().trim().isEmpty()) {
             inputLayoutUName.setError(getString(R.string.err_msg_Uname));
@@ -327,6 +353,11 @@ public class ProfileFragment extends Fragment{
 
         return true;
     }
+
+    /**
+     * validate first name
+     * @return boolean
+     */
     private boolean validateFName() {
         if (mFirstNameEditText.getText().toString().trim().isEmpty()) {
             inputLayoutFName.setError(getString(R.string.err_msg_Fname));
@@ -339,6 +370,10 @@ public class ProfileFragment extends Fragment{
         return true;
     }
 
+    /**
+     * validate last name
+     * @return boolean
+     */
     private boolean validateLName() {
         if ( mLastNameEditText.getText().toString().trim().isEmpty()) {
             inputLayoutLName.setError(getString(R.string.err_msg_Lname));
@@ -350,6 +385,11 @@ public class ProfileFragment extends Fragment{
 
         return true;
     }
+
+    /**
+     * validate biography
+     * @return boolean
+     */
     private boolean validateBio() {
         if ( mBiographyEditText.getText().toString().trim().isEmpty()) {
             inputLayoutBiography.setError(getString(R.string.err_msg_Bio));
@@ -361,6 +401,10 @@ public class ProfileFragment extends Fragment{
 
         return true;
     }
+
+    /**
+     * gets focus on edit text
+     */
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -368,7 +412,9 @@ public class ProfileFragment extends Fragment{
     }
 
 
-
+    /**
+     * listens for changes in edit texts
+     */
     private class MyTextWatcher implements TextWatcher {
 
         private View view;

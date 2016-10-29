@@ -1,13 +1,14 @@
 <resources>
     <!--
     TODO: Before you run your application, you need a Google Maps API key.
+    TODO: Make sure that you enable 'Google Maps API' and 'Google Places API' for your API key
 
     To get one, follow this link, follow the directions and press "Create" at the end:
 
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=45:55:18:60:67:1C:7A:D1:66:CA:1C:3C:F6:30:D9:61:ED:BD:6A:87%3Bcom.example.duse.maps
 
     You can also add your credentials to an existing key, using this line:
-    45:55:18:60:67:1C:7A:D1:66:CA:1C:3C:F6:30:D9:61:ED:BD:6A:87;com.example.duse.maps
+    45:55:18:60:67:1C:7A:D1:66:CA:1C:3C:F6:30:D9:61:ED:BD:6A:87;com.example.google.maps
 
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key

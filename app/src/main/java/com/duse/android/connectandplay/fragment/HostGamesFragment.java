@@ -41,6 +41,11 @@ public class HostGamesFragment extends Fragment implements LoaderManager.LoaderC
     public HostGamesFragment(){
         //required empty constructor
     }
+
+    /**
+     * retains the instance
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +53,23 @@ public class HostGamesFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
+    /**
+     * initializes the loader
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(GAME_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
+
+    /**
+     * initializes the views
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return rootView
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +87,14 @@ public class HostGamesFragment extends Fragment implements LoaderManager.LoaderC
         return rootView;
     }
 
+    /**
+     * Queries the content provider to get all the games
+     * created by the current user
+     * CURRENT USER is 1, other USERS are 0 for the user.current_user column in the database
+     * @param id
+     * @param args
+     * @return cursor Loader
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         long userId = 0;
@@ -102,6 +127,12 @@ public class HostGamesFragment extends Fragment implements LoaderManager.LoaderC
                 null);
     }
 
+    /**
+     * swaps data to the adapter and then checks if the adapter is empty or not
+     * if it is then show the empty error message
+     * @param loader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished: " + cursor.getCount());
@@ -115,6 +146,10 @@ public class HostGamesFragment extends Fragment implements LoaderManager.LoaderC
         }
     }
 
+    /**
+     * resets the adapter
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mGameAdapter.swapCursor(null);

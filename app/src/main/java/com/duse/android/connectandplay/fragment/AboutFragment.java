@@ -30,6 +30,13 @@ public class AboutFragment extends Fragment {
         //required empty constructor
     }
 
+    /**
+     * Just inflates the layout
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return rootView
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

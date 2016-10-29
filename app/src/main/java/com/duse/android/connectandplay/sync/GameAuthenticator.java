@@ -11,6 +11,11 @@ import android.os.Bundle;
  * Created by Mahesh Gaya on 10/24/16.
  */
 
+/**
+ * Create a dummy profile to make syncadapter useful
+ * Does not really do anything here
+ */
+
 public class GameAuthenticator extends AbstractAccountAuthenticator {
     public GameAuthenticator(Context context){
         super(context);

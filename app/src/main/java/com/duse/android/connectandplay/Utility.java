@@ -42,6 +42,12 @@ public class Utility {
         return -1;
     }
 
+    /**
+     * Normalizes the time. Converts 24hr into 12hr
+     * @param hourOfDay
+     * @param minute
+     * @return
+     */
     public static String[] normalizeTime(int hourOfDay, int minute){
         int hour;
         String amPmStr;
@@ -67,6 +73,13 @@ public class Utility {
         return new String[]{hourStr, minuteStr, amPmStr};
     }
 
+    /**
+     * normalize Date
+     * @param month
+     * @param dayOfMonth
+     * @param year
+     * @return date in full, i.e. October 31, 2016
+     */
     public static String[] normalizeDate(int month, int dayOfMonth, int year){
         String monthStr = "";
         switch (month){
@@ -124,6 +137,11 @@ public class Utility {
         String yearStr = String.valueOf(year);
         return new String[]{monthStr, dayOfMonthStr, yearStr};
     }
+
+    /**
+     * Checks permission for uploading images
+     *
+     */
 
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;

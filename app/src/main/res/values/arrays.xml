@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- for spinner -->
     <string-array name="sport_array">
         <item>Basketball</item>
         <item>Football</item>
