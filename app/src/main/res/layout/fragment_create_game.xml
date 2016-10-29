@@ -68,46 +68,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <!-- Date -->
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/game_date_text_input_layout"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
-                <EditText
-                    tools:text="Date"
-                    android:textColor="@android:color/black"
-                    android:hint="@string/game_date_hint"
-                    android:id="@+id/create_game_date_edit_text"
-                    android:inputType="date"
-                    android:maxLines="1"
-                    android:ems="10"
+                <TextView
+                    android:text="@string/game_date_hint"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
-            </android.support.design.widget.TextInputLayout>
-
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="@string/game_date"
+                    android:id="@+id/create_game_date_button"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <!-- Time -->
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/game_time_text_input_layout"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
-                <EditText
-                    tools:text="Time"
-                    android:textColor="@android:color/black"
-                    android:hint="@string/game_time_hint"
-                    android:id="@+id/create_game_time_edit_text"
-                    android:inputType="date"
-                    android:maxLines="1"
-                    android:ems="10"
-                    android:layout_weight="1"
+                <TextView
+                    android:text="@string/game_time_hint"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:text="@string/game_time"
+                    android:id="@+id/create_game_time_button"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
 
 
@@ -158,6 +153,7 @@
                     android:hint="@string/game_people_needed_hint"
                     android:id="@+id/create_game_people_needed_edit_text"
                     android:inputType="number"
+                    android:maxLength="2"
                     android:ems="10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

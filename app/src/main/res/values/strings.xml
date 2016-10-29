@@ -84,8 +84,10 @@
 
     <!-- Creating a new game -->
     <string name="game_title_hint">Title*</string>
-    <string name="game_time_hint">Time (HH:MM AM)*</string>
-    <string name="game_date_hint">Date (MM/dd/yyyy)*</string>
+    <string name="game_time_hint">Select Time</string>
+    <string name="game_time">00:00 AM</string>
+    <string name="game_date_hint">Select Date</string>
+    <string name="game_date">November 28, 2016</string>
     <string name="game_sport_hint">Sport</string>
     <string name="game_location_hint">Location*</string>
     <string name="game_description_hint">Description*</string>

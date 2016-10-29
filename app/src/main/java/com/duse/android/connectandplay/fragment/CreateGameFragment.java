@@ -1,19 +1,14 @@
 package com.duse.android.connectandplay.fragment;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.database.Cursor;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -26,15 +21,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
-import com.duse.android.connectandplay.data.GamesContract;
+import com.duse.android.connectandplay.Utility;
 
+
+import java.sql.Time;
 import java.util.Calendar;
 
 import butterknife.BindString;
@@ -54,14 +51,18 @@ public class CreateGameFragment extends Fragment {
     //TextInputLayout
     @BindView(R.id.game_title_text_input_layout)TextInputLayout mTitleInputLayout;
     @BindView(R.id.game_description_text_input_layout)TextInputLayout mDescriptionInputLayout;
-    @BindView(R.id.game_date_text_input_layout)TextInputLayout mDateInputLayout;
-    @BindView(R.id.game_time_text_input_layout)TextInputLayout mTimeInputLayout;
+    @BindView(R.id.create_game_date_button)Button mDateButton;
+    @BindView(R.id.create_game_time_button)Button mTimeButton;
     @BindView(R.id.game_people_needed_text_input_layout)TextInputLayout mPeopleNeededInputLayout;
 
     //Strings
     @BindString(R.string.error_message_required_field)String mRequiredFieldErrorMessage;
     @BindString(R.string.error_message_more_descriptive)String mMoreDescriptiveErrorMessage;
     @BindString(R.string.error_message_people_needed)String mPeopleNeededErrorMessage;
+
+    public String mTime;
+    public String mDate;
+
     public CreateGameFragment(){
         //required default constructor
     }
@@ -102,10 +103,27 @@ public class CreateGameFragment extends Fragment {
             }
         });
 
+        Calendar calender = Calendar.getInstance();
+        int[] dateInt = currentDateTime();
+        String[] date = Utility.normalizeDate(dateInt[0], dateInt[1], dateInt[2]);
+        mDateButton.setText(date[0] + " " + date[1] + "," + date[2]);
+
+        String[] time = Utility.normalizeTime(dateInt[3], dateInt[4]);
+        mTimeButton.setText(time[0] + ":" + time[1] + " " + time[2]);
+
 
         return rootView;
     }
 
+    public int[] currentDateTime(){
+        Calendar calendar = Calendar.getInstance();
+        return new int[]{calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.HOUR),
+                calendar.get(Calendar.MINUTE)};
+
+    }
     private void setupEditTexts(){
         setupTitle(); //For Title
         setupDescription(); //For description
@@ -126,9 +144,6 @@ public class CreateGameFragment extends Fragment {
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 if (text.length() == 0) {
                     mPeopleNeededInputLayout.setError(mRequiredFieldErrorMessage);
-                    mPeopleNeededInputLayout.setErrorEnabled(true);
-                } else if (Integer.parseInt(text.toString()) > 20) {
-                    mPeopleNeededInputLayout.setError(mPeopleNeededErrorMessage);
                     mPeopleNeededInputLayout.setErrorEnabled(true);
                 } else {
                     mPeopleNeededInputLayout.setErrorEnabled(false);
@@ -163,50 +178,20 @@ public class CreateGameFragment extends Fragment {
     }
 
     private void setupTime() {
-        mTimeInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
-                    //link: https://www.tutorialspoint.com/android/android_timepicker_control.htm
-                    //TODO use timepicker
-                    Toast.makeText(getContext(), "Time tapped", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                showTimePickerDialog(view);
             }
         });
-        mTimeInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence text, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private void setupDate() {
-        mDateInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+        mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //link: http://www.tutorialspoint.com/android/android_datepicker_control.htm
-                //TODO use datepicker
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View view) {
+                showDatePickerDialog(view);
             }
         });
     }
@@ -224,7 +209,7 @@ public class CreateGameFragment extends Fragment {
                     mDescriptionInputLayout.setError(mRequiredFieldErrorMessage);
                     mDescriptionInputLayout.setErrorEnabled(true);
                 } else if (text.length() > 0 && text.length() <= 10) {
-                    mDescriptionInputLayout.setError(mMoreDescriptiveErrorMessage);
+                    mDescriptionInputLayout.setError(mMoreDescriptiveErrorMessage + " (" + text.length() + "/10)");
                     mDescriptionInputLayout.setErrorEnabled(true);
                 } else {
                     mDescriptionInputLayout.setErrorEnabled(false);
@@ -253,7 +238,7 @@ public class CreateGameFragment extends Fragment {
                     mTitleInputLayout.setError(mRequiredFieldErrorMessage);
                     mTitleInputLayout.setErrorEnabled(true);
                 } else if (text.length() > 0 && text.length() <= 4) {
-                    mTitleInputLayout.setError(mMoreDescriptiveErrorMessage);
+                    mTitleInputLayout.setError(mMoreDescriptiveErrorMessage + " (" + text.length() + "/4)");
                     mTitleInputLayout.setErrorEnabled(true);
                 } else {
                     mTitleInputLayout.setErrorEnabled(false);
@@ -294,28 +279,112 @@ public class CreateGameFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
+
+    public static class TimePickerFragment extends DialogFragment {
+
+        TimePickerDialog.OnTimeSetListener onTimeSet;
+        private int hourOfDay, minute;
+        public TimePickerFragment() {}
+
+        public void setCallBack(TimePickerDialog.OnTimeSetListener ontime) {
+            onTimeSet = ontime;
+        }
+
+        @Override
+        public void setArguments(Bundle args) {
+            super.setArguments(args);
+            hourOfDay = args.getInt("hourOfDay");
+            minute = args.getInt("minute");
+        }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
+            return new TimePickerDialog(getActivity(), onTimeSet, hourOfDay, minute, false);
         }
     }
 
+    public void showTimePickerDialog(View view) {
+        TimePickerFragment time = new TimePickerFragment();
+        /**
+         * Set Up current time Into dialog
+         */
+        //TODO get the current value of the button
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("minute", calender.get(Calendar.MINUTE));
+        args.putInt("hourOfDay", calender.get(Calendar.HOUR_OF_DAY));
+        time.setArguments(args);
+        /**
+         * Set Call back to capture selected time
+         */
+        time.setCallBack(ontime);
+        time.show(getFragmentManager(), "Time Picker");
+    }
+
+    TimePickerDialog.OnTimeSetListener ontime = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            String[] time = Utility.normalizeTime(hourOfDay, minute);
+            mTimeButton.setText(time[0] + ":" + time[1] + " " + time[2]);
+        }
+    };
+
+    public static class DatePickerFragment extends DialogFragment {
+        //http://stackoverflow.com/questions/20673609/implement-a-datepicker-inside-a-fragment
+        DatePickerDialog.OnDateSetListener ondateSet;
+        private int year, month, day;
+        public DatePickerFragment() {}
+
+        public void setCallBack(DatePickerDialog.OnDateSetListener ondate) {
+            ondateSet = ondate;
+        }
+
+        @Override
+        public void setArguments(Bundle args) {
+            super.setArguments(args);
+            year = args.getInt("year");
+            month = args.getInt("month");
+            day = args.getInt("day");
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), ondateSet, year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            return datePickerDialog;
+        }
 
 
+    }
+    public void showDatePickerDialog(View view) {
+        DatePickerFragment date = new DatePickerFragment();
+        /**
+         * Set Up Current Date Into dialog
+         */
+        //TODO get the current value of the button
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        /**
+         * Set Call back to capture selected date
+         */
+        date.setCallBack(ondate);
+        date.show(getFragmentManager(), "Date Picker");
+    }
+
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+
+            String[] date = Utility.normalizeDate(monthOfYear, dayOfMonth, year);
+            mDateButton.setText(date[0] + " " + date[1]
+                    + "," + date[2]);
+        }
+    };
 
 
 

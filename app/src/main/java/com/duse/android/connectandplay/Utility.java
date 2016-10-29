@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,90 @@ public class Utility {
         }
         return -1;
     }
+
+    public static String[] normalizeTime(int hourOfDay, int minute){
+        int hour;
+        String amPmStr;
+        if (hourOfDay > 12){
+            hour = hourOfDay - 12;
+            amPmStr = "PM";
+        } else {
+            hour = hourOfDay;
+            amPmStr = "AM";
+        }
+        String hourStr;
+        if (hour < 10){
+            hourStr = "0" + hour;
+        } else {
+            hourStr = String.valueOf(hour);
+        }
+        String minuteStr;
+        if (minute < 10){
+            minuteStr = "0" + minute;
+        } else {
+            minuteStr = String.valueOf(minute);
+        }
+        return new String[]{hourStr, minuteStr, amPmStr};
+    }
+
+    public static String[] normalizeDate(int month, int dayOfMonth, int year){
+        String monthStr = "";
+        switch (month){
+            case Calendar.JANUARY:{
+                monthStr = "January";
+                break;
+            }
+            case Calendar.FEBRUARY:{
+                monthStr = "February";
+                break;
+            }
+            case Calendar.MARCH:{
+                monthStr = "March";
+                break;
+            }
+            case Calendar.APRIL:{
+                monthStr = "April";
+                break;
+            }
+            case Calendar.MAY:{
+                monthStr = "May";
+                break;
+            }
+            case Calendar.JUNE:{
+                monthStr = "June";
+                break;
+            }
+            case Calendar.JULY:{
+                monthStr = "July";
+                break;
+            }
+            case Calendar.AUGUST:{
+                monthStr = "August";
+                break;
+            }
+            case Calendar.SEPTEMBER:{
+                monthStr = "September";
+                break;
+            }
+            case Calendar.OCTOBER:{
+                monthStr = "October";
+                break;
+            }
+            case Calendar.NOVEMBER:{
+                monthStr = "November";
+                break;
+            }
+            case Calendar.DECEMBER:{
+                monthStr = "December";
+                break;
+            }
+
+        }
+        String dayOfMonthStr = String.valueOf(dayOfMonth);
+        String yearStr = String.valueOf(year);
+        return new String[]{monthStr, dayOfMonthStr, yearStr};
+    }
+
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
