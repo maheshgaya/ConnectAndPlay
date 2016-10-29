@@ -103,5 +103,18 @@
     <string name="error_message_toast_not_created">Failed to create game!</string>
     <string name="error_message_toast_user_not_updated">Failed to save user information!</string>
 
-
+    <!-- about -->
+    <string name="programmers">Programmers</string>
+    <string name="mahesh_gaya">Mahesh Gaya</string>
+    <string name="dalilah_earley">Dalilah Earley</string>
+    <string name="kristina_neel">Kristina Neel</string>
+    <string name="designer">Designer</string>
+    <string name="fatah_aziz">Fatah Aziz</string>
+    <string name="writer">Writer</string>
+    <string name="jacob_jensen">Jacob Jensen</string>
+    <string name="icon">Icon Authors</string>
+    <string name="app_desc">Whether you’re a beast on the boards, a cheetah on the soccer field, a freight train with the football, a smashing machine, or a spike monster, TeamUp App will help find the perfect pickup game for you. 
+        \n\nYou can explore games by tapping on the tab or use the interactive map to locate games as well as host your own games. 
+        \n\nThanks for using TeamUp App! 
+    </string>
 </resources>

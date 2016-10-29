@@ -7,8 +7,114 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     tools:context=".activity.AboutActivity">
-    <TextView
-        android:text="@string/about_label"
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="@dimen/card_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="@string/about_label"
+            android:textSize="@dimen/about_text_size"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Description of app -->
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_logo"
+            android:layout_width="@dimen/profile_icon_size"
+            android:layout_height="@dimen/profile_icon_size" />
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/card_padding"
+            android:text="@string/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:text="@string/app_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <!-- Programmers -->
+        <TextView
+            android:text="@string/programmers"
+            android:textSize="@dimen/about_section_text_size"
+            android:paddingTop="@dimen/card_padding"
+            android:paddingBottom="@dimen/about_padding"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/mahesh_gaya"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/dalilah_earley"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/kristina_neel"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--Designer-->
+        <TextView
+            android:text="@string/designer"
+            android:textSize="@dimen/about_section_text_size"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/card_padding"
+            android:paddingBottom="@dimen/about_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/fatah_aziz"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Writer -->
+        <TextView
+            android:text="@string/writer"
+            android:paddingBottom="@dimen/about_padding"
+            android:paddingTop="@dimen/card_padding"
+            android:textSize="@dimen/about_section_text_size"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/jacob_jensen"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Icon authors -->
+        <TextView
+            android:text="@string/icon"
+            android:paddingBottom="@dimen/about_padding"
+            android:paddingTop="@dimen/card_padding"
+            android:textSize="@dimen/about_section_text_size"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/icon_author_text_view"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
 </ScrollView>
