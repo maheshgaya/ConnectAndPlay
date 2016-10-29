@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.duse.android.connectandplay.R;
+import com.duse.android.connectandplay.fragment.AboutFragment;
+import com.duse.android.connectandplay.fragment.DetailFragment;
 
 /**
  * Created by earleyneverlate on 10/24/16.
@@ -12,15 +14,21 @@ import com.duse.android.connectandplay.R;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private Toolbar mtoolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        if (savedInstanceState == null) {
 
-        mtoolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mtoolbar);
+            //add fragment to activity
+            AboutFragment fragment = new AboutFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container_about, fragment)
+                    .commit();
+
+        }
 
     }
 }

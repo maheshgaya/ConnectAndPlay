@@ -130,11 +130,11 @@ public class ExploreGamesActivity extends AppCompatActivity{
             startActivity(intent);
         }
         else if (id == R.id.action_about){
-            Intent intent = new Intent(this,AboutActivity.class);
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
-        } else if (id == R.id.action_refresh){
+        } /*else if (id == R.id.action_refresh){
             updateGames();
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

@@ -155,41 +155,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    /**
-     * Inflates menus for this class
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.map_menu, menu);
-        return true;
-    }
-
-    /**
-     * Adds logic to the menus for this class
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.pref_general.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_saved_games) {
-            Intent intent = new Intent(this, YourGamesActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.action_profile){
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * Enables the My Location layer if the fine location permission has been granted.
