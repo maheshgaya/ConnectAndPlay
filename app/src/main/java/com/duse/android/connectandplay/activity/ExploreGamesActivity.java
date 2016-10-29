@@ -74,6 +74,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
         //creates the toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setLogo(logo);
+        getSupportActionBar().setTitle("");
         //handles tabs and fragments
         setupViewPage(mViewPager);
 
