@@ -14,7 +14,7 @@ This app allows users to connect and team up with other players to play sport ga
   $ git clone https://github.com/maheshgaya/ConnectAndPlay.git
   ```
 2. Import the project in Android Studio. (File -> New -> Import Project)
-3. Download your Google Maps API key from the [Google Developer Console](https://console.developers.google.com/)
+3. Download your Google Maps API key from the [Google Developer Console](https://console.developers.google.com/). Make sure that you enable `Google Maps API for Android` and `Google Places API for Android`
 4. Add your API key to google_maps_api.xml
 5. Run the project in an emulator with api greater or equal to 21
 
