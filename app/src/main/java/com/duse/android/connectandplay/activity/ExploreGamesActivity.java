@@ -132,7 +132,7 @@ public class ExploreGamesActivity extends AppCompatActivity{
             startActivity(intent);
         } else if (id == R.id.action_profile){
             Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, Constant.UPDATE_USER_REQUEST_CODE);
         } else if (id == R.id.action_map){
             Intent intent = new Intent(this, MapsActivity.class);
             startActivity(intent);

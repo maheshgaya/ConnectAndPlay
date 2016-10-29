@@ -105,6 +105,23 @@ public class Constant {
     public static final int COLUMN_SPORT_ID = 0;
     public static final int COLUMN_SPORTNAME = 1;
 
+    //User projection
+    public static final String[] USER_PROJECTION = {
+            GamesContract.UserEntry._ID,
+            GamesContract.UserEntry.COLUMN_USERNAME,
+            GamesContract.UserEntry.COLUMN_FIRST_NAME,
+            GamesContract.UserEntry.COLUMN_LAST_NAME,
+            GamesContract.UserEntry.COLUMN_BIOGRAPHY,
+            GamesContract.UserEntry.COLUMN_CURRENT_USER
+    };
+
+    public static final int COLUMN_USER_ID = 0;
+    public static final int COLUMN_USER_USERNAME = 1;
+    public static final int COLUMN_USER_FIRST_NAME = 2;
+    public static final int COLUMN_USER_LAST_NAME = 3;
+    public static final int COLUMN_USER_BIOGRAPHY = 4;
+    public static final int COLUMN_USER_CURRENT_USER = 5;
+
     //For colors
     public static final int GAME_BASKETBALL_COLOR = 0;
     public static final int GAME_FOOTBALL_COLOR = 1;
@@ -119,4 +136,5 @@ public class Constant {
 
     //Request Code
     public static final int CREATE_GAME_REQUEST_CODE = 1;
+    public static final int UPDATE_USER_REQUEST_CODE = 2;
 }

@@ -42,10 +42,10 @@
     <string name= "first_name_edit_text">First Name</string>
     <string name= "last_name_edit_text">Last Name</string>
     <string name= "bio_edit_text">Biography</string>
-    <string name="hint_username">Username</string>
-    <string name="hint_first_name">First Name</string>
-    <string name="hint_last_name">Last Name</string>
-    <string name="hint_bio">Biography</string>
+    <string name="hint_username">Username*</string>
+    <string name="hint_first_name">First Name*</string>
+    <string name="hint_last_name">Last Name*</string>
+    <string name="hint_bio">Biography*</string>
     <string name="err_msg_Uname">Username cannot be empty</string>
     <string name="err_msg_Fname">First name cannot be empty</string>
     <string name="err_msg_Lname">Last name cannot be empty</string>
@@ -99,7 +99,8 @@
     <string name="error_message_required_field">Required Field!</string>
     <string name="error_message_more_descriptive">Make it more descriptive!</string>
     <string name="error_message_people_needed">Cannot be zero!</string>
-    <string name="error_message_toast_not_created">Could not create game!</string>
+    <string name="error_message_toast_not_created">Failed to create game!</string>
+    <string name="error_message_toast_user_not_updated">Failed to update information!</string>
 
 
 </resources>

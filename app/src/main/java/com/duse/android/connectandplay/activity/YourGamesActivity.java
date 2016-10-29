@@ -1,5 +1,6 @@
 package com.duse.android.connectandplay.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.adapter.ViewPagerAdapter;
 import com.duse.android.connectandplay.fragment.HostGamesFragment;
@@ -79,6 +81,13 @@ public class YourGamesActivity extends AppCompatActivity{
                     case 1:{
                         mFab.show();
                         mFab.setVisibility(View.VISIBLE);
+                        mFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent gameIntent = new Intent(getApplicationContext(), CreateGameActivity.class);
+                                startActivityForResult(gameIntent, Constant.CREATE_GAME_REQUEST_CODE);
+                            }
+                        });
                         break;
                     }
                 }
