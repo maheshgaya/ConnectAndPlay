@@ -276,6 +276,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param organizer
      */
     public void addMarker(double latitude, double longitude, String title, String organizer, int color, Uri uri){
+
         Float bitMapColor;
         switch (color){
             case GAME_BASKETBALL_LOADER:{
@@ -343,7 +344,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         null,
                         null,
                         null
-                        );
+                );
             }
             case GAME_FOOTBALL_LOADER:{
                 Cursor sportCursor = this.getContentResolver().query(
