@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
  */
 
 public class VolleyballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final String TAG = VolleyballFragment.class.getSimpleName();
     @BindView(R.id.recycleview_volleyball)
     RecyclerView mRecycleView;
     @BindString(R.string.volleyball_query_key) String mVolleyballQueryKey;
@@ -70,7 +72,7 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
         mRecycleView.setLayoutManager(linearTrailerLayoutManager);
         mRecycleView.setAdapter(mGameAdapter);
         mRecycleView.addItemDecoration(itemDecoration);
-
+        getLoaderManager().restartLoader(GAME_LOADER, null, this);
         return rootView;
     }
 
@@ -86,6 +88,7 @@ public class VolleyballFragment extends Fragment implements LoaderManager.Loader
                 new String[]{mVolleyballQueryKey},
                 sortOrder
         );
+
 
         try {
             if (sportCursor.moveToFirst()) {

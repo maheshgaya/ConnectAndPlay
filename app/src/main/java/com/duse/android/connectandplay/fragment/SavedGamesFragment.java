@@ -52,6 +52,12 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(SAVED_LOADER, null, this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +72,6 @@ public class SavedGamesFragment extends Fragment implements LoaderManager.Loader
         mRecycleView.setLayoutManager(linearTrailerLayoutManager);
         mRecycleView.setAdapter(mGameAdapter);
         mRecycleView.addItemDecoration(itemDecoration);
-
         return rootView;
     }
 

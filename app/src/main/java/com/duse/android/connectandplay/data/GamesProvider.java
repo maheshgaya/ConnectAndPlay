@@ -39,6 +39,7 @@ public class GamesProvider  extends ContentProvider {
 
     private static final int LOCATION = 500; //dir
 
+
     //inner joins
     private static final SQLiteQueryBuilder sGameSportUserLocationQueryBuilder; //inner join with sport and game and user and location
     private static final SQLiteQueryBuilder sGameParticipateQueryBuilder; //inner join with game and participate
@@ -48,7 +49,7 @@ public class GamesProvider  extends ContentProvider {
         sGameSportUserLocationQueryBuilder = new SQLiteQueryBuilder();
         /**
          * game INNER JOIN sport ON game.sport_id = sport._id INNER JOIN user ON user._id = user_id
-         * INNER JOIN locatin ON location._id = location_id
+         * INNER JOIN location ON game.location_id = location_id
          */
         sGameSportUserLocationQueryBuilder.setTables(
                 GamesContract.GameEntry.TABLE_NAME + " INNER JOIN " +
@@ -116,7 +117,7 @@ public class GamesProvider  extends ContentProvider {
         String sportId = GamesContract.GameEntry.getSportIdFromUri(uri);
         String selection = sGameSportIdSelection;
         String[] selectionArgs = new String[]{sportId};
-        return sGameSportUserLocationQueryBuilder.query(
+        Cursor cursor = sGameSportUserLocationQueryBuilder.query(
                 mOpenDbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -125,6 +126,7 @@ public class GamesProvider  extends ContentProvider {
                 null,
                 sortOrder
         );
+        return cursor;
     }
 
 

@@ -75,10 +75,10 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             String locationJson = new String(buffer, "UTF-8");
 
             try {
+                readLocationJson(locationJson);
                 readSportsJson(sportJson);
                 readUsersJson(usersJson);
                 readGamesJson(gamesJson);
-                readLocationJson(locationJson);
                 Log.d(TAG, "onPerformSync: Wow, this is done correctly!");
             }catch (JSONException e){
                 e.printStackTrace();
@@ -277,18 +277,22 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
         if (sportCursor.moveToFirst()){
             int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
             sportId = sportCursor.getLong(sportIndex);
+            Log.d(TAG, "addGame: sportId" +  sportId);
         }
         if (userCursor.moveToFirst()){
             int userIndex = userCursor.getColumnIndex(GamesContract.UserEntry._ID);
             userId = userCursor.getLong(userIndex);
+            Log.d(TAG, "addGame: userId" +  userId);
         }
         if (locationCursor.moveToFirst()) {
             int locationIndex = locationCursor.getColumnIndex(GamesContract.LocationEntry._ID);
             locationId = locationCursor.getLong(locationIndex);
+            Log.d(TAG, "addGame: locationId" +  locationId);
         }
 
         try {
             if (userCursor.getCount() > 0 && sportCursor.getCount() > 0 && locationCursor.getCount() > 0) {
+                Log.d(TAG, "addGame: sport, location and user is in database");
                 Cursor gameCursor = getContext().getContentResolver().query(
                         GamesContract.GameEntry.CONTENT_URI,
                         new String[]{GamesContract.GameEntry._ID},
@@ -475,7 +479,7 @@ public class GameSyncAdapter extends AbstractThreadedSyncAdapter {
             String description = gameObject.getString(Constant.GAME_SHORT_DESC);
             int peopleNeeded = gameObject.getInt(Constant.GAME_PEOPLE_NEEDED);
             String organizer = gameObject.getString(Constant.GAME_ORGANIZER);
-
+            Log.d(TAG, "readGamesJson: " + gameName + " " + sport + " " + time + " " + date + " " + location);
             addGame(gameName, sport, time, date, location, description, peopleNeeded, organizer);//add to db
         }
 

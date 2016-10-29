@@ -4,6 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -25,11 +29,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.Utility;
+import com.duse.android.connectandplay.data.GamesContract;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -60,22 +67,24 @@ public class CreateGameFragment extends Fragment {
     @BindView(R.id.create_game_date_button)Button mDateButton;
     @BindView(R.id.create_game_time_button)Button mTimeButton;
     @BindView(R.id.game_people_needed_text_input_layout)TextInputLayout mPeopleNeededInputLayout;
+    @BindView(R.id.location_error_text)TextView mLocationErrorText;
 
     //Strings
     @BindString(R.string.error_message_required_field)String mRequiredFieldErrorMessage;
     @BindString(R.string.error_message_more_descriptive)String mMoreDescriptiveErrorMessage;
     @BindString(R.string.error_message_people_needed)String mPeopleNeededErrorMessage;
     @BindString(R.string.game_location_hint)String mLocationHint;
+    @BindString(R.string.error_message_toast_not_created)String mSubmitErrorMessage;
 
-    private String mTitle;
-    private String mDescription;
+    private String mTitle = "";
+    private String mDescription = "";
     private double mLatitude;
     private double mLongitude;
     private int mPeopleNeeded;
-    private String mSport;
-    private String mLocation;
-    private String mTime;
-    private String mDate;
+    private String mSport = "";
+    private String mLocation = "";
+    private String mTime = "";
+    private String mDate = "";
 
 
 
@@ -90,16 +99,105 @@ public class CreateGameFragment extends Fragment {
 
     }
 
+    /**
+     * Adds Game to Database
+     * @return
+     */
+
     public long addGameToDB(){
         long gameId = 0;
-        //TODO check if current user exists
-        //TODO get sport id
-        //TODO check if location already exists if not create a new record in location
-        //TODO add to games
+        long sportId = 0;
+        long userId = 0;
+        long locationId = 0;
+        //check if current user exists
+        Cursor userCursor = getContext().getContentResolver().query(
+                GamesContract.UserEntry.CONTENT_URI,
+                new String[]{GamesContract.UserEntry._ID},
+                GamesContract.UserEntry.COLUMN_CURRENT_USER + " = ? ",
+                new String[]{"1"},
+                null
+        );
+        //get sport id
+        Cursor sportCursor = getContext().getContentResolver().query(
+                GamesContract.SportEntry.CONTENT_URI,
+                new String[]{GamesContract.SportEntry._ID},
+                GamesContract.SportEntry.COLUMN_SPORT_NAME + " = ? ",
+                new String[]{mSport},
+                null
+        );
+        //check if location already exists if not create a new record in location
+        Cursor locationCursor = getContext().getContentResolver().query(
+                GamesContract.LocationEntry.CONTENT_URI,
+                new String[]{GamesContract.LocationEntry._ID},
+                GamesContract.LocationEntry.COLUMN_ADDRESS + " = ? ",
+                new String[]{mLocation},
+                null
+        );
+
+        if (sportCursor.moveToFirst()){
+            int sportIndex = sportCursor.getColumnIndex(GamesContract.SportEntry._ID);
+            sportId = sportCursor.getLong(sportIndex);
+        }
+        if (userCursor.moveToFirst()){
+            int userIndex = userCursor.getColumnIndex(GamesContract.UserEntry._ID);
+            userId = userCursor.getLong(userIndex);
+        }
+        if (locationCursor.moveToFirst()) {
+            //get location if exists
+            int locationIndex = locationCursor.getColumnIndex(GamesContract.LocationEntry._ID);
+            locationId = locationCursor.getLong(locationIndex);
+        } else {
+            ContentValues locationValues = new ContentValues();
+            locationValues.put(GamesContract.LocationEntry.COLUMN_ADDRESS, mLocation);
+            locationValues.put(GamesContract.LocationEntry.COLUMN_LATITUDE, mLatitude);
+            locationValues.put(GamesContract.LocationEntry.COLUMN_LONGITUDE, mLongitude);
+            Uri locationUri = getContext().getContentResolver().insert(
+                    GamesContract.LocationEntry.CONTENT_URI,
+                    locationValues
+            );
+            locationId = ContentUris.parseId(locationUri);
+        }
+        //add to game
+        try {
+            if (userCursor.getCount() > 0 && sportCursor.getCount() > 0 && locationId != 0) {
+                Log.d(TAG, "addGameToDB: " + sportId + ": " + locationId + ": " + userId);
+                //Create contentValue to hold the data
+                ContentValues gameValues = new ContentValues();
+                gameValues.put(GamesContract.GameEntry.COLUMN_GAME_NAME, mTitle);
+                gameValues.put(GamesContract.GameEntry.COLUMN_SPORT_ID, sportId);
+                gameValues.put(GamesContract.GameEntry.COLUMN_ORGANIZER_ID, userId);
+                gameValues.put(GamesContract.GameEntry.COLUMN_TIME, mTime);
+                gameValues.put(GamesContract.GameEntry.COLUMN_DATE, mDate);
+                gameValues.put(GamesContract.GameEntry.COLUMN_LOCATION_ID, locationId);
+                gameValues.put(GamesContract.GameEntry.COLUMN_SHORT_DESC, mDescription);
+                gameValues.put(GamesContract.GameEntry.COLUMN_PEOPLE_NEEDED, mPeopleNeeded);
+
+                //insert the record into database
+                Uri insertUri = getContext().getContentResolver().insert(
+                        GamesContract.GameEntry.CONTENT_URI,
+                        gameValues
+                );
+                gameId = ContentUris.parseId(insertUri);
+            }
+
+
+        } finally {
+            sportCursor.close();
+            userCursor.close();
+            locationCursor.close();
+        }
+
 
         return gameId;
     }
 
+    /**
+     * Initializes the views
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -136,7 +234,7 @@ public class CreateGameFragment extends Fragment {
         Calendar calender = Calendar.getInstance();
         int[] dateInt = currentDateTime();
         String[] date = Utility.normalizeDate(dateInt[0], dateInt[1], dateInt[2]);
-        String dateStr = date[0] + " " + date[1] + "," + date[2];
+        String dateStr = date[0] + " " + date[1] + ", " + date[2];
         mDateButton.setText(dateStr);
         mDate = dateStr;
 
@@ -149,6 +247,10 @@ public class CreateGameFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * gets the current date and time in an integer array
+     * @return
+     */
     public int[] currentDateTime(){
         Calendar calendar = Calendar.getInstance();
         return new int[]{calendar.get(Calendar.MONTH),
@@ -158,6 +260,10 @@ public class CreateGameFragment extends Fragment {
                 calendar.get(Calendar.MINUTE)};
 
     }
+
+    /**
+     * Listens for edit texts
+     */
     private void setupEditTexts(){
         setupTitle(); //For Title
         setupDescription(); //For description
@@ -206,6 +312,12 @@ public class CreateGameFragment extends Fragment {
                 mLocation = place.getAddress().toString();
                 mLatitude = place.getLatLng().latitude;
                 mLongitude = place.getLatLng().longitude;
+                if (mLocation.equals("")){
+                    mLocationErrorText.setText(mRequiredFieldErrorMessage);
+                    mLocationErrorText.setVisibility(View.VISIBLE);
+                }else {
+                    mLocationErrorText.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -313,17 +425,71 @@ public class CreateGameFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_create_game) {
-            //TODO create a new record
+            //create a new record
             Log.d(TAG, mTitle + "; " + mDescription + "; " + mDate + "; " + mTime + "; " +
                     mLocation + "; " + mLatitude + "; " + mLongitude + "; " + mSport + "; " +
                     mPeopleNeeded);
-            Toast.makeText(getContext(), "Game Created", Toast.LENGTH_SHORT).show();
+            //if good add to db else throw error
+            if (!mTitle.equals("") && mTitle.length() > 4 &&
+                    !mDescription.equals("") && mDescription.length() > 10 &&
+                    !mDate.equals("") && !mTime.equals("") && mLocation != null && !mLocation.equals("") &&
+                    !mSport.equals("") && mSport != null &&
+                    mPeopleNeeded != 0){
+                //add to database
+                long gameId = addGameToDB();
+
+                Log.d(TAG, "onOptionsItemSelected: Game added to database @record: " + gameId);
+                getActivity().finish();
+            } else {
+                //throw error
+                //error for title
+                if (mTitle.equals("")){
+                    mTitleInputLayout.setError(mRequiredFieldErrorMessage);
+                    mTitleInputLayout.setErrorEnabled(true);
+                }else if (mTitle.length() > 0 && mTitle.length() <= 4) {
+                    mTitleInputLayout.setError(mMoreDescriptiveErrorMessage + " (" + mTitle.length() + "/4)");
+                    mTitleInputLayout.setErrorEnabled(true);
+                } else {
+                    mTitleInputLayout.setErrorEnabled(false);
+                }
+                //error for description
+                if (mDescription.equals("")) {
+                    mDescriptionInputLayout.setError(mRequiredFieldErrorMessage);
+                    mDescriptionInputLayout.setErrorEnabled(true);
+                } else if (mDescription.length() > 0 && mDescription.length() <= 10) {
+                    mDescriptionInputLayout.setError(mMoreDescriptiveErrorMessage + " (" + mDescription.length() + "/10)");
+                    mDescriptionInputLayout.setErrorEnabled(true);
+                } else {
+                    mDescriptionInputLayout.setErrorEnabled(false);
+                }
+
+                //error for people needed
+                if (mPeopleNeeded == 0) {
+                    mPeopleNeededInputLayout.setError(mRequiredFieldErrorMessage + " " + mPeopleNeededErrorMessage);
+                    mPeopleNeededInputLayout.setErrorEnabled(true);
+                } else {
+                    mPeopleNeededInputLayout.setErrorEnabled(false);
+                }
+
+                //error for location
+                if (mLocation.equals("")){
+                    mLocationErrorText.setText(mRequiredFieldErrorMessage);
+                    mLocationErrorText.setVisibility(View.VISIBLE);
+                }else {
+                    mLocationErrorText.setVisibility(View.GONE);
+                }
+                Toast.makeText(getContext(), mSubmitErrorMessage, Toast.LENGTH_SHORT).show();
+
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+    /**********************
+     * TIME DIALOG
+     **********************/
     public static class TimePickerFragment extends DialogFragment {
 
         TimePickerDialog.OnTimeSetListener onTimeSet;
@@ -375,6 +541,9 @@ public class CreateGameFragment extends Fragment {
         }
     };
 
+    /*******************
+     * DATE DIALOG
+     *******************/
     public static class DatePickerFragment extends DialogFragment {
         //http://stackoverflow.com/questions/20673609/implement-a-datepicker-inside-a-fragment
         DatePickerDialog.OnDateSetListener ondateSet;
@@ -427,7 +596,7 @@ public class CreateGameFragment extends Fragment {
                               int dayOfMonth) {
 
             String[] date = Utility.normalizeDate(monthOfYear, dayOfMonth, year);
-            String dateStr = date[0] + " " + date[1] + "," + date[2];
+            String dateStr = date[0] + " " + date[1] + ", " + date[2];
             mDateButton.setText(dateStr);
             mDate = dateStr;
         }

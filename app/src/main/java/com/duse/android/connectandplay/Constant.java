@@ -117,4 +117,6 @@ public class Constant {
     public static final String EXTRA_LATITIUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
 
+    //Request Code
+    public static final int CREATE_GAME_REQUEST_CODE = 1;
 }

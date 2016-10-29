@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.duse.android.connectandplay.Constant;
 import com.duse.android.connectandplay.R;
 import com.duse.android.connectandplay.adapter.ViewPagerAdapter;
 import com.duse.android.connectandplay.fragment.BasketballFragment;
@@ -106,6 +107,13 @@ public class ExploreGamesActivity extends AppCompatActivity{
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //TODO (if have time) go to the page according to sport selected, sent data via bundle,
+        // then get the data in the fragment and scroll automatically to the game
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     /**
      * Adds logic to the menus for this class
      * @param item
@@ -131,9 +139,9 @@ public class ExploreGamesActivity extends AppCompatActivity{
         }
         else if (id == R.id.action_about){
             Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, Constant.CREATE_GAME_REQUEST_CODE);
         } /*else if (id == R.id.action_refresh){
-            updateGames();
+            GameSyncAdapter.syncImmediately(this);
         }*/
 
         return super.onOptionsItemSelected(item);

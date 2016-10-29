@@ -24,11 +24,10 @@
         android:orderInCategory="400"
         app:showAsAction="never"/>
 
-
     <!--<item-->
         <!--android:id="@+id/action_refresh"-->
         <!--android:title="@string/refresh_label"-->
-        <!--android:orderInCategory="400"-->
+        <!--android:orderInCategory="500"-->
         <!--app:showAsAction="never"/>-->
 
 

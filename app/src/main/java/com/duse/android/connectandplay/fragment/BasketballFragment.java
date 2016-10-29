@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
  */
 
 public class BasketballFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final String TAG = BasketballFragment.class.getSimpleName();
     @BindView(R.id.recycleview_basketball)RecyclerView mRecycleView;
     @BindString(R.string.basketball_query_key)String mBasketballQueryKey;
     @BindView(R.id.empty_game_recycleview)TextView emptyTextView;
@@ -72,7 +74,7 @@ public class BasketballFragment extends Fragment implements LoaderManager.Loader
         mRecycleView.setLayoutManager(linearTrailerLayoutManager);
         mRecycleView.setAdapter(mGameAdapter);
         mRecycleView.addItemDecoration(itemDecoration);
-
+        getLoaderManager().restartLoader(GAME_LOADER, null, this);
         return rootView;
     }
 
@@ -110,6 +112,7 @@ public class BasketballFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished: " + cursor.getCount());
         mGameAdapter.swapCursor(cursor);
         if (cursor.getCount() == 0){
             mRecycleView.setVisibility(View.GONE);

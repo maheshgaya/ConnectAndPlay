@@ -115,8 +115,14 @@
             android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-            />
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment" />
+        <TextView
+            android:id="@+id/location_error_text"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
 

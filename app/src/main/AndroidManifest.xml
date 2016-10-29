@@ -102,6 +102,7 @@
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.GamesProvider"
+            android:enabled="true"
             android:syncable="true"
             android:exported="true"/>
 
