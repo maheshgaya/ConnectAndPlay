@@ -52,12 +52,16 @@ public class Utility {
         int hour;
         String amPmStr;
         if (hourOfDay > 12){
-            hour = hourOfDay - 12;
+            hour = hourOfDay - 12 ;
             amPmStr = "PM";
+        } else if (hourOfDay == 0) {
+            hour = 12;
+            amPmStr = "AM";
         } else {
             hour = hourOfDay;
             amPmStr = "AM";
         }
+
         String hourStr;
         if (hour < 10){
             hourStr = "0" + hour;
