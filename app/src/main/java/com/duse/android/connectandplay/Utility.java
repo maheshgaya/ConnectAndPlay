@@ -11,6 +11,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import butterknife.BindString;
 import butterknife.ButterKnife;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 
 public class Utility {
 
+    private static final String TAG = Utility.class.getSimpleName();
     /**
      * Gets the id for the icon from the R file
      * @param context
@@ -49,6 +51,7 @@ public class Utility {
      * @return
      */
     public static String[] normalizeTime(int hourOfDay, int minute){
+        Log.d(TAG, "normalizeTime: " + hourOfDay);
         int hour;
         String amPmStr;
         if (hourOfDay > 12){
@@ -140,6 +143,20 @@ public class Utility {
         String dayOfMonthStr = String.valueOf(dayOfMonth);
         String yearStr = String.valueOf(year);
         return new String[]{monthStr, dayOfMonthStr, yearStr};
+    }
+
+    /**
+     * gets the current date and time in an integer array
+     * @return current date in Integer{MONTH, DAY, YEAR, HOUR, MINUTE}
+     */
+    public static int[] currentDateTime(){
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        return new int[]{calendar.get(java.util.Calendar.MONTH),
+                calendar.get(java.util.Calendar.DAY_OF_MONTH),
+                calendar.get(java.util.Calendar.YEAR),
+                calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                calendar.get(java.util.Calendar.MINUTE)};
+
     }
 
 }

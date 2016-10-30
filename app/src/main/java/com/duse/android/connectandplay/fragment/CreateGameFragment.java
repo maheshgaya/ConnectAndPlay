@@ -237,7 +237,7 @@ public class CreateGameFragment extends Fragment {
         //initializes the date on the buttons for time and date
         //this shows the current date
         Calendar calender = Calendar.getInstance();
-        int[] dateInt = currentDateTime();
+        int[] dateInt = Utility.currentDateTime();
         String[] date = Utility.normalizeDate(dateInt[0], dateInt[1], dateInt[2]);
         String dateStr = date[0] + " " + date[1] + ", " + date[2];
         mDateButton.setText(dateStr);
@@ -252,19 +252,7 @@ public class CreateGameFragment extends Fragment {
         return rootView;
     }
 
-    /**
-     * gets the current date and time in an integer array
-     * @return current date in Integer{MONTH, DAY, YEAR, HOUR, MINUTE}
-     */
-    public int[] currentDateTime(){
-        Calendar calendar = Calendar.getInstance();
-        return new int[]{calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.HOUR),
-                calendar.get(Calendar.MINUTE)};
 
-    }
 
     /**
      * Setups and adds listeners for the edit text
