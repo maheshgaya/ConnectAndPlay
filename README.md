@@ -7,6 +7,8 @@ This app allows users to connect and team up with other players to play sport ga
 - Sport icons obtained from [Flaticon](http://www.flaticon.com/)
 - Material icons from [Google](https://design.google.com/icons/)
 
+<img src="https://github.com/maheshgaya/maheshgaya.com/blob/master/images/TeamUpApp.png" width=280 />
+
 ## Using the Source Code in Android Studio
 1. Clone the repository
   
