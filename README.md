@@ -13,7 +13,7 @@ This app allows users to connect and team up with other players to play sport ga
 1. Clone the repository
   
   ```
-  $ git clone https://github.com/maheshgaya/ConnectAndPlay.git
+  $ git clone https://github.com/maheshgaya/TeamUpApp.git
   $ cd ConnectAndPlay/
   ```
 2. Import the project in Android Studio. (File -> New -> Import Project)
